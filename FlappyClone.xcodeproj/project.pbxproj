@@ -17,6 +17,8 @@
 		2F1403B02B0E91FE009D12C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F1403AF2B0E91FE009D12C9 /* Assets.xcassets */; };
 		2F4333602B100BA600C757D5 /* sfx_point.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2F43335E2B100BA600C757D5 /* sfx_point.mp3 */; };
 		2F4333612B100BA600C757D5 /* sfx_wing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2F43335F2B100BA600C757D5 /* sfx_wing.mp3 */; };
+		2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */; };
+		2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE132B117D5900405095 /* PhysicsCategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		2F1403AF2B0E91FE009D12C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../Desktop/Flappy-Ghost-Swift-2.1-/FlappyClone/Assets.xcassets"; sourceTree = "<group>"; };
 		2F43335E2B100BA600C757D5 /* sfx_point.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_point.mp3; sourceTree = "<group>"; };
 		2F43335F2B100BA600C757D5 /* sfx_wing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_wing.mp3; sourceTree = "<group>"; };
+		2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		2FD0EE132B117D5900405095 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 		2F1403972B0E91A6009D12C9 /* FlappyClone */ = {
 			isa = PBXGroup;
 			children = (
+				2FD0EE122B117D4F00405095 /* Sprites */,
+				2FD0EE0F2B117D2200405095 /* Extensions */,
 				2F43335D2B100BA600C757D5 /* Sounds */,
 				2F1403982B0E91A6009D12C9 /* AppDelegate.swift */,
 				2F14039A2B0E91A6009D12C9 /* GameScene.sks */,
@@ -83,6 +89,22 @@
 				2F43335F2B100BA600C757D5 /* sfx_wing.mp3 */,
 			);
 			path = Sounds;
+			sourceTree = "<group>";
+		};
+		2FD0EE0F2B117D2200405095 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2FD0EE122B117D4F00405095 /* Sprites */ = {
+			isa = PBXGroup;
+			children = (
+				2FD0EE132B117D5900405095 /* PhysicsCategory.swift */,
+			);
+			path = Sprites;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,6 +183,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F14039F2B0E91A6009D12C9 /* GameScene.swift in Sources */,
+				2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */,
+				2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */,
 				2F1403A12B0E91A6009D12C9 /* GameViewController.swift in Sources */,
 				2F1403992B0E91A6009D12C9 /* AppDelegate.swift in Sources */,
 			);

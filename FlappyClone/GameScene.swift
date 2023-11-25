@@ -2,23 +2,6 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 
-extension UIDevice {
-    public static func isTablet() -> Bool {
-        UIDevice.current.userInterfaceIdiom == .pad
-    }
-    
-    public static func isPhone() -> Bool {
-        UIDevice.current.userInterfaceIdiom == .phone
-    }
-}
-
-struct PhysicsCategory {
-    static let Player:   UInt32 = 0x1 << 1
-    static let Boundary: UInt32 = 0x1 << 2
-    static let Wall:     UInt32 = 0x1 << 3
-    static let Score:    UInt32 = 0x1 << 4
-}
-
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // Sprites
