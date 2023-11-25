@@ -21,6 +21,7 @@
 		2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE132B117D5900405095 /* PhysicsCategory.swift */; };
 		2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE152B117E5300405095 /* PlayerSprite.swift */; };
 		2FD0EE182B11832000405095 /* GroundSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE172B11832000405095 /* GroundSprite.swift */; };
+		2FD0EE1A2B1186F600405095 /* CloudSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE192B1186F600405095 /* CloudSprite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		2FD0EE132B117D5900405095 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
 		2FD0EE152B117E5300405095 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 		2FD0EE172B11832000405095 /* GroundSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroundSprite.swift; sourceTree = "<group>"; };
+		2FD0EE192B1186F600405095 /* CloudSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSprite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				2FD0EE132B117D5900405095 /* PhysicsCategory.swift */,
 				2FD0EE152B117E5300405095 /* PlayerSprite.swift */,
 				2FD0EE172B11832000405095 /* GroundSprite.swift */,
+				2FD0EE192B1186F600405095 /* CloudSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 			files = (
 				2F14039F2B0E91A6009D12C9 /* GameScene.swift in Sources */,
 				2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */,
+				2FD0EE1A2B1186F600405095 /* CloudSprite.swift in Sources */,
 				2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */,
 				2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */,
 				2F1403A12B0E91A6009D12C9 /* GameViewController.swift in Sources */,

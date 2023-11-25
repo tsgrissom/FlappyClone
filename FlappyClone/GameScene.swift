@@ -5,14 +5,12 @@ import AVFoundation
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // Sprites
-    var background = SKSpriteNode()
-    var clouds     = SKSpriteNode() // Physics category - Boundary
     var player     = PlayerSprite()        // Physics category - Player
     var wallPair   = SKNode()
     var scoreLabel = SKLabelNode()
     
     // Sprite Actions
-    var moveAndRemove     = SKAction()
+    var moveAndRemove = SKAction()
     
     // Game State
     var gameStarted = Bool()
@@ -79,43 +77,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return label
     }
     
-    private func createBackgroundSprite() -> SKSpriteNode {
-        let sprite = SKSpriteNode(imageNamed: "Background")
-        sprite.scale(to: frame.size)
-        sprite.zPosition = -1
-        return sprite
-    }
-    
-    private func createCloudsSprite() -> SKSpriteNode {
-        let sprite = SKSpriteNode(imageNamed: "Clouds")
-        let frameWidthHalved  = frame.width  / 2
+    private func calculateCloudPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
-        
         let yMultiplier = if UIDevice.isPhone() {
             0.95
         } else {
             0.35
         }
         
-        sprite.position = CGPoint(
+        return CGPoint(
             x: frame.midX,
             y: frame.midY + (frameHeightHalved * yMultiplier)
         )
-        sprite.zPosition = 3
-        sprite.zRotation = CGFloat(Double.pi)
-        
-        sprite.physicsBody = SKPhysicsBody(rectangleOf: sprite.size)
-        sprite.physicsBody?.categoryBitMask    = PhysicsCategory.Boundary
-        sprite.physicsBody?.collisionBitMask   = PhysicsCategory.Player
-        sprite.physicsBody?.contactTestBitMask = PhysicsCategory.Player
-        sprite.physicsBody?.affectedByGravity  = false
-        sprite.physicsBody?.isDynamic          = false
-        
-        return sprite
     }
     
     private func calculateGroundPosition() -> CGPoint {
-        let frameHeightHalved = frame.size.height / 2
+        let frameHeightHalved = frame.height / 2
         let yMultiplier = if UIDevice.isPhone() {
             0.95
         } else {
@@ -192,18 +169,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         loadSoundEffects()
         
-        // Setting up sprites
-        scoreLabel = createScoreLabel()
-        background = createBackgroundSprite()
-        clouds     = createCloudsSprite()
-        let ground = GroundSprite(width: frame.width, height: 100)
+        // Static Sprites
+        let background = SKSpriteNode(imageNamed: "Background")
+        background.scale(to: frame.size)
+        background.zPosition = -1
         
+        let cloud = CloudSprite(width: frame.width, height: 100)
+        cloud.position = calculateCloudPosition()
+        
+        let ground = GroundSprite(width: frame.width, height: 100)
         ground.position = calculateGroundPosition()
+
+        // Dynamic Sprites
+        scoreLabel = createScoreLabel()
         player.position = CGPoint(x: frame.midX, y: frame.midY)
         
         addChild(background)
         addChild(scoreLabel)
-        addChild(clouds)
+        addChild(cloud)
         addChild(ground)
         addChild(player)
     }
