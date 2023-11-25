@@ -8,31 +8,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var background = SKSpriteNode()
     var ground     = SKSpriteNode() // Physics category - Boundary
     var clouds     = SKSpriteNode() // Physics category - Boundary
-    var player     = SKSpriteNode() // Physics category - Player
+    var player     = PlayerSprite()        // Physics category - Player
     var wallPair   = SKNode()
     var scoreLabel = SKLabelNode()
     
     // Sprite Actions
     var moveAndRemove     = SKAction()
-    var upTurnOnFlap      = SKAction()
-    var downTurnAfterFlap = SKAction()
     
     // Game State
     var gameStarted = Bool()
     var score       = Int()
     
     // Sound Effects
-    var flapSoundEffect:  AVAudioPlayer?
     var scoreSoundEffect: AVAudioPlayer?
-    
-    private func flap(deltaY: CGFloat = 70) {
-        player.run(upTurnOnFlap)
-        player.physicsBody?.velocity = CGVectorMake(0, 0)
-        player.physicsBody?.applyImpulse(CGVectorMake(0, deltaY))
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        flapSoundEffect?.play()
-        player.run(downTurnAfterFlap)
-    }
     
     private func endGame(_ debugMessage: String = "Player hit Wall") {
 //        gameStarted = false
@@ -62,17 +50,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         } else {
             print("sfx_point.mp3 not found in bundle")
-        }
-        
-        if let path = Bundle.main.path(forResource: "sfx_wing", ofType: "mp3") {
-            let url = URL(fileURLWithPath: path)
-            do {
-                flapSoundEffect = try AVAudioPlayer(contentsOf: url)
-            } catch {
-                print("Construction of AVAudioPlayer for \"sfx_wing.mp3\" threw an exception")
-            }
-        } else {
-            print("sfx_wing.mp3 not found in bundle")
         }
     }
     
@@ -165,29 +142,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return sprite
     }
     
-    private func createPlayerSprite() -> SKSpriteNode {
-        let sprite = SKSpriteNode(imageNamed: "Birb")
-        
-        sprite.size = CGSize(width: 60, height: 70)
-        sprite.position = CGPoint(
-            x: frame.midX,
-            y: frame.midY
-        )
-        sprite.zPosition = 2
-        sprite.setScale(1.25)
-        
-        let bodyRadius = CGFloat(sprite.frame.height / 3)
-        
-        sprite.physicsBody = SKPhysicsBody(circleOfRadius: bodyRadius)
-        sprite.physicsBody?.categoryBitMask    = PhysicsCategory.Player
-        sprite.physicsBody?.collisionBitMask   = PhysicsCategory.Boundary | PhysicsCategory.Wall
-        sprite.physicsBody?.contactTestBitMask = PhysicsCategory.Boundary | PhysicsCategory.Wall | PhysicsCategory.Score
-        sprite.physicsBody?.affectedByGravity  = false
-        sprite.physicsBody?.isDynamic          = true
-        sprite.physicsBody?.restitution        = 0.3
-        
-        return sprite
-    }
+//    private func createPlayerSprite() -> SKSpriteNode {
+//        let sprite = SKSpriteNode(imageNamed: "Birb")
+//        
+//        sprite.size = CGSize(width: 60, height: 70)
+//        sprite.position = CGPoint(
+//            x: frame.midX,
+//            y: frame.midY
+//        )
+//        sprite.zPosition = 2
+//        sprite.setScale(1.25)
+//        
+//        let bodyRadius = CGFloat(sprite.frame.height / 3)
+//        
+//        sprite.physicsBody = SKPhysicsBody(circleOfRadius: bodyRadius)
+//        sprite.physicsBody?.categoryBitMask    = PhysicsCategory.Player
+//        sprite.physicsBody?.collisionBitMask   = PhysicsCategory.Boundary | PhysicsCategory.Wall
+//        sprite.physicsBody?.contactTestBitMask = PhysicsCategory.Boundary | PhysicsCategory.Wall | PhysicsCategory.Score
+//        sprite.physicsBody?.affectedByGravity  = false
+//        sprite.physicsBody?.isDynamic          = true
+//        sprite.physicsBody?.restitution        = 0.3
+//        
+//        return sprite
+//    }
     
     private func createWalls() {
         wallPair = SKNode()
@@ -251,12 +228,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.backgroundColor = UIColor.cyan
         self.physicsWorld.contactDelegate = self
         
-        self.upTurnOnFlap = SKAction.rotate(toAngle: 0, duration: 0.65)
-        self.downTurnAfterFlap = SKAction.sequence([
-            SKAction.wait(forDuration: 0.65),
-            SKAction.rotate(toAngle: -CGFloat.pi/2, duration: 0.57)
-        ])
-        
         loadSoundEffects()
         
         // Setting up sprites
@@ -264,13 +235,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         background = createBackgroundSprite()
         clouds     = createCloudsSprite()
         ground     = createGroundSprite()
-        player     = createPlayerSprite()
+        player = PlayerSprite()
         
-        self.addChild(background)
-        self.addChild(scoreLabel)
-        self.addChild(clouds)
-        self.addChild(ground)
-        self.addChild(player)
+        player.position = CGPoint(x: frame.midX, y: frame.midY)
+        
+        addChild(background)
+        addChild(scoreLabel)
+        addChild(clouds)
+        addChild(ground)
+        addChild(player)
     }
     
     override func touchesBegan(
@@ -298,9 +271,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             moveAndRemove = SKAction.sequence([movePipes, removePipes])
             
-            flap()
+            player.flap()
         } else {
-            flap()
+            player.flap()
         }
     }
     

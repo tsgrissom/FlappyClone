@@ -19,6 +19,7 @@
 		2F4333612B100BA600C757D5 /* sfx_wing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2F43335F2B100BA600C757D5 /* sfx_wing.mp3 */; };
 		2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */; };
 		2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE132B117D5900405095 /* PhysicsCategory.swift */; };
+		2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE152B117E5300405095 /* PlayerSprite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		2F43335F2B100BA600C757D5 /* sfx_wing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_wing.mp3; sourceTree = "<group>"; };
 		2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		2FD0EE132B117D5900405095 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
+		2FD0EE152B117E5300405095 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,13 +73,13 @@
 				2FD0EE0F2B117D2200405095 /* Extensions */,
 				2F43335D2B100BA600C757D5 /* Sounds */,
 				2F1403982B0E91A6009D12C9 /* AppDelegate.swift */,
-				2F14039A2B0E91A6009D12C9 /* GameScene.sks */,
-				2F14039C2B0E91A6009D12C9 /* Actions.sks */,
 				2F14039E2B0E91A6009D12C9 /* GameScene.swift */,
 				2F1403A02B0E91A6009D12C9 /* GameViewController.swift */,
 				2F1403A22B0E91A6009D12C9 /* Main.storyboard */,
-				2F1403AF2B0E91FE009D12C9 /* Assets.xcassets */,
 				2F1403A72B0E91A8009D12C9 /* LaunchScreen.storyboard */,
+				2F14039A2B0E91A6009D12C9 /* GameScene.sks */,
+				2F14039C2B0E91A6009D12C9 /* Actions.sks */,
+				2F1403AF2B0E91FE009D12C9 /* Assets.xcassets */,
 			);
 			path = FlappyClone;
 			sourceTree = "<group>";
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				2FD0EE132B117D5900405095 /* PhysicsCategory.swift */,
+				2FD0EE152B117E5300405095 /* PlayerSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 				2F14039F2B0E91A6009D12C9 /* GameScene.swift in Sources */,
 				2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */,
 				2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */,
+				2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */,
 				2F1403A12B0E91A6009D12C9 /* GameViewController.swift in Sources */,
 				2F1403992B0E91A6009D12C9 /* AppDelegate.swift in Sources */,
 			);

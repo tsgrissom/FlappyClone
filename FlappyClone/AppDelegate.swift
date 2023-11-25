@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  FlappyClone
-//
-//  Created by Tyler Grissom on 11/22/23.
-//
-
 import UIKit
 
 @main
