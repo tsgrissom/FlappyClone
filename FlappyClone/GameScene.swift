@@ -6,7 +6,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // Sprites
     var background = SKSpriteNode()
-    var ground     = SKSpriteNode() // Physics category - Boundary
     var clouds     = SKSpriteNode() // Physics category - Boundary
     var player     = PlayerSprite()        // Physics category - Player
     var wallPair   = SKNode()
@@ -115,56 +114,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return sprite
     }
     
-    private func createGroundSprite() -> SKSpriteNode {
-        let sprite = SKSpriteNode(imageNamed: "Clouds")
-        let frameWidthHalved  = frame.width  / 2
-        let frameHeightHalved = frame.height / 2
-        
+    private func calculateGroundPosition() -> CGPoint {
+        let frameHeightHalved = frame.size.height / 2
         let yMultiplier = if UIDevice.isPhone() {
             0.95
         } else {
             0.35
         }
         
-        sprite.position = CGPoint(
+        return CGPoint(
             x: frame.midX,
             y: frame.midY - (frameHeightHalved * yMultiplier)
         )
-        sprite.zPosition = 3
-        
-        sprite.physicsBody = SKPhysicsBody(rectangleOf: sprite.size)
-        sprite.physicsBody?.categoryBitMask    = PhysicsCategory.Boundary
-        sprite.physicsBody?.collisionBitMask   = PhysicsCategory.Player
-        sprite.physicsBody?.contactTestBitMask = PhysicsCategory.Player
-        sprite.physicsBody?.affectedByGravity  = false
-        sprite.physicsBody?.isDynamic          = false
-        
-        return sprite
     }
-    
-//    private func createPlayerSprite() -> SKSpriteNode {
-//        let sprite = SKSpriteNode(imageNamed: "Birb")
-//        
-//        sprite.size = CGSize(width: 60, height: 70)
-//        sprite.position = CGPoint(
-//            x: frame.midX,
-//            y: frame.midY
-//        )
-//        sprite.zPosition = 2
-//        sprite.setScale(1.25)
-//        
-//        let bodyRadius = CGFloat(sprite.frame.height / 3)
-//        
-//        sprite.physicsBody = SKPhysicsBody(circleOfRadius: bodyRadius)
-//        sprite.physicsBody?.categoryBitMask    = PhysicsCategory.Player
-//        sprite.physicsBody?.collisionBitMask   = PhysicsCategory.Boundary | PhysicsCategory.Wall
-//        sprite.physicsBody?.contactTestBitMask = PhysicsCategory.Boundary | PhysicsCategory.Wall | PhysicsCategory.Score
-//        sprite.physicsBody?.affectedByGravity  = false
-//        sprite.physicsBody?.isDynamic          = true
-//        sprite.physicsBody?.restitution        = 0.3
-//        
-//        return sprite
-//    }
     
     private func createWalls() {
         wallPair = SKNode()
@@ -234,9 +196,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel = createScoreLabel()
         background = createBackgroundSprite()
         clouds     = createCloudsSprite()
-        ground     = createGroundSprite()
-        player = PlayerSprite()
+        let ground = GroundSprite(width: frame.width, height: 100)
         
+        ground.position = calculateGroundPosition()
         player.position = CGPoint(x: frame.midX, y: frame.midY)
         
         addChild(background)
