@@ -6,11 +6,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // Sprites
     var player     = PlayerSprite()        // Physics category - Player
-    var wallPair   = SKNode()
+    var walls      = WallSprite()
     var scoreLabel = SKLabelNode()
     
     // Sprite Actions
-    var moveAndRemove = SKAction()
+    var moveAndRemove     = SKAction()
+    var flashLabelOnReset = SKAction()
+    
     
     // Game State
     var gameStarted = Bool()
@@ -19,15 +21,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Sound Effects
     var scoreSoundEffect: AVAudioPlayer?
     
-    private func endGame(_ debugMessage: String = "Player hit Wall") {
+    private func loadSoundEffects() {
+        if let path = Bundle.main.path(forResource: "Score", ofType: "mp3") {
+            let url = URL(fileURLWithPath: path)
+            do {
+                scoreSoundEffect = try AVAudioPlayer(contentsOf: url)
+            } catch {
+                print("Could not make AVAudioPlayer<-\"Score.mp3\"")
+            }
+        } else {
+            print("\"Score.mp3\" not found in bundle")
+        }
+    }
+    
+    private func setupActions() {
+        let makeLabelRed = SKAction.run({
+            () in
+            self.scoreLabel.fontColor = UIColor.systemRed
+        })
+        let resetLabelColor = SKAction.run({
+            () in
+            self.scoreLabel.fontColor = UIColor.yellow
+        })
+        flashLabelOnReset = SKAction.sequence([
+            makeLabelRed,
+            SKAction.wait(forDuration: 1.0),
+            resetLabelColor
+        ])
+    }
+    
+    // MARK: Game State Functions
+    private func endGame(for debugMessage: String = "Player hit Wall") {
 //        gameStarted = false
-        print("End: \(debugMessage)")
+//        print("End: \(debugMessage)")
         setScore(to: 0)
+        run(flashLabelOnReset)
     }
     
     private func setScore(to points: Int) {
         self.score = points
-        print("Score: \(points)")
         scoreLabel.text = "\(points)x"
     }
     
@@ -35,19 +67,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let newScore = self.score + points
         setScore(to: newScore)
         scoreSoundEffect?.play()
-    }
-    
-    private func loadSoundEffects() {
-        if let path = Bundle.main.path(forResource: "sfx_point", ofType: "mp3") {
-            let url = URL(fileURLWithPath: path)
-            do {
-                scoreSoundEffect = try AVAudioPlayer(contentsOf: url)
-            } catch {
-                print("Construction of AVAudioPlayer for \"sfx_point.mp3\" threw an exception")
-            }
-        } else {
-            print("sfx_point.mp3 not found in bundle")
-        }
     }
     
     private func createScoreLabel() -> SKLabelNode {
@@ -77,6 +96,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return label
     }
     
+    // MARK: Helper Functions
     private func calculateCloudPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
         let yMultiplier = if UIDevice.isPhone() {
@@ -105,79 +125,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         )
     }
     
+    // Creates the walls
     private func createWalls() {
-        wallPair = SKNode()
-        
-        let topWall   = SKSpriteNode(imageNamed: "PipeTop")
-        let btmWall   = SKSpriteNode(imageNamed: "PipeBottom")
-        let scoreNode = SKSpriteNode(imageNamed: "Coin")
+        walls = WallSprite()
         
         let frameHeightHalved = frame.height / 2
         let frameWidthHalved  = frame.width / 2
-        let wallX             = frame.midX + (frameWidthHalved  * 0.9)
-        let topWallY          = frame.midY + (frameHeightHalved * 0.65)
-        let btmWallY          = frame.midY - (frameHeightHalved * 0.6)
-        
-        topWall.position = CGPoint(x: wallX, y: topWallY)
-        btmWall.position = CGPoint(x: wallX, y: btmWallY)
-        topWall.setScale(0.6)
-        btmWall.setScale(0.6)
         
         let randomPositions = [0.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0]
         let random = randomPositions.randomElement() ?? 0.0
-        btmWall.position.y = btmWall.position.y + random
+        
+        let wallX    = frame.midX + (frameWidthHalved  * 0.9)
+        let topWallY = frame.midY + (frameHeightHalved * 0.65)
+        let btmWallY = frame.midY - (frameHeightHalved * 0.6) + random
+        
+        walls.spriteTop.position   = CGPoint(x: wallX, y: topWallY)
+        walls.spriteBtm.position   = CGPoint(x: wallX, y: btmWallY)
+        walls.spriteScore.position = CGPoint(x: wallX, y: 30)
         
      // let scoreNodeX = wallX + (btmWall.frame.width / 2) // If the score needs to be at the end of the pipe
+
+        walls.run(moveAndRemove)
         
-        scoreNode.size = CGSize(width: 50, height: 50)
-        scoreNode.position = CGPoint(x: wallX, y: 30)
-        
-        // Wall Physics Bodies
-        topWall.physicsBody = SKPhysicsBody(rectangleOf: topWall.size)
-        topWall.physicsBody?.categoryBitMask    = PhysicsCategory.Wall
-        topWall.physicsBody?.collisionBitMask   = PhysicsCategory.Player
-        topWall.physicsBody?.contactTestBitMask = PhysicsCategory.Player
-        topWall.physicsBody?.isDynamic = false
-        topWall.physicsBody?.affectedByGravity = false
-        
-        btmWall.physicsBody = SKPhysicsBody(rectangleOf: btmWall.size)
-        btmWall.physicsBody?.categoryBitMask    = PhysicsCategory.Wall
-        btmWall.physicsBody?.collisionBitMask   = PhysicsCategory.Player
-        btmWall.physicsBody?.contactTestBitMask = PhysicsCategory.Player
-        btmWall.physicsBody?.isDynamic = false
-        btmWall.physicsBody?.affectedByGravity = false
-        
-        scoreNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 1, height: 250))
-        scoreNode.physicsBody?.categoryBitMask    = PhysicsCategory.Score
-        scoreNode.physicsBody?.collisionBitMask   = 0
-        scoreNode.physicsBody?.contactTestBitMask = PhysicsCategory.Player
-        scoreNode.physicsBody?.affectedByGravity = false
-        scoreNode.physicsBody?.isDynamic = false
-        
-        wallPair.addChild(topWall)
-        wallPair.addChild(btmWall)
-        wallPair.addChild(scoreNode)
-        wallPair.run(moveAndRemove)
-        
-        self.addChild(wallPair)
+        self.addChild(walls)
     }
     
-    // GameScene Functions
+    // MARK: GameScene Functions
+    
+    // On first render of GameScene
     override func didMove(to view: SKView) {
         self.backgroundColor = UIColor.cyan
         self.physicsWorld.contactDelegate = self
         
         loadSoundEffects()
+        setupActions()
         
         // Static Sprites
         let background = SKSpriteNode(imageNamed: "Background")
+        let cloud  = GroundSprite(frameWidth: frame.width)
+        let ground = GroundSprite(frameWidth: frame.width)
+        
         background.scale(to: frame.size)
         background.zPosition = -1
-        
-        let cloud = CloudSprite(width: frame.width, height: 100)
-        cloud.position = calculateCloudPosition()
-        
-        let ground = GroundSprite(width: frame.width, height: 100)
+        cloud.position  = calculateCloudPosition()
+        cloud.zRotation = CGFloat(Double.pi)
         ground.position = calculateGroundPosition()
 
         // Dynamic Sprites
@@ -191,6 +182,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(player)
     }
     
+    // Handles each screen touch
     override func touchesBegan(
         _ touches: Set<UITouch>,
         with event: UIEvent?
@@ -201,7 +193,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             let spawn = SKAction.run({
                 () in
-                
                 self.createWalls()
             })
             let delay          = SKAction.wait(forDuration: 3.5)
@@ -210,8 +201,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             self.run(spawnDelayLoop)
             
-            let distance = CGFloat(self.frame.width + wallPair.frame.width)
-            let movePipes = SKAction.moveBy(x: -distance, y: 0, duration: TimeInterval(0.008 * distance))
+            let distance    = CGFloat(self.frame.width + walls.frame.width)
+            let movePipes   = SKAction.moveBy(x: -distance, y: 0, duration: TimeInterval(0.008 * distance))
             let removePipes = SKAction.removeFromParent()
             
             moveAndRemove = SKAction.sequence([movePipes, removePipes])
@@ -222,12 +213,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-    }
+    // Called before each frame is rendered
+    override func update(_ currentTime: TimeInterval) { }
     
     // From SKPhysicsContactDelegate
-    // Collision between two bodies
+    // Triggered on contact between two bodies
     func didBegin(_ contact: SKPhysicsContact) {
         let bodyA = contact.bodyA
         let bodyB = contact.bodyB
@@ -235,10 +225,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let maskB = bodyB.categoryBitMask
         
         if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Wall) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Wall)) {
-            endGame("Player hit Wall")
-            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+            player.downTurnCanceled = true
+            player.rotateToZero(collision: true)
+            endGame(for: "Player hit Wall")
+//            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+            UINotificationFeedbackGenerator().notificationOccurred(.warning)
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Boundary) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Boundary)) {
-            endGame("Player hit Ground")
+            player.downTurnCanceled = true
+            player.rotateToZero(collision: true)
+            endGame(for: "Player hit Ground")
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Score) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Score)) {
             addScore()
@@ -248,6 +243,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             } else if (maskB == PhysicsCategory.Score){
                 bodyB.node?.removeFromParent()
             }
+            
+            let downTurnAfterScore = SKAction.sequence([
+                SKAction.wait(forDuration: 0.8),
+                player.downTurnIfNotCanceled
+            ])
+            
+            player.run(downTurnAfterScore)
         }
     }
 }

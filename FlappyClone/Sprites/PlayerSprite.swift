@@ -3,9 +3,12 @@ import SpriteKit
 
 class PlayerSprite: SKSpriteNode {
     
-    private var upTurnOnFlap = SKAction()
+    private var upTurnOnFlap      = SKAction()
+    private var upTurnOnCollide   = SKAction()
     private var downTurnAfterFlap = SKAction()
-    private var onFlap = SKAction()
+    var downTurnIfNotCanceled     = SKAction()
+    
+    var downTurnCanceled = Bool()
     
     private var flapSoundEffect = AVAudioPlayer()
     
@@ -28,45 +31,61 @@ class PlayerSprite: SKSpriteNode {
         // Physics body
         let bodyRadius = CGFloat(self.frame.height / 3)
         physicsBody = SKPhysicsBody(circleOfRadius: bodyRadius)
+        
         physicsBody?.categoryBitMask = PhysicsCategory.Player
         physicsBody?.collisionBitMask = PhysicsCategory.Boundary | PhysicsCategory.Wall
         physicsBody?.contactTestBitMask = PhysicsCategory.Boundary | PhysicsCategory.Wall | PhysicsCategory.Score
         physicsBody?.affectedByGravity = false
         physicsBody?.isDynamic = true
         physicsBody?.restitution = 0.3
+        physicsBody?.usesPreciseCollisionDetection = true
         
         // SKActions
-        upTurnOnFlap = SKAction.rotate(toAngle: 0, duration: 0.65)
-        downTurnAfterFlap = SKAction.sequence([
-            SKAction.wait(forDuration: 0.65),
-            SKAction.rotate(toAngle: -CGFloat.pi/2, duration: 0.57)
-        ])
-        onFlap = SKAction.sequence([
-            upTurnOnFlap,
-            downTurnAfterFlap
-        ])
+        upTurnOnFlap      = SKAction.rotate(toAngle: 0, duration: 0.7)
+        upTurnOnCollide   = SKAction.rotate(toAngle: 0, duration: 0.15)
+        let downTurn = SKAction.rotate(toAngle: -CGFloat.pi/2, duration: 0.57)
+        downTurnIfNotCanceled = SKAction.run({
+            () in
+            if !self.downTurnCanceled {
+                self.run(downTurn)
+            } else {
+                self.downTurnCanceled = false
+            }
+        })
         
         // Audio
-        if let path = Bundle.main.path(forResource: "sfx_wing", ofType: "mp3") {
+        if let path = Bundle.main.path(forResource: "Flap", ofType: "mp3") {
             let url = URL(fileURLWithPath: path)
             do {
                 flapSoundEffect = try AVAudioPlayer(contentsOf: url)
             } catch {
-                print("Failed to create AVAudioPlayer for \"sfx_flap.mp3\".")
+                print("Could not make AVAudioPlayer<-\"Flap.mp3\".")
             }
         } else {
-            print("\"sfx_flap.mp3\" not found in bundle.")
+            print("\"Flap.mp3\" not found in bundle.")
         }
+    }
+    
+    public func rotateToZero(collision: Bool = false) {
+        self.physicsBody?.angularVelocity = 0
+        self.physicsBody?.angularDamping = 0
+        run(collision ? upTurnOnCollide : upTurnOnFlap)
     }
     
     public func flap(deltaY: CGFloat = 70) {
         // Audiovisual + haptic feedback
-        run(onFlap)
+        rotateToZero(collision: false)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
         flapSoundEffect.play()
         
         // Flap physics
-        physicsBody?.velocity = CGVectorMake(0, 0)
-        physicsBody?.applyImpulse(CGVectorMake(0, deltaY))
+        let vecNormalize = CGVectorMake(0, 0)
+        let vecFlap   = CGVectorMake(0, deltaY)
+        physicsBody?.velocity = vecNormalize
+        physicsBody?.applyImpulse(vecFlap)
+    }
+    
+    public func downTurn() {
+        run(downTurnIfNotCanceled)
     }
 }

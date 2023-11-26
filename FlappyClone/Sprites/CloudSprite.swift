@@ -1,6 +1,6 @@
 import SpriteKit
 
-class CloudSprite: SKSpriteNode {
+class CloudSprite: GroundSprite {
     
     init(width: CGFloat, height: CGFloat) {
         let texture = SKTexture(imageNamed: "Clouds")

@@ -2,10 +2,17 @@ import SpriteKit
 
 class GroundSprite: SKSpriteNode {
     
-    init(width: CGFloat, height: CGFloat) {
-        let texture = SKTexture(imageNamed: "Clouds")
-        let size = CGSize(width: width, height: height)
+    var isCloud = false
+    
+    init(frameWidth: CGFloat, imageName: String = "Clouds") {
+        let texture = SKTexture(imageNamed: imageName)
+        let size = CGSize(width: frameWidth, height: 100)
         super.init(texture: texture, color: .clear, size: size)
+        
+        if imageName=="Clouds" {
+            isCloud = true
+        }
+        
         setup()
     }
     
@@ -17,11 +24,22 @@ class GroundSprite: SKSpriteNode {
     private func setup() {
         zPosition = 3
         
-        physicsBody = SKPhysicsBody(rectangleOf: self.size)
+        let pbHeightMultiplier = if isCloud {
+            0.3
+        } else {
+            1.0
+        }
+        let pbSize   = CGSize(
+            width: self.size.width,
+            height: self.size.height * pbHeightMultiplier
+        )
+        
+        physicsBody = SKPhysicsBody(rectangleOf: pbSize)
         physicsBody?.categoryBitMask    = PhysicsCategory.Boundary
         physicsBody?.collisionBitMask   = PhysicsCategory.Player
         physicsBody?.contactTestBitMask = PhysicsCategory.Player
         physicsBody?.affectedByGravity  = false
         physicsBody?.isDynamic          = false
+        physicsBody?.restitution = 0.4
     }
 }
