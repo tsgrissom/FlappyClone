@@ -13,7 +13,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var moveAndRemove     = SKAction()
     var flashLabelOnReset = SKAction()
     
-    
     // Game State
     var gameStarted = Bool()
     var score       = Int()
@@ -67,6 +66,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let newScore = self.score + points
         setScore(to: newScore)
         scoreSoundEffect?.play()
+        player.run(player.toggleRecentlyScored)
+    }
+    
+    private func createRestartButton() {
+        
     }
     
     private func createScoreLabel() -> SKLabelNode {
