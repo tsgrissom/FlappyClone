@@ -8,6 +8,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var player     = PlayerSprite()        // Physics category - Player
     var walls      = WallSprite()
     var scoreLabel = SKLabelNode()
+    var restartButton = SKSpriteNode()
     
     // Sprite Actions
     var moveAndRemove     = SKAction()
@@ -40,7 +41,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         })
         let resetLabelColor = SKAction.run({
             () in
-            self.scoreLabel.fontColor = UIColor.yellow
+            self.scoreLabel.fontColor = UIColor.white
         })
         flashLabelOnReset = SKAction.sequence([
             makeLabelRed,
@@ -57,6 +58,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         run(flashLabelOnReset)
     }
     
+    private func restartScene() {
+        gameStarted = false
+        score = 0
+        self.removeAllChildren()
+        self.removeAllActions()
+        createScene()
+    }
+    
+    private func createScene() {
+        self.backgroundColor = UIColor.cyan
+        self.physicsWorld.contactDelegate = self
+        
+        loadSoundEffects()
+        setupActions()
+        
+        // Static Sprites
+        let background = SKSpriteNode(imageNamed: "BG-Day")
+        let cloud  = GroundSprite(frameWidth: frame.width)
+        let ground = GroundSprite(frameWidth: frame.width)
+        
+        background.scale(to: frame.size)
+        background.zPosition = -1
+        cloud.position  = calculateCloudPosition()
+        cloud.zRotation = CGFloat(Double.pi)
+        ground.position = calculateGroundPosition()
+
+        // Dynamic Sprites
+        scoreLabel = createScoreLabel()
+        player = PlayerSprite()
+        player.position = CGPoint(x: frame.midX, y: frame.midY)
+        player.physicsBody?.affectedByGravity = false
+        
+        addChild(background)
+        addChild(scoreLabel)
+        addChild(cloud)
+        addChild(ground)
+        addChild(player)
+    }
+    
     private func setScore(to points: Int) {
         self.score = points
         scoreLabel.text = "\(points)x"
@@ -69,10 +109,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.run(player.toggleRecentlyScored)
     }
     
-    private func createRestartButton() {
-        
-    }
-    
     private func createScoreLabel() -> SKLabelNode {
         let label = SKLabelNode()
         let frameWidthHalved  = frame.width / 2
@@ -80,7 +116,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let posX = if UIDevice.isPhone() {
             CGPoint(
-                x: frame.midX - (frameWidthHalved  * 0.6),
+                x: frame.midX - (frameWidthHalved  * 0.52),
                 y: frame.midY + (frameHeightHalved * 0.7)
             )
         } else {
@@ -90,14 +126,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             )
         }
         
-        label.text = ""
-        label.fontColor = UIColor.yellow
+        label.text = "0x"
+        label.fontColor = UIColor.white
         label.fontSize = 65
-        label.fontName = "SF Pro"
+        label.fontName = "04b_19"
         label.position = posX
         label.zPosition = 4
         
         return label
+    }
+    
+    private func createRestartButton() {
+        restartButton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 200, height: 100))
+        
+        let frameWidthHalved  = frame.size.width  / 2
+        let frameHeightHalved = frame.size.height / 2
+        let posX = frame.midX - (frameWidthHalved  * 0.5)
+        let posY = frame.midY + (frameHeightHalved * 0.58) // TODO iPad positioning
+        
+        restartButton.position = CGPoint(x: posX, y: posY)
+        restartButton.zPosition = 6
+        restartButton.texture = SKTexture(imageNamed: "BtnRestart")
+        addChild(restartButton)
     }
     
     // MARK: Helper Functions
@@ -158,32 +208,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // On first render of GameScene
     override func didMove(to view: SKView) {
-        self.backgroundColor = UIColor.cyan
-        self.physicsWorld.contactDelegate = self
-        
-        loadSoundEffects()
-        setupActions()
-        
-        // Static Sprites
-        let background = SKSpriteNode(imageNamed: "Background")
-        let cloud  = GroundSprite(frameWidth: frame.width)
-        let ground = GroundSprite(frameWidth: frame.width)
-        
-        background.scale(to: frame.size)
-        background.zPosition = -1
-        cloud.position  = calculateCloudPosition()
-        cloud.zRotation = CGFloat(Double.pi)
-        ground.position = calculateGroundPosition()
-
-        // Dynamic Sprites
-        scoreLabel = createScoreLabel()
-        player.position = CGPoint(x: frame.midX, y: frame.midY)
-        
-        addChild(background)
-        addChild(scoreLabel)
-        addChild(cloud)
-        addChild(ground)
-        addChild(player)
+        createScene()
     }
     
     // Handles each screen touch
@@ -194,6 +219,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (!gameStarted) {
             player.physicsBody?.affectedByGravity = true
             gameStarted = true
+            createRestartButton()
             
             let spawn = SKAction.run({
                 () in
@@ -214,6 +240,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.flap()
         } else {
             player.flap()
+        }
+        
+        for touch in touches {
+            let location = touch.location(in: self)
+            if (restartButton.contains(location)) {
+                restartScene()
+            }
         }
     }
     
