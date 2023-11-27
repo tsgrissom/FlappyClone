@@ -7,12 +7,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Sprites
     var player     = PlayerSprite()        // Physics category - Player
     var walls      = WallSprite()
-    var scoreLabel = SKLabelNode()
+    var scoreLabel = ScoreLabel()
     var restartButton = SKSpriteNode()
     
     // Sprite Actions
     var moveAndRemove     = SKAction()
-    var flashLabelOnReset = SKAction()
     
     // Game State
     var gameStarted = Bool()
@@ -34,28 +33,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    private func setupActions() {
-        let makeLabelRed = SKAction.run({
-            () in
-            self.scoreLabel.fontColor = UIColor.systemRed
-        })
-        let resetLabelColor = SKAction.run({
-            () in
-            self.scoreLabel.fontColor = UIColor.white
-        })
-        flashLabelOnReset = SKAction.sequence([
-            makeLabelRed,
-            SKAction.wait(forDuration: 1.0),
-            resetLabelColor
-        ])
-    }
-    
     // MARK: Game State Functions
     private func endGame(for debugMessage: String = "Player hit Wall") {
 //        gameStarted = false
 //        print("End: \(debugMessage)")
         setScore(to: 0)
-        run(flashLabelOnReset)
+        scoreLabel.runFlashDanger()
     }
     
     private func restartScene() {
@@ -71,7 +54,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.contactDelegate = self
         
         loadSoundEffects()
-        setupActions()
         
         // Static Sprites
         let background = SKSpriteNode(imageNamed: "BG-Day")
@@ -83,9 +65,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cloud.position  = calculateCloudPosition()
         cloud.zRotation = CGFloat(Double.pi)
         ground.position = calculateGroundPosition()
-
+        
+        
         // Dynamic Sprites
-        scoreLabel = createScoreLabel()
+        scoreLabel = ScoreLabel()
+        scoreLabel.position = calculateScoreLabelPosition()
+        scoreLabel.zPosition = 4
         player = PlayerSprite()
         player.position = CGPoint(x: frame.midX, y: frame.midY)
         player.physicsBody?.affectedByGravity = false
@@ -99,7 +84,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func setScore(to points: Int) {
         self.score = points
-        scoreLabel.text = "\(points)x"
+        scoreLabel.updateTextForScore(points)
     }
     
     private func addScore(_ points: Int = 1) {
@@ -107,33 +92,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setScore(to: newScore)
         scoreSoundEffect?.play()
         player.run(player.toggleRecentlyScored)
-    }
-    
-    private func createScoreLabel() -> SKLabelNode {
-        let label = SKLabelNode()
-        let frameWidthHalved  = frame.width / 2
-        let frameHeightHalved = frame.height / 2
-        
-        let posX = if UIDevice.isPhone() {
-            CGPoint(
-                x: frame.midX - (frameWidthHalved  * 0.52),
-                y: frame.midY + (frameHeightHalved * 0.7)
-            )
-        } else {
-            CGPoint(
-                x: frame.midX,
-                y: frame.midY + (frameHeightHalved * 0.2)
-            )
-        }
-        
-        label.text = "0x"
-        label.fontColor = UIColor.white
-        label.fontSize = 65
-        label.fontName = "04b_19"
-        label.position = posX
-        label.zPosition = 4
-        
-        return label
     }
     
     private func createRestartButton() {
@@ -177,6 +135,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             x: frame.midX,
             y: frame.midY - (frameHeightHalved * yMultiplier)
         )
+    }
+    
+    private func calculateScoreLabelPosition() -> CGPoint {
+        let frameWidthHalved  = frame.width  / 2
+        let frameHeightHalved = frame.height / 2
+        
+        return if UIDevice.isPhone() {
+            CGPoint(
+                x: frame.midX - (frameWidthHalved  * 0.52),
+                y: frame.midY + (frameHeightHalved * 0.7)
+            )
+        } else {
+            CGPoint(
+                x: frame.midX,
+                y: frame.midY + (frameHeightHalved * 0.2)
+            )
+        }
     }
     
     // Creates the walls
