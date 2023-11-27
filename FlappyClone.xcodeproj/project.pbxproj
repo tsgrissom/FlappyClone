@@ -20,6 +20,10 @@
 		2F4333602B100BA600C757D5 /* Score.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2F43335E2B100BA600C757D5 /* Score.mp3 */; };
 		2F4333612B100BA600C757D5 /* Flap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2F43335F2B100BA600C757D5 /* Flap.mp3 */; };
 		2FB05F7E2B14F4FA00C410C3 /* ScoreLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */; };
+		2FB05F822B14FF5F00C410C3 /* GameSceneSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */; };
+		2FB05F852B15242300C410C3 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F842B15242300C410C3 /* PlayButton.swift */; };
+		2FB05F872B15251000C410C3 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F862B15251000C410C3 /* SettingsButton.swift */; };
+		2FB05F892B1528BC00C410C3 /* BackgroundSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F882B1528BC00C410C3 /* BackgroundSprite.swift */; };
 		2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */; };
 		2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE132B117D5900405095 /* PhysicsCategory.swift */; };
 		2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE152B117E5300405095 /* PlayerSprite.swift */; };
@@ -43,6 +47,10 @@
 		2F43335E2B100BA600C757D5 /* Score.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Score.mp3; sourceTree = "<group>"; };
 		2F43335F2B100BA600C757D5 /* Flap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Flap.mp3; sourceTree = "<group>"; };
 		2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreLabel.swift; sourceTree = "<group>"; };
+		2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSetting.swift; sourceTree = "<group>"; };
+		2FB05F842B15242300C410C3 /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
+		2FB05F862B15251000C410C3 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
+		2FB05F882B1528BC00C410C3 /* BackgroundSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSprite.swift; sourceTree = "<group>"; };
 		2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		2FD0EE132B117D5900405095 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
 		2FD0EE152B117E5300405095 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
@@ -86,8 +94,10 @@
 				2F43335D2B100BA600C757D5 /* Bundle */,
 				2FD0EE0F2B117D2200405095 /* Extensions */,
 				2FD0EE122B117D4F00405095 /* Sprites */,
+				2FB05F832B1523E100C410C3 /* UI */,
 				2F1403982B0E91A6009D12C9 /* AppDelegate.swift */,
 				2F14039E2B0E91A6009D12C9 /* GameScene.swift */,
+				2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */,
 				2F1403A02B0E91A6009D12C9 /* GameViewController.swift */,
 				2F29634E2B14316C006C5AAA /* MenuScene.swift */,
 				2F1403A22B0E91A6009D12C9 /* Main.storyboard */,
@@ -110,6 +120,16 @@
 			path = Bundle;
 			sourceTree = "<group>";
 		};
+		2FB05F832B1523E100C410C3 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */,
+				2FB05F842B15242300C410C3 /* PlayButton.swift */,
+				2FB05F862B15251000C410C3 /* SettingsButton.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		2FD0EE0F2B117D2200405095 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,7 +145,7 @@
 				2FD0EE152B117E5300405095 /* PlayerSprite.swift */,
 				2FD0EE172B11832000405095 /* GroundSprite.swift */,
 				2FD0EE1D2B1239E500405095 /* WallSprite.swift */,
-				2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */,
+				2FB05F882B1528BC00C410C3 /* BackgroundSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -212,10 +232,14 @@
 				2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */,
 				2FB05F7E2B14F4FA00C410C3 /* ScoreLabel.swift in Sources */,
 				2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */,
+				2FB05F872B15251000C410C3 /* SettingsButton.swift in Sources */,
+				2FB05F852B15242300C410C3 /* PlayButton.swift in Sources */,
 				2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */,
 				2F1403A12B0E91A6009D12C9 /* GameViewController.swift in Sources */,
+				2FB05F822B14FF5F00C410C3 /* GameSceneSetting.swift in Sources */,
 				2F1403992B0E91A6009D12C9 /* AppDelegate.swift in Sources */,
 				2FD0EE182B11832000405095 /* GroundSprite.swift in Sources */,
+				2FB05F892B1528BC00C410C3 /* BackgroundSprite.swift in Sources */,
 				2FD0EE1E2B1239E500405095 /* WallSprite.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

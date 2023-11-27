@@ -2,14 +2,17 @@ import SpriteKit
 
 class GroundSprite: SKSpriteNode {
     
+    let setting: GameSceneSetting
     var isCloud = false
     
-    init(frameWidth: CGFloat, imageName: String = "Clouds") {
+    init(frameWidth: CGFloat, setting: GameSceneSetting = .Day) {
+        self.setting = setting
+        let imageName = setting.getCloudTextureImageName()
         let texture = SKTexture(imageNamed: imageName)
         let size = CGSize(width: frameWidth, height: 100)
         super.init(texture: texture, color: .clear, size: size)
         
-        if imageName=="Clouds" {
+        if imageName.contains("Clouds") {
             isCloud = true
         }
         
@@ -17,6 +20,7 @@ class GroundSprite: SKSpriteNode {
     }
     
     required init?(coder aDecoder: NSCoder) {
+        self.setting = .Day
         super.init(coder: aDecoder)
         setup()
     }

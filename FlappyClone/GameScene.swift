@@ -5,13 +5,13 @@ import AVFoundation
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // Sprites
-    var player     = PlayerSprite()        // Physics category - Player
-    var walls      = WallSprite()
-    var scoreLabel = ScoreLabel()
+    var player        = PlayerSprite()        // Physics category - Player
+    var walls         = WallSprite()
+    var scoreLabel    = ScoreLabel()
     var restartButton = SKSpriteNode()
     
     // Sprite Actions
-    var moveAndRemove     = SKAction()
+    var moveAndRemove = SKAction()
     
     // Game State
     var gameStarted = Bool()
@@ -35,10 +35,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: Game State Functions
     private func endGame(for debugMessage: String = "Player hit Wall") {
-//        gameStarted = false
-//        print("End: \(debugMessage)")
+        print(debugMessage)
         setScore(to: 0)
-        scoreLabel.runFlashDanger()
+        scoreLabel.flashDanger(waitDuration: 1.5)
     }
     
     private func restartScene() {
@@ -49,28 +48,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createScene()
     }
     
-    private func createScene() {
-        self.backgroundColor = UIColor.cyan
+    private func createScene(for setting: GameSceneSetting = .Day) {
         self.physicsWorld.contactDelegate = self
         
         loadSoundEffects()
         
         // Static Sprites
-        let background = SKSpriteNode(imageNamed: "BG-Day")
-        let cloud  = GroundSprite(frameWidth: frame.width)
-        let ground = GroundSprite(frameWidth: frame.width)
-        
-        background.scale(to: frame.size)
-        background.zPosition = -1
+        let background = BackgroundSprite(for: setting, frameSize: self.frame.size)
+        let cloud  = GroundSprite(frameWidth: frame.width, setting: setting)
+        let ground = GroundSprite(frameWidth: frame.width, setting: setting)
         cloud.position  = calculateCloudPosition()
         cloud.zRotation = CGFloat(Double.pi)
         ground.position = calculateGroundPosition()
-        
         
         // Dynamic Sprites
         scoreLabel = ScoreLabel()
         scoreLabel.position = calculateScoreLabelPosition()
         scoreLabel.zPosition = 4
+        
         player = PlayerSprite()
         player.position = CGPoint(x: frame.midX, y: frame.midY)
         player.physicsBody?.affectedByGravity = false
@@ -82,6 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(player)
     }
     
+    // Game State Functions
     private func setScore(to points: Int) {
         self.score = points
         scoreLabel.updateTextForScore(points)
@@ -94,6 +90,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.run(player.toggleRecentlyScored)
     }
     
+    // Elements
     private func createRestartButton() {
         restartButton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 200, height: 100))
         
@@ -108,7 +105,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(restartButton)
     }
     
-    // MARK: Helper Functions
     private func calculateCloudPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
         let yMultiplier = if UIDevice.isPhone() {
@@ -192,9 +188,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         with event: UIEvent?
     ) {
         if (!gameStarted) {
-            player.physicsBody?.affectedByGravity = true
             gameStarted = true
+            player.physicsBody?.affectedByGravity = true
             createRestartButton()
+            scoreLabel.updateTextForScore(0)
             
             let spawn = SKAction.run({
                 () in

@@ -2,8 +2,6 @@ import SpriteKit
 
 class ScoreLabel: SKLabelNode {
     
-    var flashOnDanger = SKAction()
-    
     override init() {
         super.init()
         setup()
@@ -15,12 +13,13 @@ class ScoreLabel: SKLabelNode {
     
     private func setup() {
         // Initialize label
-        text = "0x"
+        text = ""
         fontColor = UIColor.white
         fontSize = 65
         fontName = "04b_19"
-        
-        // Actions
+    }
+    
+    func flashDanger(waitDuration: Double = 1.0) {
         let makeLabelRed = SKAction.run({
             () in
             self.fontColor = UIColor.systemRed
@@ -29,18 +28,21 @@ class ScoreLabel: SKLabelNode {
             () in
             self.fontColor = UIColor.white
         })
-        flashOnDanger = SKAction.sequence([
+        let wait = SKAction.wait(forDuration: waitDuration)
+        let action = SKAction.sequence([
             makeLabelRed,
-            SKAction.wait(forDuration: 1.0),
+            wait,
             resetLabelColor
         ])
-    }
-    
-    func runFlashDanger() {
-        self.run(flashOnDanger)
+        
+        self.run(action)
     }
     
     func updateTextForScore(_ new: Int) {
         text = "\(new)x"
+    }
+    
+    func resetText() {
+        text = ""
     }
 }
