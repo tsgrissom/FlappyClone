@@ -187,7 +187,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
-        if (!gameStarted) {
+        if !gameStarted {
             gameStarted = true
             player.physicsBody?.affectedByGravity = true
             createRestartButton()
@@ -216,7 +216,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         for touch in touches {
             let location = touch.location(in: self)
-            if (restartButton.contains(location)) {
+            if restartButton.contains(location) {
                 restartScene()
             }
         }

@@ -2,30 +2,32 @@ import SpriteKit
 
 class GroundSprite: SKSpriteNode {
     
-    let setting: GameSceneSetting
-    var isCloud = false
+    private let setting: GameSceneSetting
+    let imageName: String
+    
+    var isCloud: Bool {
+        imageName.contains("Clouds")
+    }
     
     init(frameWidth: CGFloat, setting: GameSceneSetting = .Day) {
         self.setting = setting
-        let imageName = setting.getCloudTextureImageName()
+        self.imageName = setting.getCloudTextureImageName()
         let texture = SKTexture(imageNamed: imageName)
-        let size = CGSize(width: frameWidth, height: 100)
+        let size    = CGSize(width: frameWidth, height: 100)
+    
         super.init(texture: texture, color: .clear, size: size)
-        
-        if imageName.contains("Clouds") {
-            isCloud = true
-        }
-        
-        setup()
+        setupNode()
     }
     
     required init?(coder aDecoder: NSCoder) {
         self.setting = .Day
+        self.imageName = setting.getBackgroundTextureImageName()
+        
         super.init(coder: aDecoder)
-        setup()
+        setupNode()
     }
     
-    private func setup() {
+    private func setupNode() {
         zPosition = 3
         
         let pbHeightMultiplier = if isCloud {
@@ -38,12 +40,18 @@ class GroundSprite: SKSpriteNode {
             height: self.size.height * pbHeightMultiplier
         )
         
+        let restitution = if isCloud {
+            0.4
+        } else {
+            0.1
+        }
+        
         physicsBody = SKPhysicsBody(rectangleOf: pbSize)
         physicsBody?.categoryBitMask    = PhysicsCategory.Boundary
         physicsBody?.collisionBitMask   = PhysicsCategory.Player
         physicsBody?.contactTestBitMask = PhysicsCategory.Player
         physicsBody?.affectedByGravity  = false
         physicsBody?.isDynamic          = false
-        physicsBody?.restitution = 0.4
+        physicsBody?.restitution        = restitution
     }
 }
