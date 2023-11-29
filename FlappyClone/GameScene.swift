@@ -5,13 +5,14 @@ import AVFoundation
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // Sprites
-    var player        = PlayerSprite()        // Physics category - Player
-    var walls         = WallSprite()
-    var scoreLabel    = ScoreLabel()
-    var restartButton = RestartButton()
+    var player         = PlayerSprite()        // Physics category - Player
+    var walls          = WallSprite()
+    var scoreLabel     = ScoreLabel()
+    var gameStartLabel = GameStartLabel()
+    var restartButton  = RestartButton()
     
     // Sprite Actions
-    var moveAndRemove = SKAction()
+    var moveAndRemoveWalls = SKAction()
     
     // Game State
     var gameStarted = Bool()
@@ -40,6 +41,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.flashDanger(waitDuration: 1.5)
     }
     
+    private func startGame() {
+        
+        player.physicsBody?.affectedByGravity = true
+        scoreLabel.updateTextForScore(0)
+        gameStartLabel.run(SKAction.hide())
+        
+        self.addChild(restartButton)
+        
+        let spawn = SKAction.run({
+            () in
+            self.createWalls()
+        })
+        let delay          = SKAction.wait(forDuration: 3.5)
+        let spawnDelay     = SKAction.sequence([spawn, delay])
+        let spawnDelayLoop = SKAction.repeatForever(spawnDelay)
+        
+        let distance    = CGFloat(self.frame.width + walls.frame.width)
+        let movePipes   = SKAction.moveBy(x: -distance, y: 0, duration: TimeInterval(0.008 * distance))
+        let removePipes = SKAction.removeFromParent()
+        
+        moveAndRemoveWalls = SKAction.sequence([movePipes, removePipes])
+        
+        self.run(spawnDelayLoop)
+        gameStarted = true
+    }
+    
     private func restartScene() {
         gameStarted = false
         score = 0
@@ -48,36 +75,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createScene()
     }
     
-    private func createScene(for setting: GameSceneSetting = .Day) {
+    private func createScene(
+        for sceneSetting: GameSceneSetting = .Day
+    ) {
         self.physicsWorld.contactDelegate = self
         
         loadSoundEffects()
         
         // Static Sprites
-        let background = BackgroundSprite(for: setting, frameSize: self.frame.size)
-        let cloud  = GroundSprite(frameWidth: frame.width, setting: setting)
-        let ground = GroundSprite(frameWidth: frame.width, setting: setting)
+        let background = BackgroundSprite(for: sceneSetting, frameSize: frame.size)
+        let cloud  = GroundSprite(frameWidth: frame.width, setting: sceneSetting)
+        let ground = GroundSprite(frameWidth: frame.width, setting: sceneSetting)
         cloud.position   = calculateCloudPosition()
         cloud.zRotation  = CGFloat(Double.pi)
         cloud.zPosition  = 3
         ground.position  = calculateGroundPosition()
         ground.zPosition = 3
         
+        gameStartLabel = GameStartLabel()
+        gameStartLabel.position = calculateGameStartLabelPosition()
+        gameStartLabel.zPosition = 4
+        
         // Dynamic Sprites
-        restartButton = RestartButton()
-        restartButton.position  = calculateRestartButtonPosition()
-        restartButton.zPosition = 6
-        
-        scoreLabel = ScoreLabel()
-        scoreLabel.position  = calculateScoreLabelPosition()
-        scoreLabel.zPosition = 4
-        
         player = PlayerSprite()
         player.position  = CGPoint(x: frame.midX, y: frame.midY)
         player.zPosition = 2
         player.physicsBody?.affectedByGravity = false
         
+        scoreLabel = ScoreLabel()
+        scoreLabel.position  = calculateScoreLabelPosition()
+        scoreLabel.zPosition = 4
+        
+        restartButton = RestartButton(sceneSetting: sceneSetting)
+        restartButton.position  = calculateRestartButtonPosition()
+        restartButton.zPosition = 5
+        
         addChild(background)
+        addChild(gameStartLabel)
         addChild(scoreLabel)
         addChild(cloud)
         addChild(ground)
@@ -99,14 +133,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Elements
     private func calculateRestartButtonPosition() -> CGPoint {
-        let frameWidthHalved = frame.width / 2
+        let frameWidthHalved  = frame.width  / 2
         let frameHeightHalved = frame.height / 2
         let xMultiplier = 0.5
-        let yMultiplier = if UIDevice.isPhone() {
-            0.58
-        } else {
-            0.58 // TODO iPad positioning
-        }
+        let yMultiplier = UIDevice.isPhone() ? 0.58 : 0.58 // TODO iPad positioning
         
         return CGPoint(
             x: frame.midX - (frameWidthHalved  * xMultiplier),
@@ -116,11 +146,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateCloudPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = if UIDevice.isPhone() {
-            0.95
-        } else {
-            0.35
-        }
+        let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35
         
         return CGPoint(
             x: frame.midX,
@@ -130,11 +156,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateGroundPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = if UIDevice.isPhone() {
-            0.95
-        } else {
-            0.35
-        }
+        let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35
         
         return CGPoint(
             x: frame.midX,
@@ -142,21 +164,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         )
     }
     
+    private func calculateGameStartLabelPosition() -> CGPoint {
+        let frameHeightHalved = frame.height / 2
+        
+        return CGPoint(
+            x: frame.midX,
+            y: frame.midY + (frameHeightHalved * 0.3)
+        )
+    }
+    
     private func calculateScoreLabelPosition() -> CGPoint {
         let frameWidthHalved  = frame.width  / 2
         let frameHeightHalved = frame.height / 2
+        let xMultiplier = UIDevice.isPhone() ? 0.52 : 0.0
+        let yMultiplier = UIDevice.isPhone() ? 0.7  : 0.2
         
-        return if UIDevice.isPhone() {
-            CGPoint(
-                x: frame.midX - (frameWidthHalved  * 0.52),
-                y: frame.midY + (frameHeightHalved * 0.7)
-            )
-        } else {
-            CGPoint(
-                x: frame.midX,
-                y: frame.midY + (frameHeightHalved * 0.2)
-            )
-        }
+        return CGPoint(
+            x: frame.midX - (frameWidthHalved  * xMultiplier),
+            y: frame.midY + (frameHeightHalved * yMultiplier)
+        )
     }
     
     // Creates the walls
@@ -179,7 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
      // let scoreNodeX = wallX + (btmWall.frame.width / 2) // If the score needs to be at the end of the pipe
 
-        walls.run(moveAndRemove)
+        walls.run(moveAndRemoveWalls)
         
         self.addChild(walls)
     }
@@ -197,27 +223,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         with event: UIEvent?
     ) {
         if !gameStarted {
-            gameStarted = true
-            player.physicsBody?.affectedByGravity = true
-            addChild(restartButton)
-            scoreLabel.updateTextForScore(0)
-            
-            let spawn = SKAction.run({
-                () in
-                self.createWalls()
-            })
-            let delay          = SKAction.wait(forDuration: 3.5)
-            let spawnDelay     = SKAction.sequence([spawn, delay])
-            let spawnDelayLoop = SKAction.repeatForever(spawnDelay)
-            
-            self.run(spawnDelayLoop)
-            
-            let distance    = CGFloat(self.frame.width + walls.frame.width)
-            let movePipes   = SKAction.moveBy(x: -distance, y: 0, duration: TimeInterval(0.008 * distance))
-            let removePipes = SKAction.removeFromParent()
-            
-            moveAndRemove = SKAction.sequence([movePipes, removePipes])
-            
+            startGame()
             player.flap()
         } else {
             player.flap()

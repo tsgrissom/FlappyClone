@@ -8,12 +8,9 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
-//            let menuScene = MenuScene(size: view.bounds.size)
-//            menuScene.scaleMode = .aspectFill
-//            view.presentScene(menuScene)
-            if let gameScene = SKScene(fileNamed: "GameScene") {
-                gameScene.scaleMode = .aspectFill
-                view.presentScene(gameScene)
+            if let initialScene = SKScene(fileNamed: "MenuScene") {
+                initialScene.scaleMode = .aspectFill
+                view.presentScene(initialScene)
             }
             
             view.ignoresSiblingOrder = true

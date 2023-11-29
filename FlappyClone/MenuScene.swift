@@ -5,25 +5,22 @@ class MenuScene: SKScene {
     
     var playButton     = PlayButton()
     var settingsButton = SettingsButton()
+    var gameScene      = SKScene()
     
-    private func positionPlayButton() {
+    private func calculatePlayButtonPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
-        let pos = CGPoint(
+        return CGPoint(
             x: frame.midX,
-            y: frame.midY + (frameHeightHalved * 0.1)
+            y: frame.midY + (frameHeightHalved * 0.25)
         )
-        playButton.position = pos
-        playButton.zPosition = 2
     }
     
-    private func positionSettingsButton() {
+    private func calculateSettingsButtonPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
-        let pos = CGPoint(
+        return CGPoint(
             x: frame.midX,
-            y: frame.midY + (frameHeightHalved * 0.4)
+            y: frame.midY + (frameHeightHalved * 0.01)
         )
-        settingsButton.position = pos
-        settingsButton.zPosition = 2
     }
     
     private func createScene() {
@@ -31,23 +28,47 @@ class MenuScene: SKScene {
         background.position = CGPoint(x: frame.midX, y: frame.midY)
         
         playButton = PlayButton()
-        positionPlayButton()
+        playButton.position = calculatePlayButtonPosition()
+        playButton.zPosition = 2
         
         settingsButton = SettingsButton()
-        positionSettingsButton()
+        settingsButton.position = calculateSettingsButtonPosition()
+        settingsButton.zPosition = 2
         
-        self.addChild(background)
-        self.addChild(playButton)
-        self.addChild(settingsButton)
+        addChild(background)
+        addChild(playButton)
+        addChild(settingsButton)
+    }
+    
+    private func setupNextScene() {
+        if let nextScene = SKScene(fileNamed: "GameScene") {
+            gameScene = nextScene
+            gameScene.scaleMode = .aspectFill
+        } else {
+            print("Could not set up next scene GameScene")
+        }
     }
     
     override func didMove(to view: SKView) {
         createScene()
+        setupNextScene()
     }
     
     override func update(_ currentTime: TimeInterval) {}
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // TODO
+        for touch in touches {
+            let location = touch.location(in: self)
+            if playButton.contains(location) {
+                self.view?.presentScene(gameScene)
+            }
+            if settingsButton.contains(location) {
+                print("Settings button pressed")
+                // TODO Some settings
+                // TODO Toggle sound effects
+                // TODO Credits
+                // TODO Better visuals
+            }
+        }
     }
 }

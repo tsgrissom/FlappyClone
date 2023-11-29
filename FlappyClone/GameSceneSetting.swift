@@ -8,6 +8,19 @@ enum GameSceneSetting: CaseIterable {
     
     case Day, Night
     
+    public func isLight() -> Bool {
+        return switch (self) {
+        case .Day:
+            true
+        case .Night:
+            false
+        }
+    }
+    
+    public func isDark() -> Bool {
+        return !isLight()
+    }
+    
     public func getBackgroundTextureImageName() -> String {
         return switch (self) {
         case .Day:
