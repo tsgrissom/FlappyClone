@@ -5,9 +5,10 @@ class MenuScene: SKScene {
     
     let defaults = UserDefaults.standard
     
-    var playButton     = PlayButton()
-    var settingsButton = SettingsButton()
-    var gameScene      = SKScene()
+    var playButton        = PlayButton()
+    var settingsButton    = SettingsButton()
+    var audioToggleButton = AudioMuteToggleButton()
+    var gameScene         = SKScene()
     
     private func calculatePlayButtonPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
@@ -33,22 +34,35 @@ class MenuScene: SKScene {
         )
     }
     
+    private func calculateAudioToggleButtonPosition() -> CGPoint {
+        let frameHeightHalved = frame.size.height / 2
+        return CGPoint(
+            x: frame.midX,
+            y: frame.midY - (frameHeightHalved * 0.3)
+        )
+    }
+    
     private func createScene() {
-        let background = BackgroundSprite(for: GameSceneSetting.randomValue(), frameSize: frame.size)
-        background.position = CGPoint(x: frame.midX, y: frame.midY)
+        let randomSetting = GameSceneSetting.randomValue()
+        let background = BackgroundSprite(for: randomSetting, frameSize: frame.size)
+        
+        audioToggleButton = AudioMuteToggleButton()
+        audioToggleButton.position = calculateAudioToggleButtonPosition()
+        audioToggleButton.zPosition = 2
         
         playButton = PlayButton()
         playButton.position = calculatePlayButtonPosition()
         playButton.zPosition = 2
         
-        settingsButton = SettingsButton()
+        settingsButton = SettingsButton(for: randomSetting)
         settingsButton.position = calculateSettingsButtonPosition()
         settingsButton.zPosition = 2
         
-        let highScoreLabel = HighScoreLabel()
+        let highScoreLabel = HighScoreLabel(for: randomSetting)
         highScoreLabel.position = calculateHighScoreLabelPosition()
         highScoreLabel.zPosition = 2
         
+        addChild(audioToggleButton)
         addChild(background)
         addChild(playButton)
         addChild(settingsButton)
@@ -76,13 +90,14 @@ class MenuScene: SKScene {
             let location = touch.location(in: self)
             if playButton.contains(location) {
                 self.view?.presentScene(gameScene)
-            }
-            if settingsButton.contains(location) {
+            } else if settingsButton.contains(location) {
                 print("Settings button pressed")
                 // TODO Some settings
                 // TODO Toggle sound effects
                 // TODO Credits
                 // TODO Better visuals
+            } else if audioToggleButton.contains(location) {
+                audioToggleButton.toggle()
             }
         }
     }

@@ -2,8 +2,12 @@ import SpriteKit
 
 class SettingsButton: SKSpriteNode {
     
-    init(scaleSize: CGFloat = 1.0) {
-        let texture      = SKTexture(imageNamed: "BtnSettings")
+    init(
+        for sceneSetting: GameSceneSetting = .Day,
+        scaleSize: CGFloat = 1.0
+    ) {
+        let imageName    = sceneSetting.isDark() ? "BtnSettings-Light" : "BtnSettings-Dark"
+        let texture      = SKTexture(imageNamed: imageName)
         let scaledWidth  = 200 * scaleSize
         let scaledHeight = 100 * scaleSize
         let size         = CGSize(width: scaledWidth, height: scaledHeight)

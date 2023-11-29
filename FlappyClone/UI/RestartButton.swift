@@ -3,10 +3,10 @@ import SpriteKit
 class RestartButton: SKSpriteNode {
     
     init(
-        sceneSetting: GameSceneSetting = .Day,
+        for sceneSetting: GameSceneSetting = .Day,
         scaleSize: CGFloat = 1.0
     ) {
-        let imageName    = sceneSetting.isDark() ? "BtnRestart" : "BtnRestart-NoBg"
+        let imageName    = sceneSetting.isDark() ? "BtnRestart-Light" : "BtnRestart-Dark"
         let texture      = SKTexture(imageNamed: imageName)
         let scaledWidth  = 200 * scaleSize
         let scaledHeight = 100 * scaleSize

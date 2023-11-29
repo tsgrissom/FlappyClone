@@ -23,6 +23,7 @@
 		2F91E6172B16C745004C4A17 /* QuitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E6162B16C745004C4A17 /* QuitButton.swift */; };
 		2F91E6192B16CADE004C4A17 /* DefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E6182B16CADE004C4A17 /* DefaultsKey.swift */; };
 		2F91E61B2B16CCD1004C4A17 /* HighScoreLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E61A2B16CCD1004C4A17 /* HighScoreLabel.swift */; };
+		2F91E61D2B17C143004C4A17 /* AudioMuteToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E61C2B17C143004C4A17 /* AudioMuteToggleButton.swift */; };
 		2FB05F7E2B14F4FA00C410C3 /* ScoreLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */; };
 		2FB05F822B14FF5F00C410C3 /* GameSceneSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */; };
 		2FB05F852B15242300C410C3 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F842B15242300C410C3 /* PlayButton.swift */; };
@@ -54,6 +55,7 @@
 		2F91E6162B16C745004C4A17 /* QuitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitButton.swift; sourceTree = "<group>"; };
 		2F91E6182B16CADE004C4A17 /* DefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsKey.swift; sourceTree = "<group>"; };
 		2F91E61A2B16CCD1004C4A17 /* HighScoreLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScoreLabel.swift; sourceTree = "<group>"; };
+		2F91E61C2B17C143004C4A17 /* AudioMuteToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMuteToggleButton.swift; sourceTree = "<group>"; };
 		2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreLabel.swift; sourceTree = "<group>"; };
 		2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSetting.swift; sourceTree = "<group>"; };
 		2FB05F842B15242300C410C3 /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		2F1403972B0E91A6009D12C9 /* FlappyClone */ = {
 			isa = PBXGroup;
 			children = (
+				2F1403AF2B0E91FE009D12C9 /* Assets.xcassets */,
 				2FD0EE202B13DE0600405095 /* Info.plist */,
 				2F43335D2B100BA600C757D5 /* Bundle */,
 				2FD0EE0F2B117D2200405095 /* Extensions */,
@@ -113,7 +116,6 @@
 				2F1403A72B0E91A8009D12C9 /* LaunchScreen.storyboard */,
 				2F91E6102B16BE1D004C4A17 /* GameScene.sks */,
 				2F91E6122B16BED5004C4A17 /* MenuScene.sks */,
-				2F1403AF2B0E91FE009D12C9 /* Assets.xcassets */,
 			);
 			path = FlappyClone;
 			sourceTree = "<group>";
@@ -138,6 +140,7 @@
 				2F91E6142B16C39D004C4A17 /* GameStartLabel.swift */,
 				2F91E6162B16C745004C4A17 /* QuitButton.swift */,
 				2F91E61A2B16CCD1004C4A17 /* HighScoreLabel.swift */,
+				2F91E61C2B17C143004C4A17 /* AudioMuteToggleButton.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				2F14039F2B0E91A6009D12C9 /* GameScene.swift in Sources */,
 				2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */,
 				2FB05F7E2B14F4FA00C410C3 /* ScoreLabel.swift in Sources */,
+				2F91E61D2B17C143004C4A17 /* AudioMuteToggleButton.swift in Sources */,
 				2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */,
 				2FB05F872B15251000C410C3 /* SettingsButton.swift in Sources */,
 				2F91E6152B16C39D004C4A17 /* GameStartLabel.swift in Sources */,

@@ -6,10 +6,10 @@ import SpriteKit
 class QuitButton: SKSpriteNode {
     
     init(
-        sceneSetting: GameSceneSetting = .Day,
+        for sceneSetting: GameSceneSetting = .Day,
         scaleSize: CGFloat = 1.0
     ) {
-        let imageName = sceneSetting.isDark() ? "BtnQuit-NoBgLight" : "BtnQuit-NoBgDark"
+        let imageName = sceneSetting.isDark() ? "BtnQuit-Light" : "BtnQuit-Dark"
         let texture = SKTexture(imageNamed: imageName)
         let scaledWidth = 200 * scaleSize
         let scaledHeight = 100 * scaleSize

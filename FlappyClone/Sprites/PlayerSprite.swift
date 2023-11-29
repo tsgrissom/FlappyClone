@@ -130,7 +130,9 @@ class PlayerSprite: SKSpriteNode {
         // Audiovisual + haptic feedback
         rotateToZero(collision: false)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        flapSoundEffect.play()
+        if !UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted) {
+            flapSoundEffect.play()
+        }
         
         // Flap physics
         let vecNormalize = CGVectorMake(0, 0)

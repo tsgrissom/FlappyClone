@@ -4,6 +4,8 @@ import AVFoundation
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
+    let defaults = UserDefaults.standard
+    
     // Sprites
     var player         = PlayerSprite()        // Physics category - Player
     var walls          = WallSprite()
@@ -84,7 +86,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func createScene(
-        for sceneSetting: GameSceneSetting = .Day
+        for sceneSetting: GameSceneSetting = GameSceneSetting.randomValue()
     ) {
         self.physicsWorld.contactDelegate = self
         
@@ -100,7 +102,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.position  = calculateGroundPosition()
         ground.zPosition = 3
         
-        gameStartLabel = GameStartLabel()
+        gameStartLabel = GameStartLabel(for: sceneSetting)
         gameStartLabel.position = calculateGameStartLabelPosition()
         gameStartLabel.zPosition = 4
         
@@ -114,11 +116,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.position  = calculateScoreLabelPosition()
         scoreLabel.zPosition = 4
         
-        restartButton = RestartButton(sceneSetting: sceneSetting)
+        restartButton = RestartButton(for: sceneSetting)
         restartButton.position  = calculateRestartButtonPosition()
         restartButton.zPosition = 5
         
-        quitButton = QuitButton(sceneSetting: sceneSetting)
+        quitButton = QuitButton(for: sceneSetting)
         quitButton.position  = calculateQuitButtonPosition()
         quitButton.zPosition = 5
         
@@ -137,37 +139,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func addScore(_ points: Int = 1) {
-        let newScore = self.score + points
+        let oldScore = self.score
+        let newScore = oldScore + points
+        let oldHighScore = defaults.integer(forKey: DefaultsKey.HighScore)
+        
         setScore(to: newScore)
-        scoreSoundEffect?.play()
         player.run(player.toggleRecentlyScored)
+        
+        if newScore > oldHighScore {
+            // TODO Play new high score effect
+            UserDefaults.standard.setValue(newScore, forKey: DefaultsKey.HighScore)
+        } else {
+            if !UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted) {
+                scoreSoundEffect?.play()
+            }
+        }
     }
     
     // Elements
-    private func calculateRestartButtonPosition() -> CGPoint {
-        let frameWidthHalved  = frame.width  / 2
-        let frameHeightHalved = frame.height / 2
-        let xMultiplier = 0.5
-        let yMultiplier = UIDevice.isPhone() ? 0.58 : 0.58 // TODO iPad positioning
-        
-        return CGPoint(
-            x: frame.midX - (frameWidthHalved  * xMultiplier),
-            y: frame.midY + (frameHeightHalved * yMultiplier)
-        )
-    }
-    
-    private func calculateQuitButtonPosition() -> CGPoint {
-        let frameWidthHalved  = frame.width  / 2
-        let frameHeightHalved = frame.height / 2
-        let xMultiplier = 0.5
-        let yMultiplier = UIDevice.isPhone() ? 0.45 : 0.45 // TODO iPad positioning
-        
-        return CGPoint(
-            x: frame.midX - (frameWidthHalved  * xMultiplier),
-            y: frame.midY + (frameHeightHalved * yMultiplier)
-        )
-    }
-    
     private func calculateCloudPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
         let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35
@@ -200,11 +189,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func calculateScoreLabelPosition() -> CGPoint {
         let frameWidthHalved  = frame.width  / 2
         let frameHeightHalved = frame.height / 2
-        let xMultiplier = UIDevice.isPhone() ? 0.52 : 0.0
-        let yMultiplier = UIDevice.isPhone() ? 0.7  : 0.2
+        let yMultiplier = UIDevice.isPhone() ? 0.72 : 0.2 // TODO iPad positioning
         
         return CGPoint(
-            x: frame.midX - (frameWidthHalved  * xMultiplier),
+            x: frame.midX,
+            y: frame.midY + (frameHeightHalved * yMultiplier)
+        )
+    }
+    
+    
+    private func calculateQuitButtonPosition() -> CGPoint {
+        let frameWidthHalved  = frame.width  / 2
+        let frameHeightHalved = frame.height / 2
+        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.2
+        
+        return CGPoint(
+            x: frame.midX - (frameWidthHalved  * 0.52),
+            y: frame.midY + (frameHeightHalved * yMultiplier)
+        )
+    }
+    
+    private func calculateRestartButtonPosition() -> CGPoint {
+        let frameWidthHalved  = frame.width  / 2
+        let frameHeightHalved = frame.height / 2
+        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.2
+        
+        return CGPoint(
+            x: frame.midX + (frameWidthHalved  * 0.52),
             y: frame.midY + (frameHeightHalved * yMultiplier)
         )
     }
@@ -227,7 +238,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         walls.spriteBtm.position   = CGPoint(x: wallX, y: btmWallY)
         walls.spriteScore.position = CGPoint(x: wallX, y: 30)
         
-     // let scoreNodeX = wallX + (btmWall.frame.width / 2) // If the score needs to be at the end of the pipe
+        // let scoreNodeX = wallX + (btmWall.frame.width / 2)
+        // If the score needs to be at the end of the pipe
 
         walls.run(moveAndRemoveWalls)
         
@@ -257,9 +269,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let location = touch.location(in: self)
             if restartButton.contains(location) {
                 restartScene()
-            }
-            if quitButton.contains(location) {
+            } else if quitButton.contains(location) {
                 quitGame()
+            } else if scoreLabel.contains(location) {
+                scoreLabel.flashHighScore(score: score)
             }
         }
     }
