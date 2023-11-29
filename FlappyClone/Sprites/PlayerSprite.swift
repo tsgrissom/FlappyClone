@@ -23,12 +23,12 @@ class PlayerSprite: SKSpriteNode {
         let texture = SKTexture(imageNamed: "Birb")
         let size = CGSize(width: 60, height: 70)
         super.init(texture: texture, color: .clear, size: size)
-        setup()
+        setupSprite()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setup()
+        setupSprite()
     }
     
     // Bootstrap
@@ -46,6 +46,7 @@ class PlayerSprite: SKSpriteNode {
                 self.downTurnCanceled = false
             }
         })
+        
         let enableDebounceFlap = SKAction.run({
             () in
             self.rejectFlap = true
@@ -61,6 +62,7 @@ class PlayerSprite: SKSpriteNode {
             SKAction.wait(forDuration: 0.25),
             resetDebounceFlap
         ])
+        
         let enableRecentlyScored = SKAction.run({
             () in
             self.recentlyScored = true
@@ -78,8 +80,7 @@ class PlayerSprite: SKSpriteNode {
         ])
     }
     
-    private func setup() {
-        zPosition = 2
+    private func setupSprite() {
         setScale(1.25)
         
         // Physics body

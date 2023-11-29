@@ -13,16 +13,16 @@ class BackgroundSprite: SKSpriteNode {
         self.frameSize = frameSize
         let texture = SKTexture(imageNamed: setting.getBackgroundTextureImageName())
         super.init(texture: texture, color: .clear, size: frameSize)
-        setup()
+        setupSprite()
     }
     
     required init?(coder aDecoder: NSCoder) {
         self.setting = .Day
         super.init(coder: aDecoder)
-        setup()
+        setupSprite()
     }
     
-    private func setup() {
+    private func setupSprite() {
         scale(to: frameSize)
         zPosition = -1
     }

@@ -1,9 +1,9 @@
 import SpriteKit
 
-class SettingsButton: SKSpriteNode {
+class RestartButton: SKSpriteNode {
     
     init(scaleSize: CGFloat = 1.0) {
-        let texture      = SKTexture(imageNamed: "BtnSettings")
+        let texture      = SKTexture(imageNamed: "BtnRestart-NoBg")
         let scaledWidth  = 200 * scaleSize
         let scaledHeight = 100 * scaleSize
         let size         = CGSize(width: scaledWidth, height: scaledHeight)

@@ -4,14 +4,14 @@ class ScoreLabel: SKLabelNode {
     
     override init() {
         super.init()
-        setup()
+        setupLabel()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    private func setup() {
+    private func setupLabel() {
         // Initialize label
         text = ""
         fontColor = UIColor.white

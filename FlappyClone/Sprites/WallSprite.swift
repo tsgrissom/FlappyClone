@@ -9,15 +9,15 @@ class WallSprite: SKNode {
     
     override init() {
         super.init()
-        setup()
+        setupSprite()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setup()
+        setupSprite()
     }
     
-    private func setup() {
+    private func setupSprite() {
         spriteTop.setScale(0.6)
         spriteBtm.setScale(0.6)
         spriteScore.size = CGSize(width: 50, height: 50)

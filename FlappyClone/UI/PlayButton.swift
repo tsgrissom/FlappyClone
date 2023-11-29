@@ -12,16 +12,16 @@ class PlayButton: SKSpriteNode {
     init(sizeMultiplier: Double = 1.0) {
         self.sizeMultiplier = sizeMultiplier
         super.init(imageNamed: "BtnPlay")
-        setup()
+        setupSprite()
     }
     
     required init?(coder aDecoder: NSCoder) {
         self.sizeMultiplier = 1.0
         super.init(coder: aDecoder)
-        setup()
+        setupSprite()
     }
     
-    private func setup() {
+    private func setupSprite() {
         let sideLength = 100 * sizeMultiplier
         size = CGSize(width: sideLength, height: sideLength)
         

@@ -16,7 +16,7 @@ class GroundSprite: SKSpriteNode {
         let size    = CGSize(width: frameWidth, height: 100)
     
         super.init(texture: texture, color: .clear, size: size)
-        setupNode()
+        setupSprite()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -24,12 +24,10 @@ class GroundSprite: SKSpriteNode {
         self.imageName = setting.getBackgroundTextureImageName()
         
         super.init(coder: aDecoder)
-        setupNode()
+        setupSprite()
     }
     
-    private func setupNode() {
-        zPosition = 3
-        
+    private func setupSprite() {
         let pbHeightMultiplier = if isCloud {
             0.3
         } else {

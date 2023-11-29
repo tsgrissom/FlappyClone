@@ -8,7 +8,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var player        = PlayerSprite()        // Physics category - Player
     var walls         = WallSprite()
     var scoreLabel    = ScoreLabel()
-    var restartButton = SKSpriteNode()
+    var restartButton = RestartButton()
     
     // Sprite Actions
     var moveAndRemove = SKAction()
@@ -57,17 +57,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let background = BackgroundSprite(for: setting, frameSize: self.frame.size)
         let cloud  = GroundSprite(frameWidth: frame.width, setting: setting)
         let ground = GroundSprite(frameWidth: frame.width, setting: setting)
-        cloud.position  = calculateCloudPosition()
-        cloud.zRotation = CGFloat(Double.pi)
-        ground.position = calculateGroundPosition()
+        cloud.position   = calculateCloudPosition()
+        cloud.zRotation  = CGFloat(Double.pi)
+        cloud.zPosition  = 3
+        ground.position  = calculateGroundPosition()
+        ground.zPosition = 3
         
         // Dynamic Sprites
+        restartButton = RestartButton()
+        restartButton.position  = calculateRestartButtonPosition()
+        restartButton.zPosition = 6
+        
         scoreLabel = ScoreLabel()
-        scoreLabel.position = calculateScoreLabelPosition()
+        scoreLabel.position  = calculateScoreLabelPosition()
         scoreLabel.zPosition = 4
         
         player = PlayerSprite()
-        player.position = CGPoint(x: frame.midX, y: frame.midY)
+        player.position  = CGPoint(x: frame.midX, y: frame.midY)
+        player.zPosition = 2
         player.physicsBody?.affectedByGravity = false
         
         addChild(background)
@@ -91,18 +98,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // Elements
-    private func createRestartButton() {
-        restartButton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 200, height: 100))
+    private func calculateRestartButtonPosition() -> CGPoint {
+        let frameWidthHalved = frame.width / 2
+        let frameHeightHalved = frame.height / 2
+        let xMultiplier = 0.5
+        let yMultiplier = if UIDevice.isPhone() {
+            0.58
+        } else {
+            0.58 // TODO iPad positioning
+        }
         
-        let frameWidthHalved  = frame.size.width  / 2
-        let frameHeightHalved = frame.size.height / 2
-        let posX = frame.midX - (frameWidthHalved  * 0.5)
-        let posY = frame.midY + (frameHeightHalved * 0.58) // TODO iPad positioning
-        
-        restartButton.position = CGPoint(x: posX, y: posY)
-        restartButton.zPosition = 6
-        restartButton.texture = SKTexture(imageNamed: "BtnRestart")
-        addChild(restartButton)
+        return CGPoint(
+            x: frame.midX - (frameWidthHalved  * xMultiplier),
+            y: frame.midY + (frameHeightHalved * yMultiplier)
+        )
     }
     
     private func calculateCloudPosition() -> CGPoint {
@@ -190,7 +199,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if !gameStarted {
             gameStarted = true
             player.physicsBody?.affectedByGravity = true
-            createRestartButton()
+            addChild(restartButton)
             scoreLabel.updateTextForScore(0)
             
             let spawn = SKAction.run({
