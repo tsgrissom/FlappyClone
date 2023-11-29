@@ -20,6 +20,9 @@
 		2F91E6112B16BE1D004C4A17 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2F91E6102B16BE1D004C4A17 /* GameScene.sks */; };
 		2F91E6132B16BED5004C4A17 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2F91E6122B16BED5004C4A17 /* MenuScene.sks */; };
 		2F91E6152B16C39D004C4A17 /* GameStartLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E6142B16C39D004C4A17 /* GameStartLabel.swift */; };
+		2F91E6172B16C745004C4A17 /* QuitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E6162B16C745004C4A17 /* QuitButton.swift */; };
+		2F91E6192B16CADE004C4A17 /* DefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E6182B16CADE004C4A17 /* DefaultsKey.swift */; };
+		2F91E61B2B16CCD1004C4A17 /* HighScoreLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E61A2B16CCD1004C4A17 /* HighScoreLabel.swift */; };
 		2FB05F7E2B14F4FA00C410C3 /* ScoreLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */; };
 		2FB05F822B14FF5F00C410C3 /* GameSceneSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */; };
 		2FB05F852B15242300C410C3 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F842B15242300C410C3 /* PlayButton.swift */; };
@@ -48,6 +51,9 @@
 		2F91E6102B16BE1D004C4A17 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		2F91E6122B16BED5004C4A17 /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MenuScene.sks; sourceTree = "<group>"; };
 		2F91E6142B16C39D004C4A17 /* GameStartLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStartLabel.swift; sourceTree = "<group>"; };
+		2F91E6162B16C745004C4A17 /* QuitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitButton.swift; sourceTree = "<group>"; };
+		2F91E6182B16CADE004C4A17 /* DefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsKey.swift; sourceTree = "<group>"; };
+		2F91E61A2B16CCD1004C4A17 /* HighScoreLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScoreLabel.swift; sourceTree = "<group>"; };
 		2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreLabel.swift; sourceTree = "<group>"; };
 		2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSetting.swift; sourceTree = "<group>"; };
 		2FB05F842B15242300C410C3 /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
@@ -98,6 +104,7 @@
 				2FD0EE122B117D4F00405095 /* Sprites */,
 				2FB05F832B1523E100C410C3 /* UI */,
 				2F1403982B0E91A6009D12C9 /* AppDelegate.swift */,
+				2F91E6182B16CADE004C4A17 /* DefaultsKey.swift */,
 				2F14039E2B0E91A6009D12C9 /* GameScene.swift */,
 				2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */,
 				2F1403A02B0E91A6009D12C9 /* GameViewController.swift */,
@@ -129,6 +136,8 @@
 				2FB05F862B15251000C410C3 /* SettingsButton.swift */,
 				2F91E60E2B16AD99004C4A17 /* RestartButton.swift */,
 				2F91E6142B16C39D004C4A17 /* GameStartLabel.swift */,
+				2F91E6162B16C745004C4A17 /* QuitButton.swift */,
+				2F91E61A2B16CCD1004C4A17 /* HighScoreLabel.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -238,10 +247,13 @@
 				2FB05F872B15251000C410C3 /* SettingsButton.swift in Sources */,
 				2F91E6152B16C39D004C4A17 /* GameStartLabel.swift in Sources */,
 				2FB05F852B15242300C410C3 /* PlayButton.swift in Sources */,
+				2F91E6192B16CADE004C4A17 /* DefaultsKey.swift in Sources */,
 				2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */,
 				2F1403A12B0E91A6009D12C9 /* GameViewController.swift in Sources */,
 				2FB05F822B14FF5F00C410C3 /* GameSceneSetting.swift in Sources */,
+				2F91E61B2B16CCD1004C4A17 /* HighScoreLabel.swift in Sources */,
 				2F1403992B0E91A6009D12C9 /* AppDelegate.swift in Sources */,
+				2F91E6172B16C745004C4A17 /* QuitButton.swift in Sources */,
 				2FD0EE182B11832000405095 /* GroundSprite.swift in Sources */,
 				2FB05F892B1528BC00C410C3 /* BackgroundSprite.swift in Sources */,
 				2FD0EE1E2B1239E500405095 /* WallSprite.swift in Sources */,

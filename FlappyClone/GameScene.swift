@@ -10,6 +10,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoreLabel     = ScoreLabel()
     var gameStartLabel = GameStartLabel()
     var restartButton  = RestartButton()
+    var quitButton     = QuitButton()
     
     // Sprite Actions
     var moveAndRemoveWalls = SKAction()
@@ -42,12 +43,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func startGame() {
-        
         player.physicsBody?.affectedByGravity = true
         scoreLabel.updateTextForScore(0)
         gameStartLabel.run(SKAction.hide())
         
         self.addChild(restartButton)
+        self.addChild(quitButton)
         
         let spawn = SKAction.run({
             () in
@@ -65,6 +66,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.run(spawnDelayLoop)
         gameStarted = true
+    }
+    
+    private func quitGame() {
+        if let menuScene = SKScene(fileNamed: "MenuScene") {
+            menuScene.scaleMode = .aspectFill
+            self.view?.presentScene(menuScene)
+        }
     }
     
     private func restartScene() {
@@ -110,6 +118,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         restartButton.position  = calculateRestartButtonPosition()
         restartButton.zPosition = 5
         
+        quitButton = QuitButton(sceneSetting: sceneSetting)
+        quitButton.position  = calculateQuitButtonPosition()
+        quitButton.zPosition = 5
+        
         addChild(background)
         addChild(gameStartLabel)
         addChild(scoreLabel)
@@ -137,6 +149,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let frameHeightHalved = frame.height / 2
         let xMultiplier = 0.5
         let yMultiplier = UIDevice.isPhone() ? 0.58 : 0.58 // TODO iPad positioning
+        
+        return CGPoint(
+            x: frame.midX - (frameWidthHalved  * xMultiplier),
+            y: frame.midY + (frameHeightHalved * yMultiplier)
+        )
+    }
+    
+    private func calculateQuitButtonPosition() -> CGPoint {
+        let frameWidthHalved  = frame.width  / 2
+        let frameHeightHalved = frame.height / 2
+        let xMultiplier = 0.5
+        let yMultiplier = UIDevice.isPhone() ? 0.45 : 0.45 // TODO iPad positioning
         
         return CGPoint(
             x: frame.midX - (frameWidthHalved  * xMultiplier),
@@ -233,6 +257,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let location = touch.location(in: self)
             if restartButton.contains(location) {
                 restartScene()
+            }
+            if quitButton.contains(location) {
+                quitGame()
             }
         }
     }

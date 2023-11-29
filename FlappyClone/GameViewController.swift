@@ -4,8 +4,22 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+    let userDefaults = UserDefaults.standard
+    
+    private func ensureUserDefaults() {
+        if userDefaults.object(forKey: DefaultsKey.AudioMuted) == nil {
+            userDefaults.setValue(false, forKey: DefaultsKey.AudioMuted)
+        }
+        
+        if userDefaults.object(forKey: DefaultsKey.HighScore) == nil {
+            userDefaults.setValue(0, forKey: DefaultsKey.HighScore)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ensureUserDefaults()
         
         if let view = self.view as! SKView? {
             if let initialScene = SKScene(fileNamed: "MenuScene") {

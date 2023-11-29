@@ -3,6 +3,8 @@ import GameplayKit
 
 class MenuScene: SKScene {
     
+    let defaults = UserDefaults.standard
+    
     var playButton     = PlayButton()
     var settingsButton = SettingsButton()
     var gameScene      = SKScene()
@@ -23,6 +25,14 @@ class MenuScene: SKScene {
         )
     }
     
+    private func calculateHighScoreLabelPosition() -> CGPoint {
+        let frameHeightHalved = frame.size.height / 2
+        return CGPoint(
+            x: frame.midX,
+            y: frame.midY - (frameHeightHalved * 0.2)
+        )
+    }
+    
     private func createScene() {
         let background = BackgroundSprite(for: GameSceneSetting.randomValue(), frameSize: frame.size)
         background.position = CGPoint(x: frame.midX, y: frame.midY)
@@ -35,9 +45,14 @@ class MenuScene: SKScene {
         settingsButton.position = calculateSettingsButtonPosition()
         settingsButton.zPosition = 2
         
+        let highScoreLabel = HighScoreLabel()
+        highScoreLabel.position = calculateHighScoreLabelPosition()
+        highScoreLabel.zPosition = 2
+        
         addChild(background)
         addChild(playButton)
         addChild(settingsButton)
+        addChild(highScoreLabel)
     }
     
     private func setupNextScene() {
