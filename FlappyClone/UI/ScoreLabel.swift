@@ -2,19 +2,25 @@ import SpriteKit
 
 class ScoreLabel: SKLabelNode {
     
-    let defaults = UserDefaults.standard
+    private let defaults = UserDefaults.standard
     
-    let defaultFontColor: UIColor       = UIColor(named: "DefaultScoreColor") ?? UIColor.yellow
-    let dangerFontColor:  UIColor       = UIColor(named: "DangerScoreColor")  ?? UIColor.systemRed
-    let switchToHighScoreColor: UIColor = UIColor.white
+    let defaultFontColor: UIColor = .yellow
+    let dangerFontColor:  UIColor = UIColor(named: "DangerScoreColor")  ?? UIColor.systemRed
+
+    
+    private let sceneSetting: GameSceneSetting
     private var isFlashingHighScore = false
     
-    override init() {
+    init(
+        for sceneSetting: GameSceneSetting = .Day
+    ) {
+        self.sceneSetting = sceneSetting
         super.init()
         setupLabel()
     }
     
     required init?(coder aDecoder: NSCoder) {
+        self.sceneSetting = .Day
         super.init(coder: aDecoder)
         setupLabel()
     }
@@ -58,7 +64,7 @@ class ScoreLabel: SKLabelNode {
         let makeLabelHighScore = SKAction.run({
             () in
             self.isFlashingHighScore = true
-            self.fontColor = self.switchToHighScoreColor
+            self.fontColor = self.sceneSetting.isDark() ? .white : UIColor(named: "DarkColor")
             self.fontSize = 45
             self.text = "High: \(highScore)"
         })

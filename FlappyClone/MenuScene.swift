@@ -10,47 +10,55 @@ class MenuScene: SKScene {
     var audioToggleButton = AudioMuteToggleButton()
     var gameScene         = SKScene()
     
+    private func horizontallyCenteredPoint(y: CGFloat) -> CGPoint {
+        CGPoint(
+            x: frame.midX,
+            y: y
+        )
+    }
+    
     private func calculatePlayButtonPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY + (frameHeightHalved * 0.25)
-        )
+        let yMultiplier = UIDevice.isPhone() ? 0.25 : 0.15
+        let yPos = frame.midY + (frameHeightHalved * yMultiplier)
+        return horizontallyCenteredPoint(y: yPos)
     }
     
     private func calculateSettingsButtonPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY + (frameHeightHalved * 0.01)
-        )
+        let yMultiplier = UIDevice.isPhone() ? 0.01 : 0.03
+        let yPos = frame.midY - (frameHeightHalved * yMultiplier)
+        return horizontallyCenteredPoint(y: yPos)
     }
     
     private func calculateHighScoreLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY - (frameHeightHalved * 0.2)
-        )
+        let yPos = frame.midY - (frameHeightHalved * 0.1)
+        return horizontallyCenteredPoint(y: yPos)
     }
     
     private func calculateAudioToggleButtonPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY - (frameHeightHalved * 0.3)
-        )
+        let yMultiplier = UIDevice.isPhone() ? 0.25 : 0.15
+        let yPos = frame.midY - (frameHeightHalved * yMultiplier)
+        return horizontallyCenteredPoint(y: yPos)
     }
     
     private func createScene() {
         let randomSetting = GameSceneSetting.randomValue()
         let background = BackgroundSprite(for: randomSetting, frameSize: frame.size)
         
-        audioToggleButton = AudioMuteToggleButton()
+        audioToggleButton = AudioMuteToggleButton(
+            for: randomSetting,
+            scaleSize: UIDevice.isPhone() ? 1.5 : 0.75
+        )
         audioToggleButton.position = calculateAudioToggleButtonPosition()
         audioToggleButton.zPosition = 2
         
-        playButton = PlayButton()
+        playButton = PlayButton(
+            for: randomSetting,
+            scaleSize: UIDevice.isPhone() ? 1.5 : 1.0
+        )
         playButton.position = calculatePlayButtonPosition()
         playButton.zPosition = 2
         

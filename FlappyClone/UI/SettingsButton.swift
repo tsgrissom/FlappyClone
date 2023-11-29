@@ -1,27 +1,27 @@
 import SpriteKit
 
-class SettingsButton: SKSpriteNode {
+class SettingsButton: SKLabelNode {
+    
+    private let sceneSetting: GameSceneSetting
     
     init(
-        for sceneSetting: GameSceneSetting = .Day,
-        scaleSize: CGFloat = 1.0
+        for sceneSetting: GameSceneSetting = .Day
     ) {
-        let imageName    = sceneSetting.isDark() ? "BtnSettings-Light" : "BtnSettings-Dark"
-        let texture      = SKTexture(imageNamed: imageName)
-        let scaledWidth  = 200 * scaleSize
-        let scaledHeight = 100 * scaleSize
-        let size         = CGSize(width: scaledWidth, height: scaledHeight)
-        
-        super.init(texture: texture, color: .clear, size: size)
-        setupSprite()
+        self.sceneSetting = sceneSetting
+        super.init()
+        setupLabel()
     }
     
     required init?(coder aDecoder: NSCoder) {
+        self.sceneSetting = .Day
         super.init(coder: aDecoder)
-        setupSprite()
+        setupLabel()
     }
     
-    private func setupSprite() {
-        
+    private func setupLabel() {
+        text      = "Settings"
+        fontColor = sceneSetting.isDark() ? UIColor.white : UIColor(named: "DarkColor")
+        fontSize  = UIDevice.isPhone() ? 45.0 : 30.0
+        fontName  = "04b_19"
     }
 }

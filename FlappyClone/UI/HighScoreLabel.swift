@@ -23,6 +23,6 @@ class HighScoreLabel: SKLabelNode {
         text = "High Streak: \(score)"
         fontColor = sceneSetting.isDark() ? .white : UIColor(named: "DarkColor")
         fontName = "04b_19"
-        fontSize = 45
+        fontSize = UIDevice.isPhone() ? 35.0 : 25.0
     }
 }

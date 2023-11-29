@@ -179,17 +179,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateGameStartLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
+        let yMultiplier = UIDevice.isPhone() ? 0.3 : 0.15
         
         return CGPoint(
             x: frame.midX,
-            y: frame.midY + (frameHeightHalved * 0.3)
+            y: frame.midY + (frameHeightHalved * yMultiplier)
         )
     }
     
     private func calculateScoreLabelPosition() -> CGPoint {
-        let frameWidthHalved  = frame.width  / 2
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.72 : 0.2 // TODO iPad positioning
+        let yMultiplier = UIDevice.isPhone() ? 0.72 : 0.16 // TODO iPad positioning
         
         return CGPoint(
             x: frame.midX,

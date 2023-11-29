@@ -2,36 +2,60 @@ import SpriteKit
 
 class PlayButton: SKSpriteNode {
     
+    private let sceneSetting: GameSceneSetting
     private let scaleSize: Double
+    private let textureNameBtnPlayDark  = "BtnPlay-Dark"
+    private let textureNameBtnPlayLight = "BtnPlay-Light"
     
-    private var textureNormal  = SKTexture(imageNamed: "BtnPlay")
-    private var texturePressed = SKTexture(imageNamed: "BtnPlay-Pressed")
+    private func getTextureNameNotPressed() -> String {
+        sceneSetting.isDark() ? textureNameBtnPlayLight : textureNameBtnPlayDark
+    }
+    
+    private func getTextureNamePressed() -> String {
+        sceneSetting.isDark() ? textureNameBtnPlayDark : textureNameBtnPlayLight
+    }
     
     var onPress = SKAction()
     
-    init(scaleSize: Double = 1.0) {
+    init(
+        for sceneSetting: GameSceneSetting = .Day,
+        scaleSize: Double = 1.0
+    ) {
+        self.sceneSetting = sceneSetting
         self.scaleSize = scaleSize
-        super.init(texture: textureNormal, color: .clear, size: CGSize(width: 100, height: 100))
+        
+        let imageName  = sceneSetting.isDark() ? textureNameBtnPlayLight : textureNameBtnPlayDark
+        let texture    = SKTexture(imageNamed: imageName)
+        let sideLength = 100 * scaleSize
+        let size       = CGSize(width: sideLength, height: sideLength)
+        
+        super.init(texture: texture, color: .clear, size: size)
         setupSprite()
     }
     
     required init?(coder aDecoder: NSCoder) {
+        self.sceneSetting = .Day
         self.scaleSize = 1.0
+        
         super.init(coder: aDecoder)
         setupSprite()
     }
     
     private func setupSprite() {
-        let sideLength = 200 * scaleSize
-        size = CGSize(width: sideLength, height: sideLength)
-
+        let textureNotPressed = SKTexture(imageNamed: getTextureNameNotPressed())
+        let texturePressed = SKTexture(imageNamed: getTextureNamePressed())
+        
         let switchTextureToPressed = SKAction.setTexture(texturePressed)
         let delay = SKAction.wait(forDuration: 0.75)
-        let returnTextureToNormal  = SKAction.setTexture(textureNormal)
+        let resetTexture = SKAction.setTexture(textureNotPressed)
         onPress = SKAction.sequence([
             switchTextureToPressed,
             delay,
-            returnTextureToNormal
+            resetTexture
         ])
+    }
+    
+    func pressed() {
+        self.run(onPress)
     }
 }
