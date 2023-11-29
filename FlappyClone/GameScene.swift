@@ -258,22 +258,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
+        for touch in touches {
+            let location = touch.location(in: self)
+            if restartButton.contains(location) {
+                restartScene()
+                return
+            } else if quitButton.contains(location) {
+                quitGame()
+                return
+            } else if scoreLabel.contains(location) {
+                scoreLabel.flashHighScore(score: score)
+                return
+            }
+        }
+        
         if !gameStarted {
             startGame()
             player.flap()
         } else {
             player.flap()
-        }
-        
-        for touch in touches {
-            let location = touch.location(in: self)
-            if restartButton.contains(location) {
-                restartScene()
-            } else if quitButton.contains(location) {
-                quitGame()
-            } else if scoreLabel.contains(location) {
-                scoreLabel.flashHighScore(score: score)
-            }
         }
     }
     

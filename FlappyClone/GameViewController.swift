@@ -4,15 +4,34 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
-    let userDefaults = UserDefaults.standard
+    let defaults = UserDefaults.standard
     
     private func ensureUserDefaults() {
-        if userDefaults.object(forKey: DefaultsKey.AudioMuted) == nil {
-            userDefaults.setValue(false, forKey: DefaultsKey.AudioMuted)
+        // Game Difficulty
+        if defaults.object(forKey: DefaultsKey.DieOnOutOfBounds) == nil {
+            defaults.setValue(true, forKey: DefaultsKey.DieOnOutOfBounds)
+        }
+        if defaults.object(forKey: DefaultsKey.DieOnHitBoundary) == nil {
+            defaults.setValue(false, forKey: DefaultsKey.DieOnHitBoundary)
+        }
+        if defaults.object(forKey: DefaultsKey.DieOnHitWall) == nil {
+            defaults.setValue(false, forKey: DefaultsKey.DieOnHitWall)
         }
         
-        if userDefaults.object(forKey: DefaultsKey.HighScore) == nil {
-            userDefaults.setValue(0, forKey: DefaultsKey.HighScore)
+        // Game Data
+        if defaults.object(forKey: DefaultsKey.HighScore) == nil {
+            defaults.setValue(0, forKey: DefaultsKey.HighScore)
+        }
+        
+        // App Settings
+        if defaults.object(forKey: DefaultsKey.AudioMuted) == nil {
+            defaults.setValue(false, forKey: DefaultsKey.AudioMuted)
+        }
+        if defaults.object(forKey: DefaultsKey.HapticsDisabled) == nil {
+            defaults.setValue(false, forKey: DefaultsKey.HapticsDisabled)
+        }
+        if defaults.object(forKey: DefaultsKey.PreferredSceneSetting) == nil {
+            defaults.setValue("Random", forKey: DefaultsKey.PreferredSceneSetting)
         }
     }
     

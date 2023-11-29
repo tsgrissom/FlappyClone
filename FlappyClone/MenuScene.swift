@@ -11,10 +11,7 @@ class MenuScene: SKScene {
     var gameScene         = SKScene()
     
     private func horizontallyCenteredPoint(y: CGFloat) -> CGPoint {
-        CGPoint(
-            x: frame.midX,
-            y: y
-        )
+        CGPoint(x: frame.midX, y: y)
     }
     
     private func calculatePlayButtonPosition() -> CGPoint {
@@ -97,14 +94,16 @@ class MenuScene: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             if playButton.contains(location) {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 self.view?.presentScene(gameScene)
             } else if settingsButton.contains(location) {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 print("Settings button pressed")
                 // TODO Some settings
                 // TODO Toggle sound effects
                 // TODO Credits
-                // TODO Better visuals
             } else if audioToggleButton.contains(location) {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 audioToggleButton.toggle()
             }
         }

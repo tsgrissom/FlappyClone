@@ -7,7 +7,6 @@ class ScoreLabel: SKLabelNode {
     let defaultFontColor: UIColor = .yellow
     let dangerFontColor:  UIColor = UIColor(named: "DangerScoreColor")  ?? UIColor.systemRed
 
-    
     private let sceneSetting: GameSceneSetting
     private var isFlashingHighScore = false
     
