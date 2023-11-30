@@ -1,14 +1,40 @@
 import SpriteKit
 import GameplayKit
 
+private class SettingsLabelAsButton: SKLabelNode {
+    
+    let sceneSetting: GameSceneSetting
+    
+    init(
+        for sceneSetting: GameSceneSetting = .Day
+    ) {
+        self.sceneSetting = sceneSetting
+        super.init()
+        setupLabel()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.sceneSetting = .Day
+        super.init(coder: aDecoder)
+        setupLabel()
+    }
+    
+    private func setupLabel() {
+        fontColor = sceneSetting.isDark() ? UIColor.white : UIColor(named: "DarkColor")
+        fontName  = "04b_19"
+        fontSize  = UIDevice.isPhone() ? 45.0 : 30.0
+        text      = "Settings"
+    }
+}
+
 class MenuScene: SKScene {
     
-    let defaults = UserDefaults.standard
+    private let defaults = UserDefaults.standard
     
-    var playButton        = PlayButton()
-    var settingsButton    = SettingsButton()
-    var audioToggleButton = AudioMuteToggleButton()
-    var gameScene         = SKScene()
+    private var playButton        = PlayButton()
+    private var settingsButton    = SettingsButton()
+    private var audioToggleButton = AudioMuteToggleButton()
+    private var gameScene         = SKScene()
     
     private func horizontallyCenteredPoint(y: CGFloat) -> CGPoint {
         CGPoint(x: frame.midX, y: y)
@@ -21,51 +47,68 @@ class MenuScene: SKScene {
         return horizontallyCenteredPoint(y: yPos)
     }
     
-    private func calculateSettingsButtonPosition() -> CGPoint {
+    private func calculateHighScoreLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.01 : 0.03
-        let yPos = frame.midY - (frameHeightHalved * yMultiplier)
+        let yPos = if UIDevice.isPhone() {
+            frame.midY - (frameHeightHalved * 0.01)
+        } else {
+            frame.midY + (frameHeightHalved * 0.01)
+        }
         return horizontallyCenteredPoint(y: yPos)
     }
     
-    private func calculateHighScoreLabelPosition() -> CGPoint {
+    private func calculateSettingsButtonPosition() -> CGPoint {
+        let frameWidthHalved  = frame.size.width  / 2
         let frameHeightHalved = frame.size.height / 2
-        let yPos = frame.midY - (frameHeightHalved * 0.1)
-        return horizontallyCenteredPoint(y: yPos)
+        let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
+        let yMultiplier = UIDevice.isPhone() ? 0.15 : 0.05
+        
+        return CGPoint(
+            x: frame.midX + (frameWidthHalved  * xMultiplier),
+            y: frame.midY - (frameHeightHalved * yMultiplier)
+        )
     }
     
     private func calculateAudioToggleButtonPosition() -> CGPoint {
+        let frameWidthHalved  = frame.size.width  / 2
         let frameHeightHalved = frame.size.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.25 : 0.15
-        let yPos = frame.midY - (frameHeightHalved * yMultiplier)
-        return horizontallyCenteredPoint(y: yPos)
+        let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
+        let yMultiplier = UIDevice.isPhone() ? 0.15 : 0.05
+        
+        return CGPoint(
+            x: frame.midX - (frameWidthHalved  * xMultiplier),
+            y: frame.midY - (frameHeightHalved * yMultiplier)
+        )
     }
     
     private func createScene() {
         let randomSetting = GameSceneSetting.randomValue()
         let background = BackgroundSprite(for: randomSetting, frameSize: frame.size)
         
-        audioToggleButton = AudioMuteToggleButton(
-            for: randomSetting,
-            scaleSize: UIDevice.isPhone() ? 1.5 : 0.75
-        )
-        audioToggleButton.position = calculateAudioToggleButtonPosition()
-        audioToggleButton.zPosition = 2
-        
         playButton = PlayButton(
             for: randomSetting,
-            scaleSize: UIDevice.isPhone() ? 1.5 : 1.0
+            scaleSize: UIDevice.isPhone() ? 2.0 : 1.0
         )
         playButton.position = calculatePlayButtonPosition()
         playButton.zPosition = 2
         
-        settingsButton = SettingsButton(for: randomSetting)
-        settingsButton.position = calculateSettingsButtonPosition()
-        settingsButton.zPosition = 2
-        
         let highScoreLabel = HighScoreLabel(for: randomSetting)
         highScoreLabel.position = calculateHighScoreLabelPosition()
         highScoreLabel.zPosition = 2
+        
+        audioToggleButton = AudioMuteToggleButton(
+            for: randomSetting,
+            scaleSize: UIDevice.isPhone() ? 1.0 : 0.5
+        )
+        audioToggleButton.position = calculateAudioToggleButtonPosition()
+        audioToggleButton.zPosition = 2
+        
+        settingsButton = SettingsButton(
+            for: randomSetting,
+            scaleSize: UIDevice.isPhone() ? 0.5 : 0.25
+        )
+        settingsButton.position = calculateSettingsButtonPosition()
+        settingsButton.zPosition = 2
         
         addChild(audioToggleButton)
         addChild(background)

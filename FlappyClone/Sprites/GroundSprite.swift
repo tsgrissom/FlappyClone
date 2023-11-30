@@ -13,7 +13,7 @@ class GroundSprite: SKSpriteNode {
         self.setting   = setting
         self.imageName = setting.getCloudTextureImageName()
         let  texture   = SKTexture(imageNamed: imageName)
-        let  size      = CGSize(width: frameWidth, height: 100)
+        let  size      = CGSize(width: 1000, height: 100)
     
         super.init(texture: texture, color: .clear, size: size)
         setupSprite()
@@ -28,7 +28,7 @@ class GroundSprite: SKSpriteNode {
     }
     
     private func setupSprite() {
-        let pbHeightMultiplier = isCloud ? 0.3 : 1.0
+        let pbHeightMultiplier = isCloud ? 0.15 : 1.0
         let pbSize = CGSize(
             width: self.size.width,
             height: self.size.height * pbHeightMultiplier
