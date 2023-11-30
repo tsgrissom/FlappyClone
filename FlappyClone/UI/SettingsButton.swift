@@ -19,9 +19,9 @@ class SettingsButton: SKLabelNode {
     }
     
     private func setupLabel() {
-        text      = "Settings"
         fontColor = sceneSetting.isDark() ? UIColor.white : UIColor(named: "DarkColor")
-        fontSize  = UIDevice.isPhone() ? 45.0 : 30.0
         fontName  = "04b_19"
+        fontSize  = UIDevice.isPhone() ? 45.0 : 30.0
+        text      = "Settings"
     }
 }

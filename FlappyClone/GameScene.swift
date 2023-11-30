@@ -2,6 +2,58 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 
+private class QuitLabelAsButton: SKLabelNode {
+    
+    let sceneSetting: GameSceneSetting
+    
+    init(
+        for sceneSetting: GameSceneSetting = .Day
+    ) {
+        self.sceneSetting = sceneSetting
+        super.init()
+        setupLabel()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.sceneSetting = .Day
+        super.init(coder: aDecoder)
+        setupLabel()
+    }
+    
+    private func setupLabel() {
+        fontColor = sceneSetting.isDark() ? UIColor.white : UIColor(named: "DarkColor")
+        fontName  = "04b_19"
+        fontSize  = 35.0
+        text      = "Quit"
+    }
+}
+
+private class RestartLabelAsButton: SKLabelNode {
+    
+    let sceneSetting: GameSceneSetting
+    
+    init(
+        for sceneSetting: GameSceneSetting = .Day
+    ) {
+        self.sceneSetting = sceneSetting
+        super.init()
+        setupLabel()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.sceneSetting = .Day
+        super.init(coder: aDecoder)
+        setupLabel()
+    }
+    
+    private func setupLabel() {
+        fontColor = sceneSetting.isDark() ? UIColor.white : UIColor(named: "DarkColor")
+        fontName  = "04b_19"
+        fontSize  = 35.0
+        text      = "Restart"
+    }
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
     let defaults = UserDefaults.standard
@@ -11,8 +63,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var walls          = WallSprite()
     var scoreLabel     = ScoreLabel()
     var gameStartLabel = GameStartLabel()
-    var restartButton  = RestartButton()
-    var quitButton     = QuitButton()
+    private var restartButton  = RestartLabelAsButton()
+    private var quitButton     = QuitLabelAsButton()
     
     // Sprite Actions
     var moveAndRemoveWalls = SKAction()
@@ -112,15 +164,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.zPosition = 2
         player.physicsBody?.affectedByGravity = false
         
-        scoreLabel = ScoreLabel()
+        scoreLabel = ScoreLabel(for: sceneSetting)
         scoreLabel.position  = calculateScoreLabelPosition()
         scoreLabel.zPosition = 4
         
-        restartButton = RestartButton(for: sceneSetting)
+        restartButton = RestartLabelAsButton(for: sceneSetting)
         restartButton.position  = calculateRestartButtonPosition()
         restartButton.zPosition = 5
         
-        quitButton = QuitButton(for: sceneSetting)
+        quitButton = QuitLabelAsButton(for: sceneSetting)
         quitButton.position  = calculateQuitButtonPosition()
         quitButton.zPosition = 5
         
@@ -189,7 +241,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateScoreLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.72 : 0.16 // TODO iPad positioning
+        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.2 // TODO iPad positioning
         
         return CGPoint(
             x: frame.midX,
