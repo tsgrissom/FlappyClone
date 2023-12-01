@@ -56,26 +56,27 @@ private class RestartLabelAsButton: SKLabelNode {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
-    let defaults = UserDefaults.standard
+    private let defaults = UserDefaults.standard
     
     // Sprites
-    var player         = PlayerSprite()        // Physics category - Player
-    var walls          = WallSprite()
-    var scoreLabel     = ScoreLabel()
-    var gameStartLabel = GameStartLabel()
+    private var player         = PlayerSprite()        // Physics category - Player
+    private var walls          = WallSprite()
+    private var scoreLabel     = ScoreLabel()
+    private var gameStartLabel = GameStartLabel()
     private var restartButton  = RestartLabelAsButton()
     private var quitButton     = QuitLabelAsButton()
     
     // Sprite Actions
-    var moveAndRemoveWalls = SKAction()
+    private var moveAndRemoveWalls = SKAction()
     
     // Game State
-    var gameStarted = Bool()
-    var score       = Int()
-    var dead        = Bool()
+    private var gameStarted = Bool()
+    private var score       = Int()
+    private var dead        = Bool()
     
     // Sound Effects
-    var scoreSoundEffect: AVAudioPlayer?
+    private var scoreSoundEffect: AVAudioPlayer?
+    private var splatSoundEffect: AVAudioPlayer?
     
     private func loadSoundEffects() {
         if let path = Bundle.main.path(forResource: "Score", ofType: "mp3") {
@@ -88,19 +89,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else {
             print("\"Score.mp3\" not found in bundle")
         }
+        
+        if let path = Bundle.main.path(forResource: "Splat", ofType: "mp3") {
+            let url = URL(fileURLWithPath: path)
+            do {
+                splatSoundEffect = try AVAudioPlayer(contentsOf: url)
+            } catch {
+                print("Could not make AVAudioPlayer<-\"Splat.mp3\"")
+            }
+        } else {
+            print("\"Score.mp3\" not found in bundle")
+        }
     }
     
+    // MARK: Game State Functions
     private func die(from debugMessage: String = "Player left frame") {
         print(debugMessage)
         dead = true
         scoreLabel.text = "Dead: \(score)x"
         scoreLabel.fontColor = UIColor(named: "DangerColor")
         scoreLabel.fontSize = 38
-        // TODO Sound effect
         player.removeFromParent()
+        
+        if !defaults.bool(forKey: DefaultsKey.AudioMuted) {
+            splatSoundEffect?.play()
+        }
     }
     
-    // MARK: Game State Functions
     private func endGame(for debugMessage: String = "Player hit Wall") {
         print(debugMessage)
         setScore(to: 0)
@@ -212,9 +227,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if newScore > oldHighScore {
             // TODO Play new high score effect
-            UserDefaults.standard.setValue(newScore, forKey: DefaultsKey.HighScore)
+            defaults.setValue(newScore, forKey: DefaultsKey.HighScore)
         } else {
-            if !UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted) {
+            if !defaults.bool(forKey: DefaultsKey.AudioMuted) {
                 scoreSoundEffect?.play()
             }
         }
@@ -384,7 +399,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.rotateToZero(collision: true)
             endGame(for: "Player hit Wall")
             
-            if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+            if !defaults.bool(forKey: DefaultsKey.HapticsDisabled) {
                 UINotificationFeedbackGenerator().notificationOccurred(.warning)
             }
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Boundary) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Boundary)) {
@@ -396,7 +411,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.rotateToZero(collision: true)
             endGame(for: "Player hit Boundary")
             
-            if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+            if !defaults.bool(forKey: DefaultsKey.HapticsDisabled) {
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             }
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Score) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Score)) {

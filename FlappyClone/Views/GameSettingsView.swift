@@ -2,9 +2,11 @@ import SwiftUI
 
 struct GameSettingsView: View {
     
+    @State private var isConfirmClearScorePresented: Bool = false
+    
     @State private var dieOnOutOfBounds: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnOutOfBounds)
     @State private var dieOnHitBoundary: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitBoundary)
-    @State private var dieOnHitWall: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitWall)
+    @State private var dieOnHitWall:     Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitWall)
     
     var body: some View {
         ScrollView {
@@ -21,10 +23,21 @@ struct GameSettingsView: View {
     }
     
     private var sectionDifficulty: some View {
-        Section {
-            Button(action: clearHighScore) {
+        let highestScore = UserDefaults.standard.integer(forKey: DefaultsKey.HighScore)
+        return Section {
+            Button(action: {
+                self.isConfirmClearScorePresented = true
+            }) {
                 Image(systemName: "xmark")
                 Text("Clear high score")
+            }
+            .alert("Reset your high score?", isPresented: $isConfirmClearScorePresented) {
+                Button(role: .destructive, action: clearHighScore) {
+                    Text("Confirm")
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Are you sure you want to reset your high score of \(highestScore) to 0?")
             }
             .font(.title3)
             .buttonStyle(.bordered)

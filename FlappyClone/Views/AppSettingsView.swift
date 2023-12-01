@@ -17,7 +17,7 @@ struct AppSettingsView: View {
                 Divider()
                     .padding(.bottom, 15)
                 HStack {
-                    Text("Preferred Scene")
+                    Text("Preferred scene")
                     Spacer()
                     Picker(selection: $preferredSceneSetting, content: {
                         Text("Random").tag("Random")
@@ -30,7 +30,7 @@ struct AppSettingsView: View {
                     }
                 }
                 HStack {
-                    Text("Audio Muted")
+                    Text("Audio muted")
                     Toggle(isOn: $audioMuted) {}
                         .toggleStyle(.switch)
                         .onChange(of: audioMuted, initial: false) { oldValue, newValue in
@@ -39,7 +39,7 @@ struct AppSettingsView: View {
                         }
                 }
                 HStack {
-                    Text("Haptics Disabled")
+                    Text("Haptics disabled")
                     Toggle(isOn: $hapticsDisabled) {}
                         .toggleStyle(.switch)
                         .onChange(of: hapticsDisabled, initial: false) { oldValue, newValue in

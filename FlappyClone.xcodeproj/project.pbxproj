@@ -16,6 +16,7 @@
 		2F1FD9042B196D9B00926D99 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1FD9032B196D9B00926D99 /* SettingsView.swift */; };
 		2F1FD9062B196DD700926D99 /* GameSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1FD9052B196DD700926D99 /* GameSettingsView.swift */; };
 		2F1FD9082B19716E00926D99 /* AppSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1FD9072B19716E00926D99 /* AppSettingsView.swift */; };
+		2F1FD90A2B1A2F2B00926D99 /* Splat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2F1FD9092B1A2F2B00926D99 /* Splat.mp3 */; };
 		2F29634F2B14316C006C5AAA /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F29634E2B14316C006C5AAA /* MenuScene.swift */; };
 		2F4333602B100BA600C757D5 /* Score.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2F43335E2B100BA600C757D5 /* Score.mp3 */; };
 		2F4333612B100BA600C757D5 /* Flap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2F43335F2B100BA600C757D5 /* Flap.mp3 */; };
@@ -49,6 +50,7 @@
 		2F1FD9032B196D9B00926D99 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2F1FD9052B196DD700926D99 /* GameSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsView.swift; sourceTree = "<group>"; };
 		2F1FD9072B19716E00926D99 /* AppSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsView.swift; sourceTree = "<group>"; };
+		2F1FD9092B1A2F2B00926D99 /* Splat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Splat.mp3; sourceTree = "<group>"; };
 		2F29634E2B14316C006C5AAA /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		2F43335E2B100BA600C757D5 /* Score.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Score.mp3; sourceTree = "<group>"; };
 		2F43335F2B100BA600C757D5 /* Flap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Flap.mp3; sourceTree = "<group>"; };
@@ -137,8 +139,9 @@
 			isa = PBXGroup;
 			children = (
 				2FD0EE212B13DF1500405095 /* 04B_19__.TTF */,
-				2F43335E2B100BA600C757D5 /* Score.mp3 */,
 				2F43335F2B100BA600C757D5 /* Flap.mp3 */,
+				2F43335E2B100BA600C757D5 /* Score.mp3 */,
+				2F1FD9092B1A2F2B00926D99 /* Splat.mp3 */,
 			);
 			path = Bundle;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				2FD0EE222B13DF1500405095 /* 04B_19__.TTF in Resources */,
 				2F1403B02B0E91FE009D12C9 /* Assets.xcassets in Resources */,
 				2F91E6132B16BED5004C4A17 /* MenuScene.sks in Resources */,
+				2F1FD90A2B1A2F2B00926D99 /* Splat.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
