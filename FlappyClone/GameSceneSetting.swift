@@ -6,6 +6,25 @@ enum GameSceneSetting: CaseIterable {
         return self.allCases.randomElement() ?? .Day
     }
     
+    public static func getPreferredSceneSetting() -> GameSceneSetting {
+        let option = UserDefaults.standard.string(forKey: DefaultsKey.PreferredSceneSetting)
+        let allCases = GameSceneSetting.allCases
+        let def: GameSceneSetting = .Day
+        return if option == "Random" {
+            randomValue()
+        } else if option == "Day" {
+            allCases
+                .filter { it in it.isLight() }
+                .randomElement() ?? def
+        } else if option == "Night" {
+            allCases
+                .filter { it in it.isDark() }
+                .randomElement() ?? def
+        } else {
+            def
+        }
+    }
+    
     case Day, Day2, Day3, Night
     
     public func isLight() -> Bool {

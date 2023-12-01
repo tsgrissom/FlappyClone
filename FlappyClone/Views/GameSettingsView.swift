@@ -65,7 +65,9 @@ struct GameSettingsView: View {
     
     private func clearHighScore() {
         UserDefaults.standard.setValue(0, forKey: DefaultsKey.HighScore)
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        }
     }
 }
 

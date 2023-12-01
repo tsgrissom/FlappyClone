@@ -150,7 +150,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func createScene(
-        for sceneSetting: GameSceneSetting = GameSceneSetting.randomValue()
+        for sceneSetting: GameSceneSetting = GameSceneSetting.getPreferredSceneSetting()
     ) {
         self.physicsWorld.contactDelegate = self
         
@@ -383,8 +383,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.downTurnCanceled = true
             player.rotateToZero(collision: true)
             endGame(for: "Player hit Wall")
-//            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+            
+            if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+                UINotificationFeedbackGenerator().notificationOccurred(.warning)
+            }
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Boundary) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Boundary)) {
             if shouldDieOnHitBoundary {
                 die(from: "Player hit Boundary")
@@ -393,7 +395,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.downTurnCanceled = true
             player.rotateToZero(collision: true)
             endGame(for: "Player hit Boundary")
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            
+            if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            }
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Score) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Score)) {
             addScore()
             

@@ -145,17 +145,23 @@ class MenuScene: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             if playButton.contains(location) {
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                }
+                
                 self.view?.presentScene(gameScene)
             } else if settingsButton.contains(location) {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                print("Settings button pressed")
+                if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+                
                 openSettingsView()
-                // TODO Some settings
-                // TODO Toggle sound effects
                 // TODO Credits
             } else if audioToggleButton.contains(location) {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+                
                 audioToggleButton.toggle()
             }
         }

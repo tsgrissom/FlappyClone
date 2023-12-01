@@ -129,7 +129,11 @@ class PlayerSprite: SKSpriteNode {
         
         // Audiovisual + haptic feedback
         rotateToZero(collision: false)
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        
+        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
+        
         if !UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted) {
             flapSoundEffect.play()
         }
