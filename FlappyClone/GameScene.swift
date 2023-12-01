@@ -72,6 +72,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Game State
     var gameStarted = Bool()
     var score       = Int()
+    var dead        = Bool()
     
     // Sound Effects
     var scoreSoundEffect: AVAudioPlayer?
@@ -87,6 +88,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else {
             print("\"Score.mp3\" not found in bundle")
         }
+    }
+    
+    private func die(from debugMessage: String = "Player left frame") {
+        print(debugMessage)
+        dead = true
+        scoreLabel.text = "Dead: \(score)x"
+        scoreLabel.fontColor = UIColor(named: "DangerColor")
+        scoreLabel.fontSize = 38
+        // TODO Sound effect
+        player.removeFromParent()
     }
     
     // MARK: Game State Functions
@@ -130,6 +141,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func restartScene() {
+        dead = false
         gameStarted = false
         score = 0
         self.removeAllChildren()
@@ -241,7 +253,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateScoreLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.2 // TODO iPad positioning
+        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.20 // TODO iPad positioning
         
         return CGPoint(
             x: frame.midX,
@@ -249,11 +261,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         )
     }
     
-    
     private func calculateQuitButtonPosition() -> CGPoint {
         let frameWidthHalved  = frame.width  / 2
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.2
+        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.20
         
         return CGPoint(
             x: frame.midX - (frameWidthHalved  * 0.52),
@@ -264,7 +275,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func calculateRestartButtonPosition() -> CGPoint {
         let frameWidthHalved  = frame.width  / 2
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.2
+        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.20
         
         return CGPoint(
             x: frame.midX + (frameWidthHalved  * 0.52),
@@ -282,9 +293,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let randomPositions = [0.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0]
         let random = randomPositions.randomElement() ?? 0.0
         
-        let wallX    = frame.midX + (frameWidthHalved  * 0.9)
+        let wallX    = frame.midX + (frameWidthHalved  * 0.90)
         let topWallY = frame.midY + (frameHeightHalved * 0.65)
-        let btmWallY = frame.midY - (frameHeightHalved * 0.6) + random
+        let btmWallY = frame.midY - (frameHeightHalved * 0.60) + random
         
         walls.spriteTop.position   = CGPoint(x: wallX, y: topWallY)
         walls.spriteBtm.position   = CGPoint(x: wallX, y: btmWallY)
@@ -324,6 +335,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
+        if dead {
+            return
+        }
+        
         if !gameStarted {
             startGame()
             player.flap()
@@ -333,7 +348,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // Called before each frame is rendered
-    override func update(_ currentTime: TimeInterval) { }
+    override func update(_ currentTime: TimeInterval) {
+        if dead || !gameStarted {
+            return
+        }
+        
+        let px = player.position.x
+        let py = player.position.y
+        
+        let isOutOfBounds = px < frame.minX || px > frame.maxX || py < frame.minY || py > frame.maxY
+        let shouldDieOnOutOfBounds = defaults.bool(forKey: DefaultsKey.DieOnOutOfBounds)
+        
+        if isOutOfBounds && shouldDieOnOutOfBounds {
+            die(from: "Player left frame")
+        }
+    }
     
     // From SKPhysicsContactDelegate
     // Triggered on contact between two bodies

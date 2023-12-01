@@ -6,13 +6,11 @@ enum GameSceneSetting: CaseIterable {
         return self.allCases.randomElement() ?? .Day
     }
     
-    case Day, Day2, Night
+    case Day, Day2, Day3, Night
     
     public func isLight() -> Bool {
         return switch (self) {
-        case .Day:
-            true
-        case .Day2:
+        case .Day, .Day2, .Day3:
             true
         case .Night:
             false
@@ -29,6 +27,8 @@ enum GameSceneSetting: CaseIterable {
             "BG-Day"
         case .Day2:
             "BG-Day2"
+        case .Day3:
+            "BG-Day3"
         case .Night:
             "BG-Night"
         }
@@ -36,7 +36,7 @@ enum GameSceneSetting: CaseIterable {
     
     public func getCloudTextureImageName() -> String {
         return switch (self) {
-        case .Day, .Day2:
+        case .Day, .Day2, .Day3:
             "Clouds-Day"
         case .Night:
             "Clouds-Night"
