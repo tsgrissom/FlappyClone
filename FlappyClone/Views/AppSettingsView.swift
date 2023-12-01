@@ -9,22 +9,28 @@ struct AppSettingsView: View {
     
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading) {
-                Text("App Settings")
-                    .font(.largeTitle)
-                    .bold()
-                Divider()
-                    .padding(.bottom, 15)
-                sectionAppSettings
-            }
-            .padding([.top, .horizontal], 20)
+            header
+                .padding(.top, 10)
+                .padding(.horizontal, 20)
+            sectionToggles
+                .padding(.top, 10)
+                .padding(.horizontal, 20)
         }
     }
     
-    private var sectionAppSettings: some View {
-        Section {
+    private var header: some View {
+        VStack(alignment: .leading) {
+            Text("App Settings")
+                .font(.largeTitle)
+                .bold()
+            Divider()
+        }
+    }
+    
+    private var sectionToggles: some View {
+        VStack(alignment: .leading, spacing: 5) {
             Text("Toggles")
-                .font(.title3)
+                .font(.title2)
                 .bold()
             HStack {
                 Text("Audio muted")
