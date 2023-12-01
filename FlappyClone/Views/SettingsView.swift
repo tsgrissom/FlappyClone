@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct SettingsView: View {
-    var body: some View {
+    
+    public var body: some View {
         TabView {
             AppSettingsView()
                 .tabItem {
@@ -14,7 +15,7 @@ struct SettingsView: View {
                     Text("Game")
                 }
         }
-//        .tint(.yellow)
+        .tint(.purple)
     }
 }
 

@@ -6,32 +6,38 @@ enum GameSceneSetting: CaseIterable {
         return self.allCases.randomElement() ?? .Day
     }
     
+    public static func getRandomDaytimeSceneSetting() -> GameSceneSetting {
+        GameSceneSetting.allCases
+            .filter { it in it.isLight() }
+            .randomElement() ?? .Day
+    }
+    
+    public static func getRandomNighttimeSceneSetting() -> GameSceneSetting {
+        GameSceneSetting.allCases
+            .filter { it in it.isDark() }
+            .randomElement() ?? .Night
+    }
+    
     public static func getPreferredSceneSetting() -> GameSceneSetting {
-        let option = UserDefaults.standard.string(forKey: DefaultsKey.PreferredSceneSetting)
-        let allCases = GameSceneSetting.allCases
-        let def: GameSceneSetting = .Day
-        return if option == "Random" {
+        return switch (UserDefaults.standard.string(forKey: DefaultsKey.PreferredSceneSetting)) {
+        case "Random":
             randomValue()
-        } else if option == "Day" {
-            allCases
-                .filter { it in it.isLight() }
-                .randomElement() ?? def
-        } else if option == "Night" {
-            allCases
-                .filter { it in it.isDark() }
-                .randomElement() ?? def
-        } else {
-            def
+        case "Day":
+            getRandomDaytimeSceneSetting()
+        case "Night":
+            getRandomNighttimeSceneSetting()
+        default:
+            GameSceneSetting.Day
         }
     }
     
-    case Day, Day2, Day3, Night
+    case Day, Day2, Day3, Night, Night2, Night3
     
     public func isLight() -> Bool {
         return switch (self) {
         case .Day, .Day2, .Day3:
             true
-        case .Night:
+        case .Night, .Night2, .Night3:
             false
         }
     }
@@ -50,6 +56,10 @@ enum GameSceneSetting: CaseIterable {
             "BG-Day3"
         case .Night:
             "BG-Night"
+        case .Night2:
+            "BG-Night2"
+        case .Night3:
+            "BG-Night3"
         }
     }
     
@@ -57,8 +67,10 @@ enum GameSceneSetting: CaseIterable {
         return switch (self) {
         case .Day, .Day2, .Day3:
             "Clouds-Day"
-        case .Night:
+        case .Night, .Night2:
             "Clouds-Night"
+        case .Night3:
+            "Clouds-Gray"
         }
     }
 }

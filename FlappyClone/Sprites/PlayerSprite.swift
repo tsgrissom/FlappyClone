@@ -66,12 +66,10 @@ class PlayerSprite: SKSpriteNode {
         let enableRecentlyScored = SKAction.run({
             () in
             self.recentlyScored = true
-            print("Recently scored on")
         })
         let resetRecentlyScored = SKAction.run({
             () in
             self.recentlyScored = false
-            print("Recently scored off")
         })
         self.toggleRecentlyScored = SKAction.sequence([
             enableRecentlyScored,
