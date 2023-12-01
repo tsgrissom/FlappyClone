@@ -372,16 +372,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let maskA = bodyA.categoryBitMask
         let maskB = bodyB.categoryBitMask
         
+        let shouldDieOnHitBoundary = defaults.bool(forKey: DefaultsKey.DieOnHitBoundary)
+        let shouldDieOnHitWall     = defaults.bool(forKey: DefaultsKey.DieOnHitWall)
+        
         if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Wall) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Wall)) {
+            if shouldDieOnHitWall {
+                die(from: "Player hit Wall")
+            }
+            
             player.downTurnCanceled = true
             player.rotateToZero(collision: true)
             endGame(for: "Player hit Wall")
 //            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
             UINotificationFeedbackGenerator().notificationOccurred(.warning)
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Boundary) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Boundary)) {
+            if shouldDieOnHitBoundary {
+                die(from: "Player hit Boundary")
+            }
+            
             player.downTurnCanceled = true
             player.rotateToZero(collision: true)
-            endGame(for: "Player hit Ground")
+            endGame(for: "Player hit Boundary")
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Score) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Score)) {
             addScore()

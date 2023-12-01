@@ -1,5 +1,6 @@
 import SpriteKit
 import GameplayKit
+import SwiftUI
 
 private class SettingsLabelAsButton: SKLabelNode {
     
@@ -126,6 +127,13 @@ class MenuScene: SKScene {
         }
     }
     
+    private func openSettingsView() {
+        let swiftUiController = UIHostingController(rootView: SettingsView())
+        if let viewController = view?.window?.rootViewController {
+            viewController.present(swiftUiController, animated: true, completion: nil)
+        }
+    }
+    
     override func didMove(to view: SKView) {
         createScene()
         setupNextScene()
@@ -142,6 +150,7 @@ class MenuScene: SKScene {
             } else if settingsButton.contains(location) {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 print("Settings button pressed")
+                openSettingsView()
                 // TODO Some settings
                 // TODO Toggle sound effects
                 // TODO Credits
