@@ -12,7 +12,7 @@ enum GameSceneSetting: String, CaseIterable {
     case Night4 = "Night4"
     
     public static func randomValue() -> GameSceneSetting {
-        return self.allCases.randomElement() ?? .Day
+        self.allCases.randomElement() ?? .Day
     }
     
     public static func getRandomDarkScene() -> GameSceneSetting {
@@ -29,14 +29,14 @@ enum GameSceneSetting: String, CaseIterable {
     
     public static func getPreferredSceneSetting() -> GameSceneSetting {
         return switch (UserDefaults.standard.string(forKey: DefaultsKey.PreferredSceneSetting)) {
-        case "Random":
-            randomValue()
-        case "Day":
-            getRandomLightScene()
-        case "Night":
-            getRandomDarkScene()
-        default:
-            GameSceneSetting.Day
+            case "Random":
+                randomValue()
+            case "Day":
+                getRandomLightScene()
+            case "Night":
+                getRandomDarkScene()
+            default:
+                GameSceneSetting.Day
         }
     }
     
@@ -49,12 +49,11 @@ enum GameSceneSetting: String, CaseIterable {
     }
     
     public func isDark() -> Bool {
-        return !isLight()
+        !isLight()
     }
     
     public func getBackgroundTextureImageName() -> String {
-        let value = self.rawValue
-        return "BG-\(value)"
+        "BG-\(self.rawValue)"
     }
     
     public func getCloudTextureImageName() -> String {
@@ -69,10 +68,10 @@ enum GameSceneSetting: String, CaseIterable {
     }
     
     public func getBackgroundTexture() -> SKTexture {
-        return SKTexture(imageNamed: self.getBackgroundTextureImageName())
+        SKTexture(imageNamed: self.getBackgroundTextureImageName())
     }
     
     public func getCloudTexture() -> SKTexture {
-        return SKTexture(imageNamed: self.getCloudTextureImageName())
+        SKTexture(imageNamed: self.getCloudTextureImageName())
     }
 }
