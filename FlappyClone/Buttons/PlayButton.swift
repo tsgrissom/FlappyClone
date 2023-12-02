@@ -2,11 +2,16 @@ import SpriteKit
 
 class PlayButton: SKSpriteNode {
     
-    private let sceneSetting: GameSceneSetting
-    private let scaleSize: Double
+    // MARK: Variables
     private let textureNameBtnPlayDark  = "BtnPlay-Dark"
     private let textureNameBtnPlayLight = "BtnPlay-Light"
     
+    private let sceneSetting: GameSceneSetting
+    private let scaleSize: Double
+    
+    public var onPress = SKAction()
+    
+    // MARK: Helper Functions
     private func getTextureNameNotPressed() -> String {
         sceneSetting.isDark() ? textureNameBtnPlayLight : textureNameBtnPlayDark
     }
@@ -15,8 +20,7 @@ class PlayButton: SKSpriteNode {
         sceneSetting.isDark() ? textureNameBtnPlayDark : textureNameBtnPlayLight
     }
     
-    public var onPress = SKAction()
-    
+    // MARK: Initializers
     init(
         for sceneSetting: GameSceneSetting = .Day,
         scaleSize: Double = 1.0
@@ -41,6 +45,7 @@ class PlayButton: SKSpriteNode {
         setupSprite()
     }
     
+    // MARK: Setup Functions
     private func setupSprite() {
         let textureNotPressed = SKTexture(imageNamed: getTextureNameNotPressed())
         let texturePressed    = SKTexture(imageNamed: getTextureNamePressed())
@@ -55,6 +60,7 @@ class PlayButton: SKSpriteNode {
         ])
     }
     
+    // MARK: Methods
     func press() {
         self.run(onPress)
     }

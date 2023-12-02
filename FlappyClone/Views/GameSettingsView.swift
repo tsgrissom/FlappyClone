@@ -3,18 +3,27 @@ import SwiftUI
 // TODO Reset all button
 struct GameSettingsView: View {
     
+    // MARK: Variables
     private let defaults = UserDefaults.standard
     
+    // MARK: Alert State
     @State private var isConfirmClearScorePresented      = false
     @State private var isNoHighScoreToClearPresented     = false
     @State private var isConfirmResetAllOptionsPresented = false
     
+    // MARK: Stateful Variables
     @State private var preferredSceneSetting: String = UserDefaults.standard.string(forKey: DefaultsKey.PreferredSceneSetting) ?? "Random"
     @State private var dieOnOutOfBounds: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnOutOfBounds)
     @State private var dieOnHitBoundary: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitBoundary)
     @State private var dieOnHitWall:     Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitWall)
     @State private var numberOfWallHits: Int  = UserDefaults.standard.integer(forKey: DefaultsKey.NumberOfWallHitsAllowed)
     
+    // MARK: Computed Variables
+    private var highestScore: Int {
+        defaults.integer(forKey: DefaultsKey.HighScore)
+    }
+    
+    // MARK: Helper Functions
     private func resetAll() {
         defaults.setValue("Random", forKey: DefaultsKey.PreferredSceneSetting)
         defaults.setValue(true, forKey: DefaultsKey.DieOnOutOfBounds)
@@ -36,9 +45,7 @@ struct GameSettingsView: View {
         }
     }
     
-    private var highestScore: Int {
-        defaults.integer(forKey: DefaultsKey.HighScore)
-    }
+    // MARK: View Body
     
     public var body: some View {
         ScrollView {
@@ -53,22 +60,7 @@ struct GameSettingsView: View {
         }
     }
     
-    private var resetButton: some View {
-        Button(action: {
-            self.isConfirmResetAllOptionsPresented = true
-        }) {
-            Text("Reset all options")
-        }
-        .alert("Reset all game settings?", isPresented: $isConfirmResetAllOptionsPresented) {
-            Button(role: .destructive, action: resetAll) {
-                Text("Confirm")
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("All game settings will be restored to their default values.")
-        }
-    }
-    
+    // MARK: Sections
     private var header: some View {
         VStack {
             HStack {
@@ -78,7 +70,7 @@ struct GameSettingsView: View {
                 Spacer()
             }
             HStack {
-                resetButton
+                buttonReset
                 Spacer()
             }
             .padding(.top, 1)
@@ -142,6 +134,7 @@ struct GameSettingsView: View {
         }
     }
     
+    // MARK: Complex Elements
     @ViewBuilder
     private var buttonClearHighScore: some View {
         if highestScore > 0 {
@@ -178,6 +171,22 @@ struct GameSettingsView: View {
         }
     }
     
+    private var buttonReset: some View {
+        Button(action: {
+            self.isConfirmResetAllOptionsPresented = true
+        }) {
+            Text("Reset all options")
+        }
+        .alert("Reset all game settings?", isPresented: $isConfirmResetAllOptionsPresented) {
+            Button(role: .destructive, action: resetAll) {
+                Text("Confirm")
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("All game settings will be restored to their default values.")
+        }
+    }
+    
     private var pickerPreferredScene: some View {
         HStack {
             Text("Preferred scene")
@@ -196,6 +205,7 @@ struct GameSettingsView: View {
     }
 }
 
+// MARK: Previews
 #Preview {
     GameSettingsView()
 }

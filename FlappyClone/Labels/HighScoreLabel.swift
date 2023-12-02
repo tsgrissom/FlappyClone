@@ -2,8 +2,10 @@ import SpriteKit
 
 class HighScoreLabel: SKLabelNode {
     
+    // MARK: Variables
     let sceneSetting: GameSceneSetting
     
+    // MARK: Initializers
     init(
         for sceneSetting: GameSceneSetting = .Day
     ) {
@@ -18,6 +20,7 @@ class HighScoreLabel: SKLabelNode {
         setupLabel()
     }
     
+    // MARK: Setup Functions
     private func setupLabel() {
         let score = UserDefaults.standard.integer(forKey: DefaultsKey.HighScore)
         text = "High Streak: \(score)"

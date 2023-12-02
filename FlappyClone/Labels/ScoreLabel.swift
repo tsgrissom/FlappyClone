@@ -2,14 +2,16 @@ import SpriteKit
 
 class ScoreLabel: SKLabelNode {
     
+    // MARK: Variables
     private let defaults = UserDefaults.standard
     
-    let defaultFontColor: UIColor = UIColor(named: "ScoreColor")   ?? UIColor.yellow
-    let dangerFontColor:  UIColor = UIColor(named: "DangerColor")  ?? UIColor.systemRed
+    private let defaultFontColor: UIColor = UIColor(named: "ScoreColor")   ?? UIColor.yellow
+    private let dangerFontColor:  UIColor = UIColor(named: "DangerColor")  ?? UIColor.systemRed
 
     private let sceneSetting: GameSceneSetting
     private var isFlashingHighScore = false
     
+    // MARK: Initializers
     init(
         for sceneSetting: GameSceneSetting = .Day
     ) {
@@ -24,6 +26,7 @@ class ScoreLabel: SKLabelNode {
         setupLabel()
     }
     
+    // MARK: Setup Functions
     private func setupLabel() {
         // Initialize label
         text = ""
@@ -32,6 +35,7 @@ class ScoreLabel: SKLabelNode {
         fontName = "04b_19"
     }
     
+    // MARK: Methods
     func flashDanger(waitDuration: Double = 1.0) {
         if isFlashingHighScore {
             return

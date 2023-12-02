@@ -3,6 +3,7 @@ import SwiftUI
 // TODO Reset all button
 struct AppSettingsView: View {
     
+    // MARK: Variables
     private let defaults = UserDefaults.standard
     
     @State private var isConfirmResetAllOptionsPresented: Bool = false
@@ -10,6 +11,7 @@ struct AppSettingsView: View {
     @State private var audioMuted:      Bool = UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted)
     @State private var hapticsDisabled: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled)
     
+    // MARK: Helper Functions
     private func resetAll() {
         defaults.setValue(false, forKey: DefaultsKey.AudioMuted)
         defaults.setValue(false, forKey: DefaultsKey.HapticsDisabled)
@@ -17,6 +19,7 @@ struct AppSettingsView: View {
         hapticsDisabled = false
     }
     
+    // MARK: View Body
     public var body: some View {
         ScrollView {
             header
@@ -29,22 +32,7 @@ struct AppSettingsView: View {
         }
     }
     
-    private var resetButton: some View {
-        Button(action: {
-            self.isConfirmResetAllOptionsPresented = true
-        }) {
-            Text("Reset all options")
-        }
-        .alert("Reset all app settings?", isPresented: $isConfirmResetAllOptionsPresented) {
-            Button(role: .destructive, action: resetAll) {
-                Text("Confirm")
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("All app settings will be restored to their default values.")
-        }
-    }
-    
+    // MARK: Sections
     private var header: some View {
         VStack {
             HStack {
@@ -54,7 +42,7 @@ struct AppSettingsView: View {
                 Spacer()
             }
             HStack {
-                resetButton
+                buttonReset
                 Spacer()
             }
             .padding(.top, 1)
@@ -86,8 +74,26 @@ struct AppSettingsView: View {
             }
         }
     }
+    
+    // MARK: Complex Elements
+    private var buttonReset: some View {
+        Button(action: {
+            self.isConfirmResetAllOptionsPresented = true
+        }) {
+            Text("Reset all options")
+        }
+        .alert("Reset all app settings?", isPresented: $isConfirmResetAllOptionsPresented) {
+            Button(role: .destructive, action: resetAll) {
+                Text("Confirm")
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("All app settings will be restored to their default values.")
+        }
+    }
 }
 
+// MARK: Previews
 #Preview {
     AppSettingsView()
 }

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    // MARK: View Body
     public var body: some View {
         TabView {
             AppSettingsView()
@@ -19,6 +20,7 @@ struct SettingsView: View {
     }
 }
 
+// MARK: Previews
 #Preview {
     SettingsView()
 }

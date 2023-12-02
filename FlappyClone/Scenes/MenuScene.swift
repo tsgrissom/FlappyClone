@@ -6,6 +6,7 @@ class MenuScene: SKScene {
     
     // TODO Credits
     
+    // MARK: Variables
     private let defaults = UserDefaults.standard
     
     private var playButton        = PlayButton()
@@ -13,6 +14,7 @@ class MenuScene: SKScene {
     private var audioToggleButton = AudioMuteToggleButton()
     private var gameScene         = SKScene()
     
+    // MARK: UI Positioning Functions
     private func horizontallyCenteredPoint(y: CGFloat) -> CGPoint {
         CGPoint(x: frame.midX, y: y)
     }
@@ -58,6 +60,35 @@ class MenuScene: SKScene {
         )
     }
     
+    // MARK: Button Handlers
+    private func onPressPlayButton() {
+        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        }
+        
+        playButton.run(playButton.onPress) {
+            self.view?.presentScene(self.gameScene)
+        }
+    }
+    
+    private func onPressSettingsButton() {
+        settingsButton.press()
+        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
+        
+        openSettingsView()
+    }
+    
+    private func onPressAudioToggleButton() {
+        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
+        
+        audioToggleButton.toggle()
+    }
+    
+    // MARK: Scene Control Functions
     private func createScene() {
         let randomSetting = GameSceneSetting.randomValue()
         let background = BackgroundSprite(for: randomSetting, frameSize: frame.size)
@@ -110,39 +141,13 @@ class MenuScene: SKScene {
         }
     }
     
+    // MARK: GameScene Functions
     override func didMove(to view: SKView) {
         createScene()
         setupNextScene()
     }
     
     override func update(_ currentTime: TimeInterval) {}
-    
-    private func onPressPlayButton() {
-        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        }
-        
-        playButton.run(playButton.onPress) {
-            self.view?.presentScene(self.gameScene)
-        }
-    }
-    
-    private func onPressSettingsButton() {
-        settingsButton.press()
-        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        }
-        
-        openSettingsView()
-    }
-    
-    private func onPressAudioToggleButton() {
-        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        }
-        
-        audioToggleButton.toggle()
-    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {

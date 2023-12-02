@@ -2,6 +2,7 @@ import SpriteKit
 
 class GroundSprite: SKSpriteNode {
     
+    // MARK: Variables
     private let imageName:    String
     private let sceneSetting: GameSceneSetting
     

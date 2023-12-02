@@ -2,6 +2,7 @@ import SpriteKit
 
 class SettingsButton: SKSpriteNode {
     
+    // MARK: Variables
     private let imageNameSettingsDark  = "BtnSettings-Dark"
     private let imageNameSettingsGray  = "BtnSettings-Gray"
     private let imageNameSettingsLight = "BtnSettings-Light"
@@ -10,6 +11,7 @@ class SettingsButton: SKSpriteNode {
     
     private var onPress = SKAction()
     
+    // MARK: Initializers
     init(
         for sceneSetting: GameSceneSetting = .Day,
         scaleSize: CGFloat = 1.0
@@ -31,6 +33,7 @@ class SettingsButton: SKSpriteNode {
         setupSprite()
     }
     
+    // MARK: Setup Functions
     private func setupSprite() {
         let texturePressed = SKTexture(imageNamed: sceneSetting.isDark() ? imageNameSettingsGray  : imageNameSettingsLight)
         let textureNotPressed   = SKTexture(imageNamed: sceneSetting.isDark() ? imageNameSettingsLight : imageNameSettingsDark)
@@ -45,6 +48,7 @@ class SettingsButton: SKSpriteNode {
         ])
     }
     
+    // MARK: Methods
     public func press() {
         self.run(onPress)
     }

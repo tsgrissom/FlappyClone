@@ -2,16 +2,27 @@ import SpriteKit
 
 class AudioMuteToggleButton: SKSpriteNode {
     
+    // MARK: Variables
     private let textureImageNameDark       = "BtnAudio-Dark"
     private let textureImageNameDarkMuted  = "BtnAudio-DarkMuted"
     private let textureImageNameLight      = "BtnAudio-Light"
     private let textureImageNameLightMuted = "BtnAudio-LightMuted"
     
-    var toggleMuted = SKAction()
-    
     private let sceneSetting: GameSceneSetting
-    var isMuted = UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted)
     
+    public var toggleMuted = SKAction()
+    public var isMuted = UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted)
+    
+    // MARK: Helper Functions
+    private func getMutedTextureName() -> String {
+        sceneSetting.isDark() ? textureImageNameLightMuted : textureImageNameDarkMuted
+    }
+    
+    private func getUnmutedTextureName() -> String {
+        sceneSetting.isDark() ? textureImageNameLight : textureImageNameDark
+    }
+    
+    // MARK: Initialization
     init(
         for sceneSetting: GameSceneSetting = .Day,
         scaleSize: CGFloat = 1.0
@@ -41,14 +52,7 @@ class AudioMuteToggleButton: SKSpriteNode {
         setupButton()
     }
     
-    private func getMutedTextureName() -> String {
-        sceneSetting.isDark() ? textureImageNameLightMuted : textureImageNameDarkMuted
-    }
-    
-    private func getUnmutedTextureName() -> String {
-        sceneSetting.isDark() ? textureImageNameLight : textureImageNameDark
-    }
-    
+    // MARK: Setup Functions
     private func setupActions() {
         toggleMuted = SKAction.run({
             () in
@@ -68,6 +72,7 @@ class AudioMuteToggleButton: SKSpriteNode {
         
     }
     
+    // MARK: Methods
     func toggle() {
         self.run(toggleMuted)
     }

@@ -3,6 +3,7 @@ import SpriteKit
 
 class PlayerSprite: SKSpriteNode {
     
+    // MARK: Variables
     private let defaults = UserDefaults.standard
     
     // Actions
@@ -21,7 +22,7 @@ class PlayerSprite: SKSpriteNode {
     // Sound
     private var flapSoundEffect = AVAudioPlayer()
     
-    // MARK: Computed
+    // MARK: Computed Variables
     private var audioNotMuted: Bool {
         !defaults.bool(forKey: DefaultsKey.AudioMuted)
     }
@@ -44,7 +45,7 @@ class PlayerSprite: SKSpriteNode {
         setupSprite()
     }
     
-    // MARK: Setup
+    // MARK: Setup Functions
     private func setupActions() {
         // SKActions
         doUpTurnOnFlap    = SKAction.rotate(toAngle: 0, duration: 0.7)

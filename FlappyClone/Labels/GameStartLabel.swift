@@ -2,8 +2,10 @@ import SpriteKit
 
 class GameStartLabel: SKLabelNode {
     
+    // MARK: Variables
     let sceneSetting: GameSceneSetting
     
+    // MARK: Initializers
     init(
         for sceneSetting: GameSceneSetting = .Day
     ) {
@@ -18,6 +20,7 @@ class GameStartLabel: SKLabelNode {
         setupLabel()
     }
     
+    // MARK: Setup Functions
     private func setupLabel() {
         text = "Tap to start"
         fontColor = sceneSetting.isDark() ? .white : UIColor(named: "DarkColor")

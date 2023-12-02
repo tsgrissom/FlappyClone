@@ -2,10 +2,12 @@ import SpriteKit
 
 class RemainingHitsLabel: SKLabelNode {
     
+    // MARK: Variables
     private let sceneSetting: GameSceneSetting
     private let maxHits: Int
     private var remainingHits = Int()
     
+    // MARK: Initializers
     init(
         for sceneSetting: GameSceneSetting = .Day
     ) {
@@ -25,6 +27,7 @@ class RemainingHitsLabel: SKLabelNode {
         setupLabel()
     }
     
+    // MARK: Setup Functions
     private func setupLabel() {
         updateTextForHits(self.remainingHits)
         fontColor = calculateFontColor(max: maxHits, remaining: remainingHits)
@@ -32,6 +35,7 @@ class RemainingHitsLabel: SKLabelNode {
         fontSize = UIDevice.isPhone() ? 35.0 : 25.0
     }
     
+    // MARK: Methods
     private func calculateFontColor(max: Int, remaining: Int) -> UIColor {
         let high = UIColor(named: "SuccessColor") ?? UIColor.systemGreen
         let med = UIColor.systemYellow

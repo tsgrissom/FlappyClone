@@ -3,6 +3,7 @@ import SpriteKit
 
 enum GameSceneSetting: String, CaseIterable {
     
+    // MARK: Enum Values
     case Day    = "Day"
     case Day2   = "Day2"
     case Day3   = "Day3"
@@ -11,6 +12,7 @@ enum GameSceneSetting: String, CaseIterable {
     case Night3 = "Night3"
     case Night4 = "Night4"
     
+    // MARK: Static Functions
     public static func randomValue() -> GameSceneSetting {
         self.allCases.randomElement() ?? .Day
     }
@@ -40,6 +42,7 @@ enum GameSceneSetting: String, CaseIterable {
         }
     }
     
+    // MARK: Methods
     public func isLight() -> Bool {
         return if self.rawValue.contains("Day") {
             true

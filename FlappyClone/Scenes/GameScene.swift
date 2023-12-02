@@ -249,7 +249,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(player)
     }
     
-    // MARK: Element Positioning Functions
+    // MARK: UI Positioning Functions
     private func calculateCloudPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
         let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35
@@ -403,7 +403,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    // From SKPhysicsContactDelegate
+    // MARK: SKPhysicsDelegate
     // Triggered on contact between two bodies
     func didBegin(_ contact: SKPhysicsContact) {
         let bodyA = contact.bodyA
