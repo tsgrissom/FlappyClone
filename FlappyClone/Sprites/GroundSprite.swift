@@ -2,45 +2,50 @@ import SpriteKit
 
 class GroundSprite: SKSpriteNode {
     
-    private let setting: GameSceneSetting
-    private let imageName: String
+    private let imageName:    String
+    private let sceneSetting: GameSceneSetting
     
     public var isCloud: Bool {
         imageName.contains("Clouds")
     }
     
     init(frameWidth: CGFloat, setting: GameSceneSetting = .Day) {
-        self.setting   = setting
-        self.imageName = setting.getCloudTextureImageName()
-        let  texture   = SKTexture(imageNamed: imageName)
-        let  size      = CGSize(width: 1000, height: 100)
+        self.sceneSetting = setting
+        self.imageName    = setting.getCloudTextureImageName()
+        
+        let texture = SKTexture(imageNamed: imageName)
+        let size    = CGSize(width: 1000, height: 100)
     
         super.init(texture: texture, color: .clear, size: size)
         setupSprite()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.setting   = .Day
-        self.imageName = setting.getBackgroundTextureImageName()
+        self.sceneSetting   = .Day
+        self.imageName = sceneSetting.getBackgroundTextureImageName()
         
         super.init(coder: aDecoder)
         setupSprite()
     }
     
-    private func setupSprite() {
-        let pbHeightMultiplier = isCloud ? 0.15 : 1.0
-        let pbSize = CGSize(
+    private func setupPhysicsBody() {
+        let heightMultiplier = isCloud ? 0.15 : 1.0
+        let size = CGSize(
             width: self.size.width,
-            height: self.size.height * pbHeightMultiplier
+            height: self.size.height * heightMultiplier
         )
         let restitution = isCloud ? 0.4 : 0.1
         
-        physicsBody = SKPhysicsBody(rectangleOf: pbSize)
+        physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody?.categoryBitMask    = PhysicsCategory.Boundary
         physicsBody?.collisionBitMask   = PhysicsCategory.Player
         physicsBody?.contactTestBitMask = PhysicsCategory.Player
         physicsBody?.affectedByGravity  = false
         physicsBody?.isDynamic          = false
         physicsBody?.restitution        = restitution
+    }
+    
+    private func setupSprite() {
+        setupPhysicsBody()
     }
 }
