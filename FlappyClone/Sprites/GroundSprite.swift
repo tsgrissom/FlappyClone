@@ -9,9 +9,10 @@ class GroundSprite: SKSpriteNode {
         imageName.contains("Clouds")
     }
     
-    init(frameWidth: CGFloat, setting: GameSceneSetting = .Day) {
-        self.sceneSetting = setting
-        self.imageName    = setting.getCloudTextureImageName()
+    // MARK: Initializers
+    init(for sceneSetting: GameSceneSetting = .Day) {
+        self.sceneSetting = sceneSetting
+        self.imageName    = sceneSetting.getCloudTextureImageName()
         
         let texture = SKTexture(imageNamed: imageName)
         let size    = CGSize(width: 1000, height: 100)
@@ -28,6 +29,7 @@ class GroundSprite: SKSpriteNode {
         setupSprite()
     }
     
+    // MARK: Setup
     private func setupPhysicsBody() {
         let heightMultiplier = isCloud ? 0.15 : 1.0
         let size = CGSize(

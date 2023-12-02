@@ -2,6 +2,7 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 
+// MARK: Single-Use Buttons
 private class QuitLabelAsButton: SKLabelNode {
     
     let sceneSetting: GameSceneSetting
@@ -56,6 +57,7 @@ private class RestartLabelAsButton: SKLabelNode {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
+    // MARK: Variables
     private let defaults = UserDefaults.standard
     
     // Sprites
@@ -80,6 +82,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var scoreSoundEffect: AVAudioPlayer?
     private var splatSoundEffect: AVAudioPlayer?
     
+    // MARK: Setup Functions
     private func loadSoundEffects() {
         if let path = Bundle.main.path(forResource: "Score", ofType: "mp3") {
             let url = URL(fileURLWithPath: path)
@@ -105,6 +108,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // MARK: Game State Functions
+    private func setScore(to points: Int) {
+        self.score = points
+        scoreLabel.updateTextForScore(points)
+    }
+    
+    private func addScore(_ points: Int = 1) {
+        let oldScore = self.score
+        let newScore = oldScore + points
+        let oldHighScore = defaults.integer(forKey: DefaultsKey.HighScore)
+        
+        setScore(to: newScore)
+        player.run(player.doToggleRecentlyScored)
+        
+        if newScore > oldHighScore {
+            // TODO Play new high score effect
+            defaults.setValue(newScore, forKey: DefaultsKey.HighScore)
+        } else {
+            if !defaults.bool(forKey: DefaultsKey.AudioMuted) {
+                scoreSoundEffect?.play()
+            }
+        }
+    }
+    
     private func die(from debugMessage: String = "Player left frame") {
         print(debugMessage)
         dead = true
@@ -160,6 +186,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    // MARK: Scene Control Functions
     private func restartScene() {
         dead = false
         gameStarted = false
@@ -180,8 +207,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Static Sprites
         let background = BackgroundSprite(for: sceneSetting, frameSize: frame.size)
-        let cloud  = GroundSprite(frameWidth: frame.width, setting: sceneSetting)
-        let ground = GroundSprite(frameWidth: frame.width, setting: sceneSetting)
+        let cloud  = GroundSprite(for: sceneSetting)
+        let ground = GroundSprite(for: sceneSetting)
         cloud.position   = calculateCloudPosition()
         cloud.zRotation  = CGFloat(Double.pi)
         cloud.zPosition  = 3
@@ -222,31 +249,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(player)
     }
     
-    // Game State Functions
-    private func setScore(to points: Int) {
-        self.score = points
-        scoreLabel.updateTextForScore(points)
-    }
-    
-    private func addScore(_ points: Int = 1) {
-        let oldScore = self.score
-        let newScore = oldScore + points
-        let oldHighScore = defaults.integer(forKey: DefaultsKey.HighScore)
-        
-        setScore(to: newScore)
-        player.run(player.doToggleRecentlyScored)
-        
-        if newScore > oldHighScore {
-            // TODO Play new high score effect
-            defaults.setValue(newScore, forKey: DefaultsKey.HighScore)
-        } else {
-            if !defaults.bool(forKey: DefaultsKey.AudioMuted) {
-                scoreSoundEffect?.play()
-            }
-        }
-    }
-    
-    // Elements
+    // MARK: Element Positioning Functions
     private func calculateCloudPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
         let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35

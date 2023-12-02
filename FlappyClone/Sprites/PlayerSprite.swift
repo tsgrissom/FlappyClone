@@ -21,6 +21,7 @@ class PlayerSprite: SKSpriteNode {
     // Sound
     private var flapSoundEffect = AVAudioPlayer()
     
+    // MARK: Computed
     private var audioNotMuted: Bool {
         !defaults.bool(forKey: DefaultsKey.AudioMuted)
     }
@@ -29,22 +30,21 @@ class PlayerSprite: SKSpriteNode {
         !defaults.bool(forKey: DefaultsKey.HapticsDisabled)
     }
     
+    // MARK: Initializers
     init() {
         let texture = SKTexture(imageNamed: "Birb")
         let size    = CGSize(width: 60, height: 70)
         
         super.init(texture: texture, color: .clear, size: size)
         setupSprite()
-        setupActions()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupSprite()
-        setupActions()
     }
     
-    // Bootstrap
+    // MARK: Setup
     private func setupActions() {
         // SKActions
         doUpTurnOnFlap    = SKAction.rotate(toAngle: 0, duration: 0.7)
@@ -88,22 +88,7 @@ class PlayerSprite: SKSpriteNode {
         ])
     }
     
-    private func setupSprite() {
-        setScale(1.25)
-        
-        // Physics body
-        let bodyRadius = CGFloat(self.frame.height / 3)
-        physicsBody = SKPhysicsBody(circleOfRadius: bodyRadius)
-        
-        physicsBody?.categoryBitMask = PhysicsCategory.Player
-        physicsBody?.collisionBitMask = PhysicsCategory.Boundary | PhysicsCategory.Wall
-        physicsBody?.contactTestBitMask = PhysicsCategory.Boundary | PhysicsCategory.Wall | PhysicsCategory.Score
-        physicsBody?.affectedByGravity = false
-        physicsBody?.isDynamic = true
-        physicsBody?.restitution = 0.3
-        physicsBody?.usesPreciseCollisionDetection = true
-        
-        // Audio
+    private func setupAudio() {
         if let path = Bundle.main.path(forResource: "Flap", ofType: "mp3") {
             let url = URL(fileURLWithPath: path)
             do {
@@ -116,7 +101,28 @@ class PlayerSprite: SKSpriteNode {
         }
     }
     
-    // Methods
+    private func setupPhysicsBody() {
+        let bodyRadius = CGFloat(self.frame.height / 3)
+        physicsBody = SKPhysicsBody(circleOfRadius: bodyRadius)
+        
+        physicsBody?.categoryBitMask = PhysicsCategory.Player
+        physicsBody?.collisionBitMask = PhysicsCategory.Boundary | PhysicsCategory.Wall
+        physicsBody?.contactTestBitMask = PhysicsCategory.Boundary | PhysicsCategory.Wall | PhysicsCategory.Score
+        physicsBody?.affectedByGravity = false
+        physicsBody?.isDynamic = true
+        physicsBody?.restitution = 0.3
+        physicsBody?.usesPreciseCollisionDetection = true
+    }
+    
+    private func setupSprite() {
+        setScale(1.25)
+        
+        setupActions()
+        setupAudio()
+        setupPhysicsBody()
+    }
+    
+    // MARK: Methods
     public func rotateToZero(collision: Bool = false) {
         self.physicsBody?.angularVelocity = 0
         run(collision ? doUpTurnOnCollide : doUpTurnOnFlap)
