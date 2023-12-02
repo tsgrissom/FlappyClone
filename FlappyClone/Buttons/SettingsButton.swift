@@ -8,7 +8,7 @@ class SettingsButton: SKSpriteNode {
     
     private let sceneSetting: GameSceneSetting
     
-    private var togglePressedTexture = SKAction()
+    private var onPress = SKAction()
     
     init(
         for sceneSetting: GameSceneSetting = .Day,
@@ -32,18 +32,20 @@ class SettingsButton: SKSpriteNode {
     }
     
     private func setupSprite() {
-        let pressedTexture   = SKTexture(imageNamed: sceneSetting.isDark() ? imageNameSettingsGray  : imageNameSettingsLight)
-        let resetTexture     = SKTexture(imageNamed: sceneSetting.isDark() ? imageNameSettingsLight : imageNameSettingsDark)
-        let switchAction     = SKAction.setTexture(pressedTexture)
-        let resetAction      = SKAction.setTexture(resetTexture)
-        togglePressedTexture = SKAction.sequence([
-            switchAction,
-            SKAction.wait(forDuration: 0.30),
-            resetAction
+        let texturePressed = SKTexture(imageNamed: sceneSetting.isDark() ? imageNameSettingsGray  : imageNameSettingsLight)
+        let textureNotPressed   = SKTexture(imageNamed: sceneSetting.isDark() ? imageNameSettingsLight : imageNameSettingsDark)
+        let setTexture   = SKAction.setTexture(texturePressed)
+        let delay        = SKAction.wait(forDuration: 0.30)
+        let resetTexture = SKAction.setTexture(textureNotPressed)
+        
+        onPress = SKAction.sequence([
+            setTexture,
+            delay,
+            resetTexture
         ])
     }
     
-    public func toggleTexture() {
-        self.run(togglePressedTexture)
+    public func press() {
+        self.run(onPress)
     }
 }

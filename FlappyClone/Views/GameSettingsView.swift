@@ -5,14 +5,29 @@ struct GameSettingsView: View {
     
     private let defaults = UserDefaults.standard
     
-    @State private var isConfirmClearScorePresented:  Bool = false
-    @State private var isNoHighScoreToClearPresented: Bool = false
+    @State private var isConfirmClearScorePresented      = false
+    @State private var isNoHighScoreToClearPresented     = false
+    @State private var isConfirmResetAllOptionsPresented = false
     
     @State private var preferredSceneSetting: String = UserDefaults.standard.string(forKey: DefaultsKey.PreferredSceneSetting) ?? "Random"
     @State private var dieOnOutOfBounds: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnOutOfBounds)
     @State private var dieOnHitBoundary: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitBoundary)
     @State private var dieOnHitWall:     Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitWall)
     @State private var numberOfWallHits: Int  = UserDefaults.standard.integer(forKey: DefaultsKey.NumberOfWallHitsAllowed)
+    
+    private func resetAll() {
+        defaults.setValue("Random", forKey: DefaultsKey.PreferredSceneSetting)
+        defaults.setValue(true, forKey: DefaultsKey.DieOnOutOfBounds)
+        defaults.setValue(false, forKey: DefaultsKey.DieOnHitBoundary)
+        defaults.setValue(false, forKey: DefaultsKey.DieOnHitWall)
+        defaults.setValue(0, forKey: DefaultsKey.NumberOfWallHitsAllowed)
+        
+        preferredSceneSetting = "Random"
+        dieOnOutOfBounds = true
+        dieOnHitBoundary = false
+        dieOnHitWall = false
+        numberOfWallHits = 0
+    }
     
     private func clearHighScore() {
         defaults.setValue(0, forKey: DefaultsKey.HighScore)
@@ -31,9 +46,26 @@ struct GameSettingsView: View {
                 .padding(.top, 10)
                 .padding(.horizontal, 20)
             sectionBase
+                .padding(.top, 10)
                 .padding(.horizontal, 20)
             sectionDifficulty
                 .padding(.horizontal, 20)
+        }
+    }
+    
+    private var resetButton: some View {
+        Button(action: {
+            self.isConfirmResetAllOptionsPresented = true
+        }) {
+            Text("Reset all options")
+        }
+        .alert("Reset all game settings?", isPresented: $isConfirmResetAllOptionsPresented) {
+            Button(role: .destructive, action: resetAll) {
+                Text("Confirm")
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("All game settings will be restored to their default values.")
         }
     }
     
@@ -45,6 +77,11 @@ struct GameSettingsView: View {
                     .bold()
                 Spacer()
             }
+            HStack {
+                resetButton
+                Spacer()
+            }
+            .padding(.top, 1)
         }
     }
     

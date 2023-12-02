@@ -15,7 +15,7 @@ class PlayButton: SKSpriteNode {
         sceneSetting.isDark() ? textureNameBtnPlayDark : textureNameBtnPlayLight
     }
     
-    var onPress = SKAction()
+    public var onPress = SKAction()
     
     init(
         for sceneSetting: GameSceneSetting = .Day,
@@ -43,19 +43,19 @@ class PlayButton: SKSpriteNode {
     
     private func setupSprite() {
         let textureNotPressed = SKTexture(imageNamed: getTextureNameNotPressed())
-        let texturePressed = SKTexture(imageNamed: getTextureNamePressed())
+        let texturePressed    = SKTexture(imageNamed: getTextureNamePressed())
         
-        let switchTextureToPressed = SKAction.setTexture(texturePressed)
-        let delay = SKAction.wait(forDuration: 0.75)
+        let setTexture = SKAction.setTexture(texturePressed)
+        let delay = SKAction.wait(forDuration: 0.30)
         let resetTexture = SKAction.setTexture(textureNotPressed)
         onPress = SKAction.sequence([
-            switchTextureToPressed,
+            setTexture,
             delay,
             resetTexture
         ])
     }
     
-    func pressed() {
+    func press() {
         self.run(onPress)
     }
 }

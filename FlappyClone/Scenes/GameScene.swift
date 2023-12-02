@@ -62,6 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var player         = PlayerSprite()        // Physics category - Player
     private var walls          = WallSprite()
     private var scoreLabel     = ScoreLabel()
+    private var livesLabel     = RemainingHitsLabel()
     private var gameStartLabel = GameStartLabel()
     private var restartButton  = RestartLabelAsButton()
     private var quitButton     = QuitLabelAsButton()
@@ -107,9 +108,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func die(from debugMessage: String = "Player left frame") {
         print(debugMessage)
         dead = true
-        scoreLabel.text = "Dead: \(score)x"
-        scoreLabel.fontColor = UIColor(named: "DangerColor")
-        scoreLabel.fontSize = 38
+        livesLabel.text = "Dead!"
+        livesLabel.fontColor = UIColor(named: "DangerColor")
+        livesLabel.fontSize = 38
         player.removeFromParent()
         
         if !defaults.bool(forKey: DefaultsKey.AudioMuted) {
@@ -128,8 +129,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.updateTextForScore(0)
         gameStartLabel.run(SKAction.hide())
         
-        self.addChild(restartButton)
-        self.addChild(quitButton)
+        addChild(restartButton)
+        addChild(quitButton)
+        if remainingWallHits > 0 && defaults.bool(forKey: DefaultsKey.DieOnHitWall) {
+            addChild(livesLabel)
+        }
         
         let spawn = SKAction.run({
             () in
@@ -197,6 +201,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel = ScoreLabel(for: sceneSetting)
         scoreLabel.position  = calculateScoreLabelPosition()
         scoreLabel.zPosition = 4
+        
+        livesLabel = RemainingHitsLabel(for: sceneSetting)
+        livesLabel.position = calculateRemainingHitsLabelPosition()
+        livesLabel.zPosition = 4
         
         restartButton = RestartLabelAsButton(for: sceneSetting)
         restartButton.position  = calculateRestartButtonPosition()
@@ -272,6 +280,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func calculateScoreLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
         let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.20 // TODO iPad positioning
+        
+        return CGPoint(
+            x: frame.midX,
+            y: frame.midY + (frameHeightHalved * yMultiplier)
+        )
+    }
+    
+    private func calculateRemainingHitsLabelPosition() -> CGPoint {
+        let frameHeightHalved = frame.height / 2
+        let yMultiplier = UIDevice.isPhone() ? 0.65 : 0.15
         
         return CGPoint(
             x: frame.midX,
@@ -396,6 +414,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Wall) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Wall)) {
             if remainingWallHits > 0 {
                 remainingWallHits -= 1
+                livesLabel.updateTextForHits(remainingWallHits)
                 return
             }
             

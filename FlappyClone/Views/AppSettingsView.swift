@@ -5,8 +5,17 @@ struct AppSettingsView: View {
     
     private let defaults = UserDefaults.standard
     
+    @State private var isConfirmResetAllOptionsPresented: Bool = false
+    
     @State private var audioMuted:      Bool = UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted)
     @State private var hapticsDisabled: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled)
+    
+    private func resetAll() {
+        defaults.setValue(false, forKey: DefaultsKey.AudioMuted)
+        defaults.setValue(false, forKey: DefaultsKey.HapticsDisabled)
+        audioMuted = false
+        hapticsDisabled = false
+    }
     
     public var body: some View {
         ScrollView {
@@ -14,8 +23,25 @@ struct AppSettingsView: View {
                 .padding(.top, 10)
                 .padding(.horizontal, 20)
             sectionToggles
-                .padding(.top, 5)
+                .padding(.top, 10)
                 .padding(.horizontal, 20)
+            
+        }
+    }
+    
+    private var resetButton: some View {
+        Button(action: {
+            self.isConfirmResetAllOptionsPresented = true
+        }) {
+            Text("Reset all options")
+        }
+        .alert("Reset all app settings?", isPresented: $isConfirmResetAllOptionsPresented) {
+            Button(role: .destructive, action: resetAll) {
+                Text("Confirm")
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("All app settings will be restored to their default values.")
         }
     }
     
@@ -27,6 +53,11 @@ struct AppSettingsView: View {
                     .bold()
                 Spacer()
             }
+            HStack {
+                resetButton
+                Spacer()
+            }
+            .padding(.top, 1)
         }
     }
     
