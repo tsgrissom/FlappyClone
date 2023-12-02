@@ -1,5 +1,6 @@
 import SwiftUI
 
+// TODO Reset all button
 struct GameSettingsView: View {
     
     private let defaults = UserDefaults.standard
@@ -11,6 +12,7 @@ struct GameSettingsView: View {
     @State private var dieOnOutOfBounds: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnOutOfBounds)
     @State private var dieOnHitBoundary: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitBoundary)
     @State private var dieOnHitWall:     Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitWall)
+    @State private var numberOfWallHits: Int  = UserDefaults.standard.integer(forKey: DefaultsKey.NumberOfWallHitsAllowed)
     
     private func clearHighScore() {
         defaults.setValue(0, forKey: DefaultsKey.HighScore)
@@ -29,7 +31,6 @@ struct GameSettingsView: View {
                 .padding(.top, 10)
                 .padding(.horizontal, 20)
             sectionBase
-                .padding(.top, 10)
                 .padding(.horizontal, 20)
             sectionDifficulty
                 .padding(.horizontal, 20)
@@ -37,11 +38,13 @@ struct GameSettingsView: View {
     }
     
     private var header: some View {
-        VStack(alignment: .leading) {
-            Text("Game Settings")
-                .font(.largeTitle)
-                .bold()
-            Divider()
+        VStack {
+            HStack {
+                Text("Game Settings")
+                    .font(.largeTitle)
+                    .bold()
+                Spacer()
+            }
         }
     }
     
@@ -62,6 +65,16 @@ struct GameSettingsView: View {
             Text("Difficulty")
                 .font(.title2)
                 .bold()
+            HStack {
+                Text("Allowed wall hits: \(numberOfWallHits)")
+                Stepper(value: $numberOfWallHits, in: 0...3) {}
+                    .onChange(of: numberOfWallHits, initial: false) { oldValue, newValue in
+                        print("Altered setting NumberOfWallHitsAllowed (\(oldValue)->\(newValue))")
+                        defaults.setValue(newValue, forKey: DefaultsKey.NumberOfWallHitsAllowed)
+                        dieOnHitWall = true
+                        defaults.setValue(true, forKey: DefaultsKey.DieOnHitWall)
+                    }
+            }
             HStack {
                 Text("Die on out of bounds")
                 Toggle(isOn: $dieOnOutOfBounds) {}

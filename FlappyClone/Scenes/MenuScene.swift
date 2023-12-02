@@ -128,9 +128,9 @@ class MenuScene: SKScene {
     }
     
     private func openSettingsView() {
-        let swiftUiController = UIHostingController(rootView: SettingsView())
+        let settingsViewController = UIHostingController(rootView: SettingsView())
         if let viewController = view?.window?.rootViewController {
-            viewController.present(swiftUiController, animated: true, completion: nil)
+            viewController.present(settingsViewController, animated: true, completion: nil)
         }
     }
     
@@ -151,6 +151,7 @@ class MenuScene: SKScene {
                 
                 self.view?.presentScene(gameScene)
             } else if settingsButton.contains(location) {
+                settingsButton.toggleTexture()
                 if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }

@@ -1,5 +1,6 @@
 import SwiftUI
 
+// TODO Reset all button
 struct AppSettingsView: View {
     
     private let defaults = UserDefaults.standard
@@ -13,17 +14,19 @@ struct AppSettingsView: View {
                 .padding(.top, 10)
                 .padding(.horizontal, 20)
             sectionToggles
-                .padding(.top, 10)
+                .padding(.top, 5)
                 .padding(.horizontal, 20)
         }
     }
     
     private var header: some View {
-        VStack(alignment: .leading) {
-            Text("App Settings")
-                .font(.largeTitle)
-                .bold()
-            Divider()
+        VStack {
+            HStack {
+                Text("App Settings")
+                    .font(.largeTitle)
+                    .bold()
+                Spacer()
+            }
         }
     }
     

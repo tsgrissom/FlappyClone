@@ -70,9 +70,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var moveAndRemoveWalls = SKAction()
     
     // Game State
-    private var gameStarted = Bool()
-    private var score       = Int()
-    private var dead        = Bool()
+    private var gameStarted       = Bool()
+    private var dead              = Bool()
+    private var score             = Int()
+    private var remainingWallHits = Int()
     
     // Sound Effects
     private var scoreSoundEffect: AVAudioPlayer?
@@ -159,6 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         dead = false
         gameStarted = false
         score = 0
+        remainingWallHits = 0
         self.removeAllChildren()
         self.removeAllActions()
         createScene()
@@ -170,6 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.contactDelegate = self
         
         loadSoundEffects()
+        remainingWallHits = defaults.integer(forKey: DefaultsKey.NumberOfWallHitsAllowed)
         
         // Static Sprites
         let background = BackgroundSprite(for: sceneSetting, frameSize: frame.size)
@@ -391,7 +394,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let shouldDieOnHitWall     = defaults.bool(forKey: DefaultsKey.DieOnHitWall)
         
         if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Wall) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Wall)) {
-            if shouldDieOnHitWall {
+            if remainingWallHits > 0 {
+                remainingWallHits -= 1
+                return
+            }
+            
+            if shouldDieOnHitWall && remainingWallHits <= 0 {
                 die(from: "Player hit Wall")
             }
             

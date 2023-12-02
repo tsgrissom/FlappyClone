@@ -4,7 +4,7 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
-    let defaults = UserDefaults.standard
+    private let defaults = UserDefaults.standard
     
     private func ensureUserDefaults() {
         // Game Difficulty
@@ -16,6 +16,9 @@ class GameViewController: UIViewController {
         }
         if defaults.object(forKey: DefaultsKey.DieOnHitWall) == nil {
             defaults.setValue(false, forKey: DefaultsKey.DieOnHitWall)
+        }
+        if defaults.object(forKey: DefaultsKey.NumberOfWallHitsAllowed) == nil {
+            defaults.setValue(0, forKey: DefaultsKey.NumberOfWallHitsAllowed)
         }
         
         // Game Data
