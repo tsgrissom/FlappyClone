@@ -3,9 +3,9 @@ import SpriteKit
 class GroundSprite: SKSpriteNode {
     
     private let setting: GameSceneSetting
-    let imageName: String
+    private let imageName: String
     
-    var isCloud: Bool {
+    public var isCloud: Bool {
         imageName.contains("Clouds")
     }
     

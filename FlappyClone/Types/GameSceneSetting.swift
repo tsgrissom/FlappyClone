@@ -1,21 +1,30 @@
 import Foundation
+import SpriteKit
 
-enum GameSceneSetting: CaseIterable {
+enum GameSceneSetting: String, CaseIterable {
+    
+    case Day    = "Day"
+    case Day2   = "Day2"
+    case Day3   = "Day3"
+    case Night  = "Night"
+    case Night2 = "Night2"
+    case Night3 = "Night3"
+    case Night4 = "Night4"
     
     public static func randomValue() -> GameSceneSetting {
         return self.allCases.randomElement() ?? .Day
     }
     
-    public static func getRandomDaytimeSceneSetting() -> GameSceneSetting {
-        GameSceneSetting.allCases
-            .filter { it in it.isLight() }
-            .randomElement() ?? .Day
-    }
-    
-    public static func getRandomNighttimeSceneSetting() -> GameSceneSetting {
+    public static func getRandomDarkScene() -> GameSceneSetting {
         GameSceneSetting.allCases
             .filter { it in it.isDark() }
             .randomElement() ?? .Night
+    }
+    
+    public static func getRandomLightScene() -> GameSceneSetting {
+        GameSceneSetting.allCases
+            .filter { it in it.isLight() }
+            .randomElement() ?? .Day
     }
     
     public static func getPreferredSceneSetting() -> GameSceneSetting {
@@ -23,21 +32,18 @@ enum GameSceneSetting: CaseIterable {
         case "Random":
             randomValue()
         case "Day":
-            getRandomDaytimeSceneSetting()
+            getRandomLightScene()
         case "Night":
-            getRandomNighttimeSceneSetting()
+            getRandomDarkScene()
         default:
             GameSceneSetting.Day
         }
     }
     
-    case Day, Day2, Day3, Night, Night2, Night3
-    
     public func isLight() -> Bool {
-        return switch (self) {
-        case .Day, .Day2, .Day3:
+        return if self.rawValue.contains("Day") {
             true
-        case .Night, .Night2, .Night3:
+        } else {
             false
         }
     }
@@ -47,20 +53,8 @@ enum GameSceneSetting: CaseIterable {
     }
     
     public func getBackgroundTextureImageName() -> String {
-        return switch (self) {
-        case .Day:
-            "BG-Day"
-        case .Day2:
-            "BG-Day2"
-        case .Day3:
-            "BG-Day3"
-        case .Night:
-            "BG-Night"
-        case .Night2:
-            "BG-Night2"
-        case .Night3:
-            "BG-Night3"
-        }
+        let value = self.rawValue
+        return "BG-\(value)"
     }
     
     public func getCloudTextureImageName() -> String {
@@ -69,8 +63,16 @@ enum GameSceneSetting: CaseIterable {
             "Clouds-Day"
         case .Night, .Night2:
             "Clouds-Night"
-        case .Night3:
+        case .Night3, .Night4:
             "Clouds-Gray"
         }
+    }
+    
+    public func getBackgroundTexture() -> SKTexture {
+        return SKTexture(imageNamed: self.getBackgroundTextureImageName())
+    }
+    
+    public func getCloudTexture() -> SKTexture {
+        return SKTexture(imageNamed: self.getCloudTextureImageName())
     }
 }

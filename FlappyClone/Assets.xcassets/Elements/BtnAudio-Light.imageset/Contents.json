@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "BtnAudio-Light.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Audio_-_Light-UPSCALED-UPSCALED.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Audio_-_Light-UPSCALED-UPSCALED 1.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

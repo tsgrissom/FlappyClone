@@ -2,7 +2,7 @@ import SpriteKit
 
 class BackgroundSprite: SKSpriteNode {
     
-    let setting: GameSceneSetting
+    private let setting: GameSceneSetting
     private var frameSize = CGSize()
     
     init(
@@ -11,7 +11,9 @@ class BackgroundSprite: SKSpriteNode {
     ) {
         self.setting   = setting
         self.frameSize = frameSize
-        let texture = SKTexture(imageNamed: setting.getBackgroundTextureImageName())
+        
+        let texture = setting.getBackgroundTexture()
+        
         super.init(texture: texture, color: .clear, size: frameSize)
         setupSprite()
     }
