@@ -3,78 +3,88 @@ import SpriteKit
 
 class PlayerSprite: SKSpriteNode {
     
+    private let defaults = UserDefaults.standard
+    
     // Actions
-    private var upTurnOnFlap       = SKAction()
-    private var upTurnOnCollide    = SKAction()
-    private var downTurnAfterFlap  = SKAction()
-    var downTurnIfNotCanceled      = SKAction()
-    var toggleRecentlyScored       = SKAction()
-    private var debounceFlap       = SKAction()
+    private var doUpTurnOnFlap           = SKAction()
+    private var doUpTurnOnCollide        = SKAction()
+    private var doDownTurnAfterFlap      = SKAction()
+    public  var doDownTurnIfNotCancelled = SKAction()
+    public  var doToggleRecentlyScored   = SKAction()
+    private var doDebounceFlap           = SKAction()
     
     // Player State
-    var downTurnCanceled = Bool()
-    var rejectFlap       = Bool()
-    var recentlyScored   = Bool()
+    public var downTurnCanceled = Bool()
+    public var rejectFlap       = Bool()
+    public var recentlyScored   = Bool()
     
     // Sound
     private var flapSoundEffect = AVAudioPlayer()
     
+    private var audioNotMuted: Bool {
+        !defaults.bool(forKey: DefaultsKey.AudioMuted)
+    }
+    
+    private var hapticsNotDisabled: Bool {
+        !defaults.bool(forKey: DefaultsKey.HapticsDisabled)
+    }
+    
     init() {
         let texture = SKTexture(imageNamed: "Birb")
-        let size = CGSize(width: 60, height: 70)
+        let size    = CGSize(width: 60, height: 70)
+        
         super.init(texture: texture, color: .clear, size: size)
         setupSprite()
+        setupActions()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupSprite()
+        setupActions()
     }
     
     // Bootstrap
     private func setupActions() {
         // SKActions
-        self.upTurnOnFlap      = SKAction.rotate(toAngle: 0, duration: 0.7)
-        self.upTurnOnCollide   = SKAction.rotate(toAngle: 0, duration: 0.15)
-        let downAngle = (-CGFloat.pi / 2) * 0.8
-        let downTurn  = SKAction.rotate(toAngle: downAngle, duration: 0.57)
-        self.downTurnIfNotCanceled = SKAction.run({
+        doUpTurnOnFlap    = SKAction.rotate(toAngle: 0, duration: 0.7)
+        doUpTurnOnCollide = SKAction.rotate(toAngle: 0, duration: 0.15)
+        
+        let downAngle  = (-CGFloat.pi / 2) * 0.8
+        let doDownTurn = SKAction.rotate(toAngle: downAngle, duration: 0.57)
+        doDownTurnIfNotCancelled = SKAction.run({
             () in
             if !self.downTurnCanceled && self.recentlyScored {
-                self.run(downTurn)
+                self.run(doDownTurn)
             } else {
                 self.downTurnCanceled = false
             }
         })
         
-        let enableDebounceFlap = SKAction.run({
-            () in
-            self.rejectFlap = true
-        })
-        let resetDebounceFlap  = SKAction.run({
-            () in
-            if self.rejectFlap {
-                self.rejectFlap = false
-            }
-        })
-        self.debounceFlap = SKAction.sequence([
-            enableDebounceFlap,
+        doDebounceFlap = SKAction.sequence([
+            SKAction.run({
+                () in
+                self.rejectFlap = true
+            }),
             SKAction.wait(forDuration: 0.25),
-            resetDebounceFlap
+            SKAction.run({
+                () in
+                if self.rejectFlap {
+                    self.rejectFlap = false
+                }
+            })
         ])
         
-        let enableRecentlyScored = SKAction.run({
-            () in
-            self.recentlyScored = true
-        })
-        let resetRecentlyScored = SKAction.run({
-            () in
-            self.recentlyScored = false
-        })
-        self.toggleRecentlyScored = SKAction.sequence([
-            enableRecentlyScored,
+        doToggleRecentlyScored = SKAction.sequence([
+            SKAction.run({
+                () in
+                self.recentlyScored = true
+            }),
             SKAction.wait(forDuration: 1.5),
-            resetRecentlyScored
+            SKAction.run({
+                () in
+                self.recentlyScored = false
+            })
         ])
     }
     
@@ -93,8 +103,6 @@ class PlayerSprite: SKSpriteNode {
         physicsBody?.restitution = 0.3
         physicsBody?.usesPreciseCollisionDetection = true
         
-        setupActions()
-        
         // Audio
         if let path = Bundle.main.path(forResource: "Flap", ofType: "mp3") {
             let url = URL(fileURLWithPath: path)
@@ -111,7 +119,7 @@ class PlayerSprite: SKSpriteNode {
     // Methods
     public func rotateToZero(collision: Bool = false) {
         self.physicsBody?.angularVelocity = 0
-        run(collision ? upTurnOnCollide : upTurnOnFlap)
+        run(collision ? doUpTurnOnCollide : doUpTurnOnFlap)
     }
     
     public func flap(deltaY: CGFloat = 70) {
@@ -120,31 +128,24 @@ class PlayerSprite: SKSpriteNode {
             return
         }
         
-//        if recentlyScored {
-//            downTurnCanceled = true
-//        }
-        // This breaks down turning
-        
         // Audiovisual + haptic feedback
         rotateToZero(collision: false)
         
-        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+        if hapticsNotDisabled {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
         
-        if !UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted) {
+        if audioNotMuted {
             flapSoundEffect.play()
         }
         
         // Flap physics
-        let vecNormalize = CGVectorMake(0, 0)
-        let vecFlap   = CGVectorMake(0, deltaY)
-        physicsBody?.velocity = vecNormalize
-        physicsBody?.applyImpulse(vecFlap)
-        run(debounceFlap)
+        physicsBody?.velocity = CGVectorMake(0, 0)
+        physicsBody?.applyImpulse(CGVectorMake(0, deltaY))
+        run(doDebounceFlap)
     }
     
     public func downTurn() {
-        run(downTurnIfNotCanceled)
+        run(doDownTurnIfNotCancelled)
     }
 }

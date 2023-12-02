@@ -234,7 +234,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let oldHighScore = defaults.integer(forKey: DefaultsKey.HighScore)
         
         setScore(to: newScore)
-        player.run(player.toggleRecentlyScored)
+        player.run(player.doToggleRecentlyScored)
         
         if newScore > oldHighScore {
             // TODO Play new high score effect
@@ -452,7 +452,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             let downTurnAfterScore = SKAction.sequence([
                 SKAction.wait(forDuration: 0.8),
-                player.downTurnIfNotCanceled
+                player.doDownTurnIfNotCancelled
             ])
             
             player.run(downTurnAfterScore)
