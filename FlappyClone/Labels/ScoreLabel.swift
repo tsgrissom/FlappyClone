@@ -31,7 +31,7 @@ class ScoreLabel: SKLabelNode {
         // Initialize label
         text = ""
         fontColor = defaultFontColor
-        fontSize = 65
+        fontSize = UIDevice.isPhone() ? 65.0 : 30.0
         fontName = "04b_19"
     }
     

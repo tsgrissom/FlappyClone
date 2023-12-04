@@ -2,6 +2,8 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 
+private let gameSceneFontSize: CGFloat = UIDevice.isPhone() ? 35.0 : 25.0
+
 // MARK: Single-Use Buttons
 private class QuitLabelAsButton: SKLabelNode {
     
@@ -24,7 +26,7 @@ private class QuitLabelAsButton: SKLabelNode {
     private func setupLabel() {
         fontColor = sceneSetting.isDark() ? UIColor.white : UIColor(named: "DarkColor")
         fontName  = "04b_19"
-        fontSize  = 35.0
+        fontSize  = gameSceneFontSize
         text      = "Quit"
     }
 }
@@ -50,7 +52,7 @@ private class RestartLabelAsButton: SKLabelNode {
     private func setupLabel() {
         fontColor = sceneSetting.isDark() ? UIColor.white : UIColor(named: "DarkColor")
         fontName  = "04b_19"
-        fontSize  = 35.0
+        fontSize  = gameSceneFontSize
         text      = "Restart"
     }
 }

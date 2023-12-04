@@ -24,7 +24,7 @@ class GameStartLabel: SKLabelNode {
     private func setupLabel() {
         text = "Tap to start"
         fontColor = sceneSetting.isDark() ? .white : UIColor(named: "DarkColor")
-        fontSize = 45
+        fontSize = UIDevice.isPhone() ? 45.0 : 35.0
         fontName = "04b_19"
     }
 }
