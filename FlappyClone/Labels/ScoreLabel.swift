@@ -28,11 +28,10 @@ class ScoreLabel: SKLabelNode {
     
     // MARK: Setup Functions
     private func setupLabel() {
-        // Initialize label
-        text = ""
         fontColor = defaultFontColor
-        fontSize = UIDevice.isPhone() ? 65.0 : 30.0
-        fontName = "04b_19"
+        fontName  = "04b_19"
+        fontSize  = UIDevice.isPhone() ? 65.0 : 30.0
+        text      = ""
     }
     
     // MARK: Methods

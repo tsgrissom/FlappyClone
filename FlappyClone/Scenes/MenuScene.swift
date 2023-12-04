@@ -8,6 +8,7 @@ class MenuScene: SKScene {
     
     // MARK: Variables
     private let defaults = UserDefaults.standard
+    private let sceneSetting = GameSceneSetting.randomValue()
     
     private var playButton        = PlayButton()
     private var settingsButton    = SettingsButton()
@@ -21,8 +22,13 @@ class MenuScene: SKScene {
     
     private func calculatePlayButtonPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.25 : 0.15
+        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+            UIDevice.isPhone() ? 0.25 : 0.15
+        } else {
+            0.15
+        }
         let yPos = frame.midY + (frameHeightHalved * yMultiplier)
+        
         return horizontallyCenteredPoint(y: yPos)
     }
     
@@ -40,7 +46,11 @@ class MenuScene: SKScene {
         let frameWidthHalved  = frame.size.width  / 2
         let frameHeightHalved = frame.size.height / 2
         let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
-        let yMultiplier = UIDevice.isPhone() ? 0.15 : 0.05
+        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+            UIDevice.isPhone() ? 0.15 : 0.05
+        } else {
+            0.12
+        }
         
         return CGPoint(
             x: frame.midX + (frameWidthHalved  * xMultiplier),
@@ -52,7 +62,12 @@ class MenuScene: SKScene {
         let frameWidthHalved  = frame.size.width  / 2
         let frameHeightHalved = frame.size.height / 2
         let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
-        let yMultiplier = UIDevice.isPhone() ? 0.15 : 0.05
+    
+        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+            UIDevice.isPhone() ? 0.15 : 0.05
+        } else {
+            0.12
+        }
         
         return CGPoint(
             x: frame.midX - (frameWidthHalved  * xMultiplier),
@@ -90,29 +105,28 @@ class MenuScene: SKScene {
     
     // MARK: Scene Control Functions
     private func createScene() {
-        let randomSetting = GameSceneSetting.randomValue()
-        let background = BackgroundSprite(for: randomSetting, frameSize: frame.size)
+        let background = BackgroundSprite(for: sceneSetting, frameSize: frame.size)
         
         playButton = PlayButton(
-            for: randomSetting,
+            for: sceneSetting,
             scaleSize: UIDevice.isPhone() ? 2.0 : 1.0
         )
         playButton.position = calculatePlayButtonPosition()
         playButton.zPosition = 2
         
-        let highScoreLabel = HighScoreLabel(for: randomSetting)
+        let highScoreLabel = HighScoreLabel(for: sceneSetting)
         highScoreLabel.position = calculateHighScoreLabelPosition()
         highScoreLabel.zPosition = 2
         
         audioToggleButton = AudioMuteToggleButton(
-            for: randomSetting,
+            for: sceneSetting,
             scaleSize: UIDevice.isPhone() ? 1.0 : 0.5
         )
         audioToggleButton.position = calculateAudioToggleButtonPosition()
         audioToggleButton.zPosition = 2
         
         settingsButton = SettingsButton(
-            for: randomSetting,
+            for: sceneSetting,
             scaleSize: UIDevice.isPhone() ? 0.5 : 0.25
         )
         settingsButton.position = calculateSettingsButtonPosition()
@@ -145,6 +159,32 @@ class MenuScene: SKScene {
     override func didMove(to view: SKView) {
         createScene()
         setupNextScene()
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func deviceDidRotate() {
+        if UIDevice.current.orientation.isFlat && (!UIDevice.current.orientation.isPortrait || !UIDevice.current.orientation.isLandscape) {
+            return
+        }
+        
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        let isPortrait  = UIDevice.current.orientation.isPortrait
+        
+        let btnPlayScaledLength = if isPortrait {
+            UIDevice.isPhone() ? 200 : 100
+        } else {
+            100
+        }
+        
+        playButton.scale(to: CGSize(width: btnPlayScaledLength, height: btnPlayScaledLength))
+        playButton.position = calculatePlayButtonPosition()
+        
+        audioToggleButton.position = calculateAudioToggleButtonPosition()
+        settingsButton.position = calculateSettingsButtonPosition()
     }
     
     override func update(_ currentTime: TimeInterval) {}

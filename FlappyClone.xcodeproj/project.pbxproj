@@ -187,9 +187,9 @@
 		2FB05F832B1523E100C410C3 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				2F91E61C2B17C143004C4A17 /* AudioMuteToggleButton.swift */,
 				2FB05F842B15242300C410C3 /* PlayButton.swift */,
 				2FB05F862B15251000C410C3 /* SettingsButton.swift */,
-				2F91E61C2B17C143004C4A17 /* AudioMuteToggleButton.swift */,
 				2FB37C932B1E458200BE426E /* QuitLabelAsButton.swift */,
 				2FB37C952B1E45A900BE426E /* RestartLabelAsButton.swift */,
 			);

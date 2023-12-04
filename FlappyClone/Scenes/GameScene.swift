@@ -1,6 +1,7 @@
-import SpriteKit
-import GameplayKit
 import AVFoundation
+import CoreMotion
+import GameplayKit
+import SpriteKit
 
 // MARK: Single-Use Buttons
 
@@ -228,7 +229,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateGameStartLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.3 : 0.15
+        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+            UIDevice.isPhone() ? 0.30 : 0.15
+        } else {
+            0.15
+        }
         
         return CGPoint(
             x: frame.midX,
@@ -238,7 +243,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateScoreLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.20 // TODO iPad positioning
+        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+            UIDevice.isPhone() ? 0.75 : 0.20
+        } else {
+            0.20
+        }
         
         return CGPoint(
             x: frame.midX,
@@ -248,7 +257,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateRemainingHitsLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.65 : 0.15
+        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+            UIDevice.isPhone() ? 0.65 : 0.15
+        } else {
+            0.15
+        }
         
         return CGPoint(
             x: frame.midX,
@@ -259,7 +272,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func calculateQuitButtonPosition() -> CGPoint {
         let frameWidthHalved  = frame.width  / 2
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.20
+        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+            UIDevice.isPhone() ? 0.75 : 0.20
+        } else {
+            0.20
+        }
         
         return CGPoint(
             x: frame.midX - (frameWidthHalved  * 0.52),
@@ -270,7 +287,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func calculateRestartButtonPosition() -> CGPoint {
         let frameWidthHalved  = frame.width  / 2
         let frameHeightHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.75 : 0.20
+        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+            UIDevice.isPhone() ? 0.75 : 0.20
+        } else {
+            0.20
+        }
         
         return CGPoint(
             x: frame.midX + (frameWidthHalved  * 0.52),
@@ -309,6 +330,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // On first render of GameScene
     override func didMove(to view: SKView) {
         createScene()
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func deviceDidRotate() {
+        if UIDevice.current.orientation.isFlat && (!UIDevice.current.orientation.isPortrait || !UIDevice.current.orientation.isLandscape) {
+            return
+        }
+        
+        if UIDevice.current.orientation.isPortrait {
+            scoreLabel.fontSize = 65.0
+            livesLabel.fontSize = 35.0
+        } else if (UIDevice.current.orientation.isLandscape) {
+            scoreLabel.fontSize = 35.0
+            livesLabel.fontSize = 30.0
+        }
+        
+        quitButton.position    = calculateQuitButtonPosition()
+        restartButton.position = calculateRestartButtonPosition()
+        scoreLabel.position    = calculateScoreLabelPosition()
+        livesLabel.position    = calculateRemainingHitsLabelPosition()
+        gameStartLabel.position = calculateGameStartLabelPosition()
     }
     
     // Handles each screen touch
