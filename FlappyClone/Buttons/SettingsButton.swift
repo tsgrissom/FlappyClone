@@ -13,15 +13,13 @@ class SettingsButton: SKSpriteNode {
     
     // MARK: Initializers
     init(
-        for sceneSetting: GameSceneSetting = .Day,
-        scaleSize: CGFloat = 1.0
+        for sceneSetting: GameSceneSetting = .Day
     ) {
         self.sceneSetting = sceneSetting
         
         let imageName  = sceneSetting.isDark() ? imageNameSettingsLight : imageNameSettingsDark
         let texture    = SKTexture(imageNamed: imageName)
-        let sideLength = 200 * scaleSize
-        let size       = CGSize(width: sideLength, height: sideLength)
+        let size       = CGSize(width: 100, height: 100)
         
         super.init(texture: texture, color: .clear, size: size)
         setupSprite()

@@ -7,7 +7,6 @@ class PlayButton: SKSpriteNode {
     private let textureNameBtnPlayLight = "BtnPlay-Light"
     
     private let sceneSetting: GameSceneSetting
-    private let scaleSize: Double
     
     public var onPress = SKAction()
     
@@ -22,16 +21,13 @@ class PlayButton: SKSpriteNode {
     
     // MARK: Initializers
     init(
-        for sceneSetting: GameSceneSetting = .Day,
-        scaleSize: Double = 1.0
+        for sceneSetting: GameSceneSetting = .Day
     ) {
         self.sceneSetting = sceneSetting
-        self.scaleSize = scaleSize
         
         let imageName  = sceneSetting.isDark() ? textureNameBtnPlayLight : textureNameBtnPlayDark
         let texture    = SKTexture(imageNamed: imageName)
-        let sideLength = 100 * scaleSize
-        let size       = CGSize(width: sideLength, height: sideLength)
+        let size       = CGSize(width: 100, height: 100)
         
         super.init(texture: texture, color: .clear, size: size)
         setupSprite()
@@ -39,8 +35,6 @@ class PlayButton: SKSpriteNode {
     
     required init?(coder aDecoder: NSCoder) {
         self.sceneSetting = .Day
-        self.scaleSize = 1.0
-        
         super.init(coder: aDecoder)
         setupSprite()
     }

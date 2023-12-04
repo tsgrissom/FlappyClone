@@ -32,6 +32,11 @@ class MenuScene: SKScene {
         return horizontallyCenteredPoint(y: yPos)
     }
     
+    private func calculatePlayButtonScale() -> CGSize {
+        let scaledLength = UIDevice.current.orientation.isPortrait && UIDevice.isPhone() ? 200 : 100
+        return CGSize(width: scaledLength, height: scaledLength)
+    }
+    
     private func calculateHighScoreLabelPosition() -> CGPoint {
         let frameHeightHalved = frame.size.height / 2
         let yPos = if UIDevice.isPhone() {
@@ -107,28 +112,20 @@ class MenuScene: SKScene {
     private func createScene() {
         let background = BackgroundSprite(for: sceneSetting, frameSize: frame.size)
         
-        playButton = PlayButton(
-            for: sceneSetting,
-            scaleSize: UIDevice.isPhone() ? 2.0 : 1.0
-        )
+        playButton = PlayButton(for: sceneSetting)
         playButton.position = calculatePlayButtonPosition()
         playButton.zPosition = 2
+        playButton.scale(to: calculatePlayButtonScale())
         
         let highScoreLabel = HighScoreLabel(for: sceneSetting)
         highScoreLabel.position = calculateHighScoreLabelPosition()
         highScoreLabel.zPosition = 2
         
-        audioToggleButton = AudioMuteToggleButton(
-            for: sceneSetting,
-            scaleSize: UIDevice.isPhone() ? 1.0 : 0.5
-        )
+        audioToggleButton = AudioMuteToggleButton(for: sceneSetting)
         audioToggleButton.position = calculateAudioToggleButtonPosition()
         audioToggleButton.zPosition = 2
         
-        settingsButton = SettingsButton(
-            for: sceneSetting,
-            scaleSize: UIDevice.isPhone() ? 0.5 : 0.25
-        )
+        settingsButton = SettingsButton(for: sceneSetting)
         settingsButton.position = calculateSettingsButtonPosition()
         settingsButton.zPosition = 2
         
@@ -174,13 +171,7 @@ class MenuScene: SKScene {
         let isLandscape = UIDevice.current.orientation.isLandscape
         let isPortrait  = UIDevice.current.orientation.isPortrait
         
-        let btnPlayScaledLength = if isPortrait {
-            UIDevice.isPhone() ? 200 : 100
-        } else {
-            100
-        }
-        
-        playButton.scale(to: CGSize(width: btnPlayScaledLength, height: btnPlayScaledLength))
+        playButton.scale(to: calculatePlayButtonScale())
         playButton.position = calculatePlayButtonPosition()
         
         audioToggleButton.position = calculateAudioToggleButtonPosition()

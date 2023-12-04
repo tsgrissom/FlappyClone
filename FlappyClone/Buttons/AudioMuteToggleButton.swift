@@ -24,8 +24,7 @@ class AudioMuteToggleButton: SKSpriteNode {
     
     // MARK: Initialization
     init(
-        for sceneSetting: GameSceneSetting = .Day,
-        scaleSize: CGFloat = 1.0
+        for sceneSetting: GameSceneSetting = .Day
     ) {
         self.sceneSetting = sceneSetting
         
@@ -34,13 +33,9 @@ class AudioMuteToggleButton: SKSpriteNode {
         } else { // light setting
             isMuted ? textureImageNameDarkMuted : textureImageNameDark
         }
-        
         let texture      = SKTexture(imageNamed: imageName)
-        let scaledWidth  = 100 * scaleSize
-        let scaledHeight = 100 * scaleSize
-        let size         = CGSize(width: scaledWidth, height: scaledHeight)
         
-        super.init(texture: texture, color: .clear, size: size)
+        super.init(texture: texture, color: .clear, size: CGSize(width: 100, height: 100))
         setupActions()
         setupButton()
     }
