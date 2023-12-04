@@ -15,6 +15,11 @@ struct SettingsView: View {
                     Image(systemName: "gamecontroller.fill")
                     Text("Game")
                 }
+            VisualSettingsView()
+                .tabItem {
+                    Image(systemName: "photo.fill")
+                    Text("Visual")
+                }
         }
         .tint(.purple)
     }

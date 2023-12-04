@@ -12,7 +12,6 @@ struct GameSettingsView: View {
     @State private var isConfirmResetAllOptionsPresented = false
     
     // MARK: Stateful Variables
-    @State private var preferredSceneSetting: String = UserDefaults.standard.string(forKey: DefaultsKey.PreferredSceneSetting) ?? "Random"
     @State private var dieOnOutOfBounds: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnOutOfBounds)
     @State private var dieOnHitBoundary: Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitBoundary)
     @State private var dieOnHitWall:     Bool = UserDefaults.standard.bool(forKey: DefaultsKey.DieOnHitWall)
@@ -25,13 +24,11 @@ struct GameSettingsView: View {
     
     // MARK: Helper Functions
     private func resetAll() {
-        defaults.setValue("Random", forKey: DefaultsKey.PreferredSceneSetting)
         defaults.setValue(true, forKey: DefaultsKey.DieOnOutOfBounds)
         defaults.setValue(false, forKey: DefaultsKey.DieOnHitBoundary)
         defaults.setValue(false, forKey: DefaultsKey.DieOnHitWall)
         defaults.setValue(0, forKey: DefaultsKey.NumberOfWallHitsAllowed)
         
-        preferredSceneSetting = "Random"
         dieOnOutOfBounds = true
         dieOnHitBoundary = false
         dieOnHitWall = false
@@ -49,7 +46,7 @@ struct GameSettingsView: View {
     
     public var body: some View {
         ScrollView {
-            header
+            sectionHeader
                 .padding(.top, 10)
                 .padding(.horizontal, 20)
             sectionBase
@@ -61,7 +58,7 @@ struct GameSettingsView: View {
     }
     
     // MARK: Sections
-    private var header: some View {
+    private var sectionHeader: some View {
         VStack {
             HStack {
                 Text("Game Settings")
@@ -79,8 +76,6 @@ struct GameSettingsView: View {
     
     private var sectionBase: some View {
         VStack(alignment: .leading, spacing: 0) {
-            pickerPreferredScene
-            
             HStack {
                 Text("High score: \(highestScore)")
                 Spacer()
@@ -184,23 +179,6 @@ struct GameSettingsView: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("All game settings will be restored to their default values.")
-        }
-    }
-    
-    private var pickerPreferredScene: some View {
-        HStack {
-            Text("Preferred scene")
-            Spacer()
-            Picker(selection: $preferredSceneSetting, content: {
-                Text("Random").tag("Random")
-                Text("Day").tag("Day")
-                Text("Night").tag("Night")
-            }, label: {})
-            .onChange(of: preferredSceneSetting, initial: false) { oldValue, newValue in
-                print("Altered setting PreferredSceneSetting (\"\(oldValue)\"->\"\(newValue)\")")
-                defaults.setValue(newValue, forKey: DefaultsKey.PreferredSceneSetting)
-            }
-            
         }
     }
 }

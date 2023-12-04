@@ -32,6 +32,7 @@
 		2FB05F852B15242300C410C3 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F842B15242300C410C3 /* PlayButton.swift */; };
 		2FB05F872B15251000C410C3 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F862B15251000C410C3 /* SettingsButton.swift */; };
 		2FB05F892B1528BC00C410C3 /* BackgroundSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F882B1528BC00C410C3 /* BackgroundSprite.swift */; };
+		2FB37C922B1CF5C300BE426E /* VisualSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB37C912B1CF5C300BE426E /* VisualSettingsView.swift */; };
 		2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */; };
 		2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE132B117D5900405095 /* PhysicsCategory.swift */; };
 		2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE152B117E5300405095 /* PlayerSprite.swift */; };
@@ -67,6 +68,7 @@
 		2FB05F842B15242300C410C3 /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		2FB05F862B15251000C410C3 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		2FB05F882B1528BC00C410C3 /* BackgroundSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSprite.swift; sourceTree = "<group>"; };
+		2FB37C912B1CF5C300BE426E /* VisualSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualSettingsView.swift; sourceTree = "<group>"; };
 		2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		2FD0EE132B117D5900405095 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
 		2FD0EE152B117E5300405095 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
@@ -129,9 +131,10 @@
 		2F1FD9022B196D7500926D99 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2F1FD9032B196D9B00926D99 /* SettingsView.swift */,
-				2F1FD9052B196DD700926D99 /* GameSettingsView.swift */,
 				2F1FD9072B19716E00926D99 /* AppSettingsView.swift */,
+				2F1FD9052B196DD700926D99 /* GameSettingsView.swift */,
+				2F1FD9032B196D9B00926D99 /* SettingsView.swift */,
+				2FB37C912B1CF5C300BE426E /* VisualSettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */,
 				2F1FD9062B196DD700926D99 /* GameSettingsView.swift in Sources */,
 				2FB05F7E2B14F4FA00C410C3 /* ScoreLabel.swift in Sources */,
+				2FB37C922B1CF5C300BE426E /* VisualSettingsView.swift in Sources */,
 				2F6E72402B1AC334001A1313 /* RemainingHitsLabel.swift in Sources */,
 				2F91E61D2B17C143004C4A17 /* AudioMuteToggleButton.swift in Sources */,
 				2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */,
