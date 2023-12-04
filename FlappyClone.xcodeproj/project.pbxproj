@@ -33,6 +33,8 @@
 		2FB05F872B15251000C410C3 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F862B15251000C410C3 /* SettingsButton.swift */; };
 		2FB05F892B1528BC00C410C3 /* BackgroundSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F882B1528BC00C410C3 /* BackgroundSprite.swift */; };
 		2FB37C922B1CF5C300BE426E /* VisualSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB37C912B1CF5C300BE426E /* VisualSettingsView.swift */; };
+		2FB37C942B1E458200BE426E /* QuitLabelAsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB37C932B1E458200BE426E /* QuitLabelAsButton.swift */; };
+		2FB37C962B1E45A900BE426E /* RestartLabelAsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB37C952B1E45A900BE426E /* RestartLabelAsButton.swift */; };
 		2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */; };
 		2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE132B117D5900405095 /* PhysicsCategory.swift */; };
 		2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE152B117E5300405095 /* PlayerSprite.swift */; };
@@ -69,6 +71,8 @@
 		2FB05F862B15251000C410C3 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		2FB05F882B1528BC00C410C3 /* BackgroundSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSprite.swift; sourceTree = "<group>"; };
 		2FB37C912B1CF5C300BE426E /* VisualSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualSettingsView.swift; sourceTree = "<group>"; };
+		2FB37C932B1E458200BE426E /* QuitLabelAsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitLabelAsButton.swift; sourceTree = "<group>"; };
+		2FB37C952B1E45A900BE426E /* RestartLabelAsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestartLabelAsButton.swift; sourceTree = "<group>"; };
 		2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		2FD0EE132B117D5900405095 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
 		2FD0EE152B117E5300405095 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
@@ -186,6 +190,8 @@
 				2FB05F842B15242300C410C3 /* PlayButton.swift */,
 				2FB05F862B15251000C410C3 /* SettingsButton.swift */,
 				2F91E61C2B17C143004C4A17 /* AudioMuteToggleButton.swift */,
+				2FB37C932B1E458200BE426E /* QuitLabelAsButton.swift */,
+				2FB37C952B1E45A900BE426E /* RestartLabelAsButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -288,6 +294,7 @@
 			files = (
 				2F29634F2B14316C006C5AAA /* MenuScene.swift in Sources */,
 				2F14039F2B0E91A6009D12C9 /* GameScene.swift in Sources */,
+				2FB37C962B1E45A900BE426E /* RestartLabelAsButton.swift in Sources */,
 				2FD0EE112B117D3100405095 /* UIDeviceExtension.swift in Sources */,
 				2F1FD9062B196DD700926D99 /* GameSettingsView.swift in Sources */,
 				2FB05F7E2B14F4FA00C410C3 /* ScoreLabel.swift in Sources */,
@@ -307,6 +314,7 @@
 				2F1FD9082B19716E00926D99 /* AppSettingsView.swift in Sources */,
 				2FD0EE182B11832000405095 /* GroundSprite.swift in Sources */,
 				2FB05F892B1528BC00C410C3 /* BackgroundSprite.swift in Sources */,
+				2FB37C942B1E458200BE426E /* QuitLabelAsButton.swift in Sources */,
 				2FD0EE1E2B1239E500405095 /* WallSprite.swift in Sources */,
 				2F1FD9042B196D9B00926D99 /* SettingsView.swift in Sources */,
 			);

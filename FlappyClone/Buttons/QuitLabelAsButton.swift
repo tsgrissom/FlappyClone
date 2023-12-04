@@ -1,11 +1,9 @@
 import SpriteKit
 
-class GameStartLabel: SKLabelNode {
+class QuitLabelAsButton: SKLabelNode {
     
-    // MARK: Variables
-    let sceneSetting: GameSceneSetting
+    private let sceneSetting: GameSceneSetting
     
-    // MARK: Initializers
     init(
         for sceneSetting: GameSceneSetting = .Day
     ) {
@@ -20,11 +18,10 @@ class GameStartLabel: SKLabelNode {
         setupLabel()
     }
     
-    // MARK: Setup Functions
     private func setupLabel() {
         fontColor = sceneSetting.getFontColor()
         fontName  = "04b_19"
-        fontSize  = UIDevice.isPhone() ? 45.0 : 35.0
-        text      = "Tap to start"
+        fontSize  = UIDevice.isPhone() ? 35.0 : 25.0
+        text      = "Quit"
     }
 }

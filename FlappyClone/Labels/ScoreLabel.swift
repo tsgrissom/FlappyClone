@@ -67,7 +67,7 @@ class ScoreLabel: SKLabelNode {
         let makeLabelHighScore = SKAction.run({
             () in
             self.isFlashingHighScore = true
-            self.fontColor = self.sceneSetting.isDark() ? .white : UIColor(named: "DarkColor")
+            self.fontColor = self.sceneSetting.getFontColor()
             self.fontSize = 45
             self.text = "High: \(highScore)"
         })

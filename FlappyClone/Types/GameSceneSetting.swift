@@ -77,4 +77,9 @@ enum GameSceneSetting: String, CaseIterable {
     public func getCloudTexture() -> SKTexture {
         SKTexture(imageNamed: self.getCloudTextureImageName())
     }
+    
+    public func getFontColor() -> UIColor {
+        let lightFontColor: UIColor = UIColor(named: "DarkColor") ?? UIColor.black
+        return self.isDark() ? UIColor.white : lightFontColor
+    }
 }

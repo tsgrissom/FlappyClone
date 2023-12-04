@@ -23,9 +23,9 @@ class HighScoreLabel: SKLabelNode {
     // MARK: Setup Functions
     private func setupLabel() {
         let score = UserDefaults.standard.integer(forKey: DefaultsKey.HighScore)
-        text = "High Streak: \(score)"
-        fontColor = sceneSetting.isDark() ? .white : UIColor(named: "DarkColor")
+        fontColor = sceneSetting.getFontColor()
         fontName = "04b_19"
         fontSize = UIDevice.isPhone() ? 35.0 : 25.0
+        text = "High Streak: \(score)"
     }
 }

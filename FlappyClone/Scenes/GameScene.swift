@@ -2,60 +2,8 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 
-private let gameSceneFontSize: CGFloat = UIDevice.isPhone() ? 35.0 : 25.0
-
 // MARK: Single-Use Buttons
-private class QuitLabelAsButton: SKLabelNode {
-    
-    let sceneSetting: GameSceneSetting
-    
-    init(
-        for sceneSetting: GameSceneSetting = .Day
-    ) {
-        self.sceneSetting = sceneSetting
-        super.init()
-        setupLabel()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        self.sceneSetting = .Day
-        super.init(coder: aDecoder)
-        setupLabel()
-    }
-    
-    private func setupLabel() {
-        fontColor = sceneSetting.isDark() ? UIColor.white : UIColor(named: "DarkColor")
-        fontName  = "04b_19"
-        fontSize  = gameSceneFontSize
-        text      = "Quit"
-    }
-}
 
-private class RestartLabelAsButton: SKLabelNode {
-    
-    let sceneSetting: GameSceneSetting
-    
-    init(
-        for sceneSetting: GameSceneSetting = .Day
-    ) {
-        self.sceneSetting = sceneSetting
-        super.init()
-        setupLabel()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        self.sceneSetting = .Day
-        super.init(coder: aDecoder)
-        setupLabel()
-    }
-    
-    private func setupLabel() {
-        fontColor = sceneSetting.isDark() ? UIColor.white : UIColor(named: "DarkColor")
-        fontName  = "04b_19"
-        fontSize  = gameSceneFontSize
-        text      = "Restart"
-    }
-}
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
@@ -84,7 +32,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var scoreSoundEffect: AVAudioPlayer?
     private var splatSoundEffect: AVAudioPlayer?
     
-    // MARK: Setup Functions
     private func loadSoundEffects() {
         if let path = Bundle.main.path(forResource: "Score", ofType: "mp3") {
             let url = URL(fileURLWithPath: path)
@@ -107,6 +54,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else {
             print("\"Score.mp3\" not found in bundle")
         }
+    }
+    
+    // MARK: Computed Variables
+    private var audioNotMuted: Bool {
+        !UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted)
     }
     
     // MARK: Game State Functions
@@ -141,7 +93,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         livesLabel.fontSize = 38
         player.removeFromParent()
         
-        if !defaults.bool(forKey: DefaultsKey.AudioMuted) {
+        if audioNotMuted {
             splatSoundEffect?.play()
         }
     }
@@ -157,9 +109,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.updateTextForScore(0)
         gameStartLabel.run(SKAction.hide())
         
+        let shouldHaveLivesLabel = remainingWallHits > 0 && defaults.bool(forKey: DefaultsKey.DieOnHitWall)
+        
         addChild(restartButton)
         addChild(quitButton)
-        if remainingWallHits > 0 && defaults.bool(forKey: DefaultsKey.DieOnHitWall) {
+        if shouldHaveLivesLabel {
             addChild(livesLabel)
         }
         
