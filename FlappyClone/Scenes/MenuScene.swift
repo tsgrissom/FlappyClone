@@ -1,4 +1,5 @@
 import SpriteKit
+import GameController
 import GameplayKit
 import SwiftUI
 
@@ -157,6 +158,8 @@ class MenuScene: SKScene {
         createScene()
         setupNextScene()
         NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidConnect), name: .GCControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidDisconnect), name: .GCControllerDidDisconnect, object: nil)
     }
     
     deinit {
@@ -164,12 +167,13 @@ class MenuScene: SKScene {
     }
     
     @objc func deviceDidRotate() {
-        if UIDevice.current.orientation.isFlat && (!UIDevice.current.orientation.isPortrait || !UIDevice.current.orientation.isLandscape) {
-            return
-        }
-        
         let isLandscape = UIDevice.current.orientation.isLandscape
         let isPortrait  = UIDevice.current.orientation.isPortrait
+        
+        // Prevent rescale+reposition when device is laid flat without primary orientation change
+        if UIDevice.current.orientation.isFlat && (!isLandscape || !isPortrait) {
+            return
+        }
         
         playButton.scale(to: calculatePlayButtonScale())
         playButton.position = calculatePlayButtonPosition()
@@ -178,7 +182,31 @@ class MenuScene: SKScene {
         settingsButton.position = calculateSettingsButtonPosition()
     }
     
-    override func update(_ currentTime: TimeInterval) {}
+    @objc func controllerDidConnect(notification: Notification) {
+        if let controller = notification.object as? GCController {
+            print("Controller connected: \(controller.vendorName ?? "Unknown controller")")
+        }
+    }
+    
+    @objc func controllerDidDisconnect(notification: Notification) {
+        if let controller = notification.object as? GCController {
+            print("Controller disconnected: \(controller.vendorName ?? "Unknown controller")")
+        }
+    }
+    
+    private func handleButtonPress(for button: GCControllerButtonInput) {
+        if button.isPressed {
+            onPressPlayButton()
+        }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if let gameController = GCController.controllers().first {
+            gameController.extendedGamepad?.buttonA.valueChangedHandler = { button, value, pressed in
+                self.handleButtonPress(for: button)
+            }
+        }
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {

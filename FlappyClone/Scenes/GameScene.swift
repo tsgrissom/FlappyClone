@@ -1,5 +1,6 @@
 import AVFoundation
 import CoreMotion
+import GameController
 import GameplayKit
 import SpriteKit
 
@@ -350,11 +351,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             livesLabel.fontSize = 30.0
         }
         
-        quitButton.position    = calculateQuitButtonPosition()
-        restartButton.position = calculateRestartButtonPosition()
-        scoreLabel.position    = calculateScoreLabelPosition()
-        livesLabel.position    = calculateRemainingHitsLabelPosition()
+        quitButton.position     = calculateQuitButtonPosition()
+        restartButton.position  = calculateRestartButtonPosition()
+        scoreLabel.position     = calculateScoreLabelPosition()
+        livesLabel.position     = calculateRemainingHitsLabelPosition()
         gameStartLabel.position = calculateGameStartLabelPosition()
+    }
+    
+    @objc func simulateTap() {
+        let tapLocation = CGPoint(x: frame.midX, y: frame.midY)
+        let touch = UITouch()
+        let tapEvent = UIEvent()
+        touchesBegan([touch], with: tapEvent)
     }
     
     // Handles each screen touch
@@ -390,9 +398,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
+        if !dead {
+            if let controller = GCController.controllers().first {
+                controller.extendedGamepad?.buttonX.valueChangedHandler = { button, value, pressed in
+                    if pressed {
+                        self.quitGame()
+                    }
+                }
+                controller.extendedGamepad?.buttonA.valueChangedHandler = { button, value, pressed in
+                    if pressed {
+                        self.simulateTap()
+                    }
+                }
+                controller.extendedGamepad?.buttonB.valueChangedHandler = { button, value, pressed in
+                    if pressed {
+                        self.restartScene()
+                    }
+                }
+            }
+        }
+        
         if dead || !gameStarted {
             return
         }
+        
+        
         
         let px = player.position.x
         let py = player.position.y
