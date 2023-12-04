@@ -3,7 +3,7 @@ import SpriteKit
 class GameStartLabel: SKLabelNode {
     
     // MARK: Variables
-    let sceneSetting: GameSceneSetting
+    private let sceneSetting: GameSceneSetting
     
     // MARK: Initializers
     init(

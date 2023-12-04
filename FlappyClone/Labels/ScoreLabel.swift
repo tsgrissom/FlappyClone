@@ -36,7 +36,7 @@ class ScoreLabel: SKLabelNode {
     }
     
     // MARK: Methods
-    func flashDanger(waitDuration: Double = 1.0) {
+    public func flashDanger(waitDuration: Double = 1.0) {
         if isFlashingHighScore {
             return
         }
@@ -59,7 +59,7 @@ class ScoreLabel: SKLabelNode {
         self.run(action)
     }
     
-    func flashHighScore(
+    public func flashHighScore(
         score: Int,
         waitDuration: Double = 2.5
     ) {
@@ -88,7 +88,7 @@ class ScoreLabel: SKLabelNode {
         self.run(action)
     }
     
-    func updateTextForScore(
+    public func updateTextForScore(
         _ new: Int
     ) {
         if isFlashingHighScore {
@@ -98,7 +98,7 @@ class ScoreLabel: SKLabelNode {
         text = "\(new)x"
     }
     
-    func resetText() {
+    public func resetText() {
         text = ""
     }
 }
