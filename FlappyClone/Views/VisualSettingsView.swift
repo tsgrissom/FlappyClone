@@ -2,17 +2,23 @@ import SwiftUI
 
 struct VisualSettingsView: View {
     
+    
+    // MARK: Variables
     private let defaults = UserDefaults.standard
     
     @State private var isConfirmResetAllOptionsPresented = false
     
+    @State private var gamepadHintDisplayMode: String = UserDefaults.standard.string(forKey: DefaultsKey.GamepadDisplayMode) ?? "Dynamic"
+    @State private var preferredGamepad: String = UserDefaults.standard.string(forKey: DefaultsKey.PreferredGamepad) ?? "Dynamic"
     @State private var preferredSceneSetting: String = UserDefaults.standard.string(forKey: DefaultsKey.PreferredSceneSetting) ?? "Random"
     
+    // MARK: Helper Functions
     private func resetAll() {
         defaults.setValue("Random", forKey: DefaultsKey.PreferredSceneSetting)
         preferredSceneSetting = "Random"
     }
     
+    // MARK: View Body
     public var body: some View {
         ScrollView {
             sectionHeader
@@ -21,9 +27,13 @@ struct VisualSettingsView: View {
             sectionBase
                 .padding(.top, 10)
                 .padding(.horizontal, 20)
+            sectionGamepad
+                .padding(.top, 10)
+                .padding(.horizontal, 20)
         }
     }
     
+    // MARK: Section Views
     private var sectionHeader: some View {
         VStack {
             HStack {
@@ -40,12 +50,26 @@ struct VisualSettingsView: View {
         }
     }
     
+    private var sectionGamepad: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text("Gamepad")
+                    .font(.title2)
+                    .bold()
+                Spacer()
+            }
+            pickerGamepadPromptDisplayMode
+            pickerPreferredGamepad
+        }
+    }
+    
     private var sectionBase: some View {
         VStack(alignment: .leading, spacing: 0) {
             pickerPreferredScene
         }
     }
     
+    // MARK: Subviews
     private var buttonReset: some View {
         Button(action: {
             self.isConfirmResetAllOptionsPresented = true
@@ -59,6 +83,38 @@ struct VisualSettingsView: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("All visual settings will be restored to their default values.")
+        }
+    }
+    
+    private var pickerGamepadPromptDisplayMode: some View {
+        HStack {
+            Text("Display prompts")
+            Spacer()
+            Picker(selection: $gamepadHintDisplayMode, content: {
+                Text("Dynamic").tag("Dynamic")
+                Text("Always").tag("Always")
+                Text("Never").tag("Never")
+            }, label: {})
+            .onChange(of: preferredGamepad, initial: false) { oldValue, newValue in
+                print("Altered setting GamepadDisplayMode (\"\(oldValue)\"->\"\(newValue)\")")
+                defaults.setValue(newValue, forKey: DefaultsKey.GamepadDisplayMode)
+            }
+        }
+    }
+    
+    private var pickerPreferredGamepad: some View {
+        HStack {
+            Text("Preferred gamepad")
+            Spacer()
+            Picker(selection: $preferredGamepad, content: {
+                Text("Dynamic").tag("Dynamic")
+                Text("Sony").tag("Sony")
+                Text("Xbox").tag("Standard")
+            }, label: {})
+            .onChange(of: preferredGamepad, initial: false) { oldValue, newValue in
+                print("Altered setting PreferredGamepad (\"\(oldValue)\"->\"\(newValue)\")")
+                defaults.setValue(newValue, forKey: DefaultsKey.PreferredGamepad)
+            }
         }
     }
     
@@ -79,6 +135,7 @@ struct VisualSettingsView: View {
     }
 }
 
+// MARK: Previews
 #Preview {
     VisualSettingsView()
 }

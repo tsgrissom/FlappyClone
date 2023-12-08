@@ -30,8 +30,14 @@ class GameViewController: UIViewController {
         if defaults.object(forKey: DefaultsKey.AudioMuted) == nil {
             defaults.setValue(false, forKey: DefaultsKey.AudioMuted)
         }
+        if defaults.object(forKey: DefaultsKey.GamepadDisplayMode) == nil {
+            defaults.setValue("Dynamic", forKey: DefaultsKey.GamepadDisplayMode)
+        }
         if defaults.object(forKey: DefaultsKey.HapticsDisabled) == nil {
             defaults.setValue(false, forKey: DefaultsKey.HapticsDisabled)
+        }
+        if defaults.object(forKey: DefaultsKey.PreferredGamepad) == nil {
+            defaults.setValue("Dynamic", forKey: DefaultsKey.PreferredGamepad)
         }
         if defaults.object(forKey: DefaultsKey.PreferredSceneSetting) == nil {
             defaults.setValue("Random", forKey: DefaultsKey.PreferredSceneSetting)

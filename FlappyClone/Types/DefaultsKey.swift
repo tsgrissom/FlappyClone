@@ -17,7 +17,9 @@ struct DefaultsKey {
     static let NumberOfWallHitsAllowed = "DifficultyNumberOfWallHitsAllowed" // def 0
     
     // App Settings
-    static let AudioMuted            = "SettingAudioMuted"            // def false
-    static let HapticsDisabled       = "SettingHapticsDisabled"       // def false
-    static let PreferredSceneSetting = "SettingPreferredSceneSetting" // def "Random"
+    static let AudioMuted                = "SettingAudioMuted"            // def false
+    static let GamepadDisplayMode        = "SettingGamepadDisplayMode"    // def "Dynamic"
+    static let HapticsDisabled           = "SettingHapticsDisabled"       // def false
+    static let PreferredGamepad          = "SettingPreferredGamepad"      // def "Dynamic"
+    static let PreferredSceneSetting     = "SettingPreferredSceneSetting" // def "Random"
 }

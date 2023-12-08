@@ -29,6 +29,8 @@
 		2F91E6192B16CADE004C4A17 /* DefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E6182B16CADE004C4A17 /* DefaultsKey.swift */; };
 		2F91E61B2B16CCD1004C4A17 /* HighScoreLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E61A2B16CCD1004C4A17 /* HighScoreLabel.swift */; };
 		2F91E61D2B17C143004C4A17 /* AudioMuteToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F91E61C2B17C143004C4A17 /* AudioMuteToggleButton.swift */; };
+		2FA5FF352B23BE09003586BA /* GamepadHintDisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA5FF342B23BE09003586BA /* GamepadHintDisplayMode.swift */; };
+		2FA5FF372B23BEE2003586BA /* GamepadPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA5FF362B23BEE2003586BA /* GamepadPreference.swift */; };
 		2FB05F7E2B14F4FA00C410C3 /* ScoreLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */; };
 		2FB05F822B14FF5F00C410C3 /* GameSceneSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */; };
 		2FB05F852B15242300C410C3 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB05F842B15242300C410C3 /* PlayButton.swift */; };
@@ -69,6 +71,8 @@
 		2F91E6182B16CADE004C4A17 /* DefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsKey.swift; sourceTree = "<group>"; };
 		2F91E61A2B16CCD1004C4A17 /* HighScoreLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScoreLabel.swift; sourceTree = "<group>"; };
 		2F91E61C2B17C143004C4A17 /* AudioMuteToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMuteToggleButton.swift; sourceTree = "<group>"; };
+		2FA5FF342B23BE09003586BA /* GamepadHintDisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadHintDisplayMode.swift; sourceTree = "<group>"; };
+		2FA5FF362B23BEE2003586BA /* GamepadPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadPreference.swift; sourceTree = "<group>"; };
 		2FB05F7D2B14F4FA00C410C3 /* ScoreLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreLabel.swift; sourceTree = "<group>"; };
 		2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSetting.swift; sourceTree = "<group>"; };
 		2FB05F842B15242300C410C3 /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
@@ -173,6 +177,8 @@
 				2F91E6182B16CADE004C4A17 /* DefaultsKey.swift */,
 				2FB05F812B14FF5F00C410C3 /* GameSceneSetting.swift */,
 				2FD0EE132B117D5900405095 /* PhysicsCategory.swift */,
+				2FA5FF342B23BE09003586BA /* GamepadHintDisplayMode.swift */,
+				2FA5FF362B23BEE2003586BA /* GamepadPreference.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -307,6 +313,7 @@
 				2FB37C922B1CF5C300BE426E /* VisualSettingsView.swift in Sources */,
 				2F8C4A932B1E7A3200B37E81 /* GamepadButton.swift in Sources */,
 				2F6E72402B1AC334001A1313 /* RemainingHitsLabel.swift in Sources */,
+				2FA5FF352B23BE09003586BA /* GamepadHintDisplayMode.swift in Sources */,
 				2F91E61D2B17C143004C4A17 /* AudioMuteToggleButton.swift in Sources */,
 				2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */,
 				2FB05F872B15251000C410C3 /* SettingsButton.swift in Sources */,
@@ -319,6 +326,7 @@
 				2F91E61B2B16CCD1004C4A17 /* HighScoreLabel.swift in Sources */,
 				2F1403992B0E91A6009D12C9 /* AppDelegate.swift in Sources */,
 				2F1FD9082B19716E00926D99 /* AppSettingsView.swift in Sources */,
+				2FA5FF372B23BEE2003586BA /* GamepadPreference.swift in Sources */,
 				2FD0EE182B11832000405095 /* GroundSprite.swift in Sources */,
 				2FB05F892B1528BC00C410C3 /* BackgroundSprite.swift in Sources */,
 				2FB37C942B1E458200BE426E /* QuitLabelAsButton.swift in Sources */,
