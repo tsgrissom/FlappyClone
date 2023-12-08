@@ -152,11 +152,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func showGamepadHints() {
         restartButtonGamepadHint.show()
         quitButtonGamepadHint.show()
+        gameStartLabel.renderNode(withGamepadHint: true)
     }
     
     private func hideGamepadHints() {
         restartButtonGamepadHint.hide()
         quitButtonGamepadHint.hide()
+        gameStartLabel.renderNode(withGamepadHint: false)
+    }
+    
+    private func reinitializeGamepadHints() {
+        restartButtonGamepadHint   = GamepadButton(buttonName: "B")
+        quitButtonGamepadHint      = GamepadButton(buttonName: "X")
+        gameStartLabel.setupNode()
     }
     
     // MARK: Scene Control Functions
@@ -191,6 +199,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameStartLabel = GameStartLabel(for: sceneSetting)
         gameStartLabel.position = calculateGameStartLabelPosition()
         gameStartLabel.zPosition = 4
+        gameStartLabel.gamepadHint.zPosition = 5
         
         // Dynamic Sprites
         player = PlayerSprite()
@@ -416,6 +425,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             print("Controller connected: \(vendorName)")
             controller.printLayout()
             
+            self.reinitializeGamepadHints()
             self.showGamepadHints()
         }
     }
@@ -491,8 +501,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if dead || !gameStarted {
             return
         }
-        
-        
         
         let px = player.position.x
         let py = player.position.y

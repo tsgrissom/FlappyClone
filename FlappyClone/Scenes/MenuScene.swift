@@ -189,6 +189,10 @@ class MenuScene: SKScene {
         playButtonGamepadHint.hide()
     }
     
+    private func reinitializeGamepadHints() {
+        playButtonGamepadHint = GamepadButton(buttonName: "A")
+    }
+    
     // MARK: GameScene Functions
     override func didMove(to view: SKView) {
         createScene()
@@ -225,6 +229,8 @@ class MenuScene: SKScene {
             print("Controller connected: \(vendorName)")
             controller.printLayout()
             
+            reinitializeGamepadHints()
+            
             playButtonGamepadHint.show()
         }
     }
@@ -238,16 +244,22 @@ class MenuScene: SKScene {
         }
     }
     
-    private func handleButtonPress(for button: GCControllerButtonInput) {
-        if button.isPressed {
-            onPressPlayButton()
-        }
-    }
-    
     override func update(_ currentTime: TimeInterval) {
         if let gameController = GCController.controllers().first {
             gameController.extendedGamepad?.buttonA.valueChangedHandler = { button, value, pressed in
-                self.handleButtonPress(for: button)
+                if pressed {
+                    self.onPressPlayButton()
+                }
+            }
+            gameController.extendedGamepad?.buttonB.valueChangedHandler = { button, value, pressed in
+                if pressed {
+                    self.onPressSettingsButton()
+                }
+            }
+            gameController.extendedGamepad?.buttonX.valueChangedHandler = { button, value, pressed in
+                if pressed {
+                    self.onPressAudioToggleButton()
+                }
             }
         }
     }

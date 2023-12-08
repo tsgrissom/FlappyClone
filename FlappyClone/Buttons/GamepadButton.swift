@@ -1,13 +1,29 @@
+import GameController
 import SpriteKit
 
 class GamepadButton: SKSpriteNode {
     
     private let buttonName: String
     
-    init(buttonName: String) {
+    init(
+        buttonName: String
+    ) {
         self.buttonName = buttonName
         
-        let imageName = "Gamepad\(buttonName)"
+        var sonyLayout = false
+        
+        if let controller = GCController.controllers().first {
+            if controller.isPlayStationFormat() {
+                sonyLayout = true
+            }
+        }
+        
+        let imageName = if sonyLayout {
+            "GamepadSony\(buttonName)"
+        } else {
+            "GamepadXbox\(buttonName)"
+        }
+        
         let texture = SKTexture(imageNamed: imageName)
         let size = CGSize(width: 40, height: 40)
         
