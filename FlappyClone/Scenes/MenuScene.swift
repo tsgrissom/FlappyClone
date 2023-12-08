@@ -14,7 +14,14 @@ class MenuScene: SKScene {
     private var playButton        = PlayButton()
     private var settingsButton    = SettingsButton()
     private var audioToggleButton = AudioMuteToggleButton()
+    
+    private var playButtonGamepadHint = GamepadButton(buttonName: "A")
+    
     private var gameScene         = SKScene()
+    
+    private var hapticsNotDisabled: Bool {
+        !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled)
+    }
     
     // MARK: UI Positioning Functions
     private func horizontallyCenteredPoint(y: CGFloat) -> CGPoint {
@@ -22,13 +29,13 @@ class MenuScene: SKScene {
     }
     
     private func calculatePlayButtonPosition() -> CGPoint {
-        let frameHeightHalved = frame.size.height / 2
+        let htHalved = frame.size.height / 2
         let yMultiplier = if UIDevice.current.orientation.isPortrait {
             UIDevice.isPhone() ? 0.25 : 0.15
         } else {
             0.15
         }
-        let yPos = frame.midY + (frameHeightHalved * yMultiplier)
+        let yPos = frame.midY + (htHalved * yMultiplier)
         
         return horizontallyCenteredPoint(y: yPos)
     }
@@ -38,19 +45,30 @@ class MenuScene: SKScene {
         return CGSize(width: scaledLength, height: scaledLength)
     }
     
+    private func calculatePlayButtonGamepadHintPosition() -> CGPoint {
+        let playX      = playButton.position.x
+        let playY      = playButton.position.y
+        let playWidth  = playButton.frame.width
+        let playHeight = playButton.frame.height
+        return CGPoint(
+            x: playX + (playWidth/2),
+            y: playY + (playHeight/2)
+        )
+    }
+    
     private func calculateHighScoreLabelPosition() -> CGPoint {
-        let frameHeightHalved = frame.size.height / 2
+        let htHalved = frame.size.height / 2
         let yPos = if UIDevice.isPhone() {
-            frame.midY - (frameHeightHalved * 0.01)
+            frame.midY - (htHalved * 0.01)
         } else {
-            frame.midY + (frameHeightHalved * 0.01)
+            frame.midY + (htHalved * 0.01)
         }
         return horizontallyCenteredPoint(y: yPos)
     }
     
     private func calculateSettingsButtonPosition() -> CGPoint {
-        let frameWidthHalved  = frame.size.width  / 2
-        let frameHeightHalved = frame.size.height / 2
+        let wtHalved  = frame.size.width  / 2
+        let htHalved = frame.size.height / 2
         let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
         let yMultiplier = if UIDevice.current.orientation.isPortrait {
             UIDevice.isPhone() ? 0.15 : 0.05
@@ -59,14 +77,14 @@ class MenuScene: SKScene {
         }
         
         return CGPoint(
-            x: frame.midX + (frameWidthHalved  * xMultiplier),
-            y: frame.midY - (frameHeightHalved * yMultiplier)
+            x: frame.midX + (wtHalved  * xMultiplier),
+            y: frame.midY - (htHalved * yMultiplier)
         )
     }
     
     private func calculateAudioToggleButtonPosition() -> CGPoint {
-        let frameWidthHalved  = frame.size.width  / 2
-        let frameHeightHalved = frame.size.height / 2
+        let wtHalved  = frame.size.width  / 2
+        let htHalved = frame.size.height / 2
         let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
     
         let yMultiplier = if UIDevice.current.orientation.isPortrait {
@@ -76,14 +94,14 @@ class MenuScene: SKScene {
         }
         
         return CGPoint(
-            x: frame.midX - (frameWidthHalved  * xMultiplier),
-            y: frame.midY - (frameHeightHalved * yMultiplier)
+            x: frame.midX - (wtHalved * xMultiplier),
+            y: frame.midY - (htHalved * yMultiplier)
         )
     }
     
     // MARK: Button Handlers
     private func onPressPlayButton() {
-        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+        if hapticsNotDisabled {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
         
@@ -94,7 +112,7 @@ class MenuScene: SKScene {
     
     private func onPressSettingsButton() {
         settingsButton.press()
-        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+        if hapticsNotDisabled {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
         
@@ -102,7 +120,7 @@ class MenuScene: SKScene {
     }
     
     private func onPressAudioToggleButton() {
-        if !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled) {
+        if hapticsNotDisabled {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
         
@@ -117,6 +135,9 @@ class MenuScene: SKScene {
         playButton.position = calculatePlayButtonPosition()
         playButton.zPosition = 2
         playButton.scale(to: calculatePlayButtonScale())
+        
+        playButtonGamepadHint.position = calculatePlayButtonGamepadHintPosition()
+        playButtonGamepadHint.zPosition = 3
         
         let highScoreLabel = HighScoreLabel(for: sceneSetting)
         highScoreLabel.position = calculateHighScoreLabelPosition()
@@ -133,8 +154,15 @@ class MenuScene: SKScene {
         addChild(audioToggleButton)
         addChild(background)
         addChild(playButton)
+        addChild(playButtonGamepadHint)
         addChild(settingsButton)
         addChild(highScoreLabel)
+        
+        for controller in GCController.controllers() {
+            if controller.extendedGamepad != nil {
+                self.showGamepadHints()
+            }
+        }
     }
     
     private func setupNextScene() {
@@ -151,6 +179,14 @@ class MenuScene: SKScene {
         if let viewController = view?.window?.rootViewController {
             viewController.present(settingsViewController, animated: true, completion: nil)
         }
+    }
+    
+    private func showGamepadHints() {
+        playButtonGamepadHint.show()
+    }
+    
+    private func hideGamepadHints() {
+        playButtonGamepadHint.hide()
     }
     
     // MARK: GameScene Functions
@@ -177,6 +213,7 @@ class MenuScene: SKScene {
         
         playButton.scale(to: calculatePlayButtonScale())
         playButton.position = calculatePlayButtonPosition()
+        playButtonGamepadHint.position = calculatePlayButtonGamepadHintPosition()
         
         audioToggleButton.position = calculateAudioToggleButtonPosition()
         settingsButton.position = calculateSettingsButtonPosition()
@@ -184,13 +221,20 @@ class MenuScene: SKScene {
     
     @objc func controllerDidConnect(notification: Notification) {
         if let controller = notification.object as? GCController {
-            print("Controller connected: \(controller.vendorName ?? "Unknown controller")")
+            let vendorName = controller.getVendorName()
+            print("Controller connected: \(vendorName)")
+            controller.printLayout()
+            
+            playButtonGamepadHint.show()
         }
     }
     
     @objc func controllerDidDisconnect(notification: Notification) {
         if let controller = notification.object as? GCController {
-            print("Controller disconnected: \(controller.vendorName ?? "Unknown controller")")
+            let vendorName = controller.getVendorName()
+            print("Controller disconnected: \(vendorName)")
+            
+            playButtonGamepadHint.hide()
         }
     }
     

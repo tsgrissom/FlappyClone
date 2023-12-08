@@ -21,6 +21,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var restartButton  = RestartLabelAsButton()
     private var quitButton     = QuitLabelAsButton()
     
+    private var restartButtonGamepadHint = GamepadButton(buttonName: "B")
+    private var quitButtonGamepadHint    = GamepadButton(buttonName: "X")
+    
     // Sprite Actions
     private var moveAndRemoveWalls = SKAction()
     
@@ -114,7 +117,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let shouldHaveLivesLabel = remainingWallHits > 0 && defaults.bool(forKey: DefaultsKey.DieOnHitWall)
         
         addChild(restartButton)
+        addChild(restartButtonGamepadHint)
         addChild(quitButton)
+        addChild(quitButtonGamepadHint)
         if shouldHaveLivesLabel {
             addChild(livesLabel)
         }
@@ -142,6 +147,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             menuScene.scaleMode = .aspectFill
             self.view?.presentScene(menuScene)
         }
+    }
+    
+    private func showGamepadHints() {
+        restartButtonGamepadHint.show()
+        quitButtonGamepadHint.show()
+    }
+    
+    private func hideGamepadHints() {
+        restartButtonGamepadHint.hide()
+        quitButtonGamepadHint.hide()
     }
     
     // MARK: Scene Control Functions
@@ -194,10 +209,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         restartButton = RestartLabelAsButton(for: sceneSetting)
         restartButton.position  = calculateRestartButtonPosition()
         restartButton.zPosition = 5
+        restartButtonGamepadHint.position = calculateRestartGamepadHintPosition()
+        restartButtonGamepadHint.zPosition = 6
         
         quitButton = QuitLabelAsButton(for: sceneSetting)
         quitButton.position  = calculateQuitButtonPosition()
         quitButton.zPosition = 5
+        quitButtonGamepadHint.position = calculateQuitGamepadHintPosition()
+        quitButtonGamepadHint.zPosition = 6
         
         addChild(background)
         addChild(gameStartLabel)
@@ -205,31 +224,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(cloud)
         addChild(ground)
         addChild(player)
+        
+        for controller in GCController.controllers() {
+            if controller.extendedGamepad != nil {
+                self.showGamepadHints()
+            }
+        }
     }
     
     // MARK: UI Positioning Functions
     private func calculateCloudPosition() -> CGPoint {
-        let frameHeightHalved = frame.height / 2
+        let htHalved = frame.height / 2
         let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35
         
         return CGPoint(
             x: frame.midX,
-            y: frame.midY + (frameHeightHalved * yMultiplier)
+            y: frame.midY + (htHalved * yMultiplier)
         )
     }
     
     private func calculateGroundPosition() -> CGPoint {
-        let frameHeightHalved = frame.height / 2
+        let htHalved = frame.height / 2
         let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35
         
         return CGPoint(
             x: frame.midX,
-            y: frame.midY - (frameHeightHalved * yMultiplier)
+            y: frame.midY - (htHalved * yMultiplier)
         )
     }
     
     private func calculateGameStartLabelPosition() -> CGPoint {
-        let frameHeightHalved = frame.height / 2
+        let htHalved = frame.height / 2
         let yMultiplier = if UIDevice.current.orientation.isPortrait {
             UIDevice.isPhone() ? 0.30 : 0.15
         } else {
@@ -238,65 +263,87 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         return CGPoint(
             x: frame.midX,
-            y: frame.midY + (frameHeightHalved * yMultiplier)
+            y: frame.midY + (htHalved * yMultiplier)
         )
     }
     
     private func calculateScoreLabelPosition() -> CGPoint {
-        let frameHeightHalved = frame.height / 2
+        let htHalved = frame.height / 2
         let yMultiplier = if UIDevice.current.orientation.isPortrait {
             UIDevice.isPhone() ? 0.75 : 0.20
-        } else {
-            0.20
-        }
-        
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY + (frameHeightHalved * yMultiplier)
-        )
-    }
-    
-    private func calculateRemainingHitsLabelPosition() -> CGPoint {
-        let frameHeightHalved = frame.height / 2
-        let yMultiplier = if UIDevice.current.orientation.isPortrait {
-            UIDevice.isPhone() ? 0.65 : 0.15
         } else {
             0.15
         }
         
         return CGPoint(
             x: frame.midX,
-            y: frame.midY + (frameHeightHalved * yMultiplier)
+            y: frame.midY + (htHalved * yMultiplier)
+        )
+    }
+    
+    private func calculateRemainingHitsLabelPosition() -> CGPoint {
+        let htHalved = frame.height / 2
+        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+            UIDevice.isPhone() ? 0.65 : 0.15
+        } else {
+            0.10
+        }
+        
+        return CGPoint(
+            x: frame.midX,
+            y: frame.midY + (htHalved * yMultiplier)
         )
     }
     
     private func calculateQuitButtonPosition() -> CGPoint {
-        let frameWidthHalved  = frame.width  / 2
-        let frameHeightHalved = frame.height / 2
+        let wtHalved  = frame.width  / 2
+        let htHalved = frame.height / 2
         let yMultiplier = if UIDevice.current.orientation.isPortrait {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
-            0.20
+            0.12
         }
         
         return CGPoint(
-            x: frame.midX - (frameWidthHalved  * 0.52),
-            y: frame.midY + (frameHeightHalved * yMultiplier)
+            x: frame.midX - (wtHalved * 0.52),
+            y: frame.midY + (htHalved * yMultiplier)
+        )
+    }
+    
+    private func calculateQuitGamepadHintPosition() -> CGPoint {
+        let quitX      = quitButton.position.x
+        let quitY      = quitButton.position.y
+        let quitWidth  = quitButton.frame.width
+        let quitHeight = quitButton.frame.height
+        return CGPoint(
+            x: quitX + (quitWidth  * 0.01),
+            y: quitY + (quitHeight * 1.90)
         )
     }
     
     private func calculateRestartButtonPosition() -> CGPoint {
-        let frameWidthHalved  = frame.width  / 2
-        let frameHeightHalved = frame.height / 2
+        let wtHalved  = frame.width  / 2
+        let htHalved = frame.height / 2
         let yMultiplier = if UIDevice.current.orientation.isPortrait {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
-            0.20
+            0.12
         }
         
         return CGPoint(
-            x: frame.midX + (frameWidthHalved  * 0.52),
-            y: frame.midY + (frameHeightHalved * yMultiplier)
+            x: frame.midX + (wtHalved  * 0.52),
+            y: frame.midY + (htHalved * yMultiplier)
+        )
+    }
+    
+    private func calculateRestartGamepadHintPosition() -> CGPoint {
+        let restartX      = restartButton.position.x
+        let restartY      = restartButton.position.y
+        let restartWidth  = restartButton.frame.width
+        let restartHeight = restartButton.frame.height
+        return CGPoint(
+            x: restartX + (restartWidth  * 0.01),
+            y: restartY + (restartHeight * 1.90)
         )
     }
     
@@ -304,15 +351,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func createWalls() {
         walls = WallSprite()
         
-        let frameHeightHalved = frame.height / 2
-        let frameWidthHalved  = frame.width / 2
+        let htHalved = frame.height / 2
+        let wtHalved  = frame.width / 2
         
         let randomPositions = [0.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0]
         let random = randomPositions.randomElement() ?? 0.0
         
-        let wallX    = frame.midX + (frameWidthHalved  * 0.90)
-        let topWallY = frame.midY + (frameHeightHalved * 0.65)
-        let btmWallY = frame.midY - (frameHeightHalved * 0.60) + random
+        let wallX    = frame.midX + (wtHalved  * 0.90)
+        let topWallY = frame.midY + (htHalved * 0.65)
+        let btmWallY = frame.midY - (htHalved * 0.60) + random
         
         walls.spriteTop.position   = CGPoint(x: wallX, y: topWallY)
         walls.spriteBtm.position   = CGPoint(x: wallX, y: btmWallY)
@@ -332,6 +379,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         createScene()
         NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidConnect), name: .GCControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidDisconnect), name: .GCControllerDidDisconnect, object: nil)
     }
     
     deinit {
@@ -356,10 +405,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.position     = calculateScoreLabelPosition()
         livesLabel.position     = calculateRemainingHitsLabelPosition()
         gameStartLabel.position = calculateGameStartLabelPosition()
+        
+        restartButtonGamepadHint.position = calculateRestartGamepadHintPosition()
+        quitButtonGamepadHint.position = calculateQuitGamepadHintPosition()
+    }
+    
+    @objc func controllerDidConnect(notification: Notification) {
+        if let controller = notification.object as? GCController {
+            let vendorName = controller.getVendorName()
+            print("Controller connected: \(vendorName)")
+            controller.printLayout()
+            
+            self.showGamepadHints()
+        }
+    }
+    
+    @objc func controllerDidDisconnect(notification: Notification) {
+        if let controller = notification.object as? GCController {
+            let vendorName = controller.getVendorName()
+            print("Controller disconnected: \(vendorName)")
+            
+            self.hideGamepadHints()
+        }
     }
     
     @objc func simulateTap() {
-        let tapLocation = CGPoint(x: frame.midX, y: frame.midY)
         let touch = UITouch()
         let tapEvent = UIEvent()
         touchesBegan([touch], with: tapEvent)
@@ -372,10 +442,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     ) {
         for touch in touches {
             let location = touch.location(in: self)
-            if restartButton.contains(location) {
+            if restartButton.contains(location) || restartButtonGamepadHint.contains(location) {
                 restartScene()
                 return
-            } else if quitButton.contains(location) {
+            } else if quitButton.contains(location) || quitButtonGamepadHint.contains(location) {
                 quitGame()
                 return
             } else if scoreLabel.contains(location) {

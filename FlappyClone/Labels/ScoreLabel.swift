@@ -5,7 +5,7 @@ class ScoreLabel: SKLabelNode {
     // MARK: Variables
     private let defaults = UserDefaults.standard
     
-    private let defaultFontColor: UIColor = UIColor(named: "ScoreColor")   ?? UIColor.yellow
+    private let defaultFontColor: UIColor = UIColor.systemYellow
     private let dangerFontColor:  UIColor = UIColor(named: "DangerColor")  ?? UIColor.systemRed
 
     private let sceneSetting: GameSceneSetting
