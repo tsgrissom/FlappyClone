@@ -23,7 +23,7 @@ class MenuScene: SKScene {
         !UserDefaults.standard.bool(forKey: DefaultsKey.HapticsDisabled)
     }
     
-    // MARK: UI Positioning Functions
+    // MARK: Calculation Functions
     private func horizontallyCenteredPoint(y: CGFloat) -> CGPoint {
         CGPoint(x: frame.midX, y: y)
     }
@@ -99,7 +99,7 @@ class MenuScene: SKScene {
         )
     }
     
-    // MARK: Button Handlers
+    // MARK: Button Handler Functions
     private func onPressPlayButton() {
         if hapticsNotDisabled {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -127,7 +127,7 @@ class MenuScene: SKScene {
         audioToggleButton.toggle()
     }
     
-    // MARK: Scene Control Functions
+    // MARK: Initializing Functions
     private func createScene() {
         let background = BackgroundSprite(for: sceneSetting, frameSize: frame.size)
         
@@ -151,15 +151,16 @@ class MenuScene: SKScene {
         settingsButton.position = calculateSettingsButtonPosition()
         settingsButton.zPosition = 2
         
-        addChild(audioToggleButton)
         addChild(background)
+        addChild(highScoreLabel)
+        addChild(audioToggleButton)
         addChild(playButton)
         addChild(playButtonGamepadHint)
         addChild(settingsButton)
-        addChild(highScoreLabel)
         
         for controller in GCController.controllers() {
             if controller.extendedGamepad != nil {
+                playButtonGamepadHint = GamepadButton(buttonName: "A")
                 self.showGamepadHints()
             }
         }
@@ -172,6 +173,12 @@ class MenuScene: SKScene {
         } else {
             print("Could not set up next scene GameScene")
         }
+    }
+    
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidConnect), name: .GCControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidDisconnect), name: .GCControllerDidDisconnect, object: nil)
     }
      
     private func openSettingsView() {
@@ -197,51 +204,11 @@ class MenuScene: SKScene {
     override func didMove(to view: SKView) {
         createScene()
         setupNextScene()
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidConnect), name: .GCControllerDidConnect, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidDisconnect), name: .GCControllerDidDisconnect, object: nil)
+        setupObservers()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func deviceDidRotate() {
-        let isLandscape = UIDevice.current.orientation.isLandscape
-        let isPortrait  = UIDevice.current.orientation.isPortrait
-        
-        // Prevent rescale+reposition when device is laid flat without primary orientation change
-        if UIDevice.current.orientation.isFlat && (!isLandscape || !isPortrait) {
-            return
-        }
-        
-        playButton.scale(to: calculatePlayButtonScale())
-        playButton.position = calculatePlayButtonPosition()
-        playButtonGamepadHint.position = calculatePlayButtonGamepadHintPosition()
-        
-        audioToggleButton.position = calculateAudioToggleButtonPosition()
-        settingsButton.position = calculateSettingsButtonPosition()
-    }
-    
-    @objc func controllerDidConnect(notification: Notification) {
-        if let controller = notification.object as? GCController {
-            let vendorName = controller.getVendorName()
-            print("Controller connected: \(vendorName)")
-            controller.printLayout()
-            
-            reinitializeGamepadHints()
-            
-            playButtonGamepadHint.show()
-        }
-    }
-    
-    @objc func controllerDidDisconnect(notification: Notification) {
-        if let controller = notification.object as? GCController {
-            let vendorName = controller.getVendorName()
-            print("Controller disconnected: \(vendorName)")
-            
-            playButtonGamepadHint.hide()
-        }
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -274,6 +241,44 @@ class MenuScene: SKScene {
             } else if audioToggleButton.contains(location) {
                 onPressAudioToggleButton()
             }
+        }
+    }
+    
+    // MARK: Objective-C Functions
+    @objc func deviceDidRotate() {
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        let isPortrait  = UIDevice.current.orientation.isPortrait
+        
+        // Prevent rescale+reposition when device is laid flat without primary orientation change
+        if UIDevice.current.orientation.isFlat && (!isLandscape || !isPortrait) {
+            return
+        }
+        
+        playButton.scale(to: calculatePlayButtonScale())
+        playButton.position = calculatePlayButtonPosition()
+        playButtonGamepadHint.position = calculatePlayButtonGamepadHintPosition()
+        
+        audioToggleButton.position = calculateAudioToggleButtonPosition()
+        settingsButton.position = calculateSettingsButtonPosition()
+    }
+    
+    @objc func controllerDidConnect(notification: Notification) {
+        if let controller = notification.object as? GCController {
+            let vendorName = controller.getVendorName()
+            print("Controller connected: \(vendorName)")
+            controller.printLayout()
+            
+            self.reinitializeGamepadHints()
+            self.showGamepadHints()
+        }
+    }
+    
+    @objc func controllerDidDisconnect(notification: Notification) {
+        if let controller = notification.object as? GCController {
+            let vendorName = controller.getVendorName()
+            print("Controller disconnected: \(vendorName)")
+            
+            self.hideGamepadHints()
         }
     }
 }

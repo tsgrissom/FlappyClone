@@ -4,9 +4,6 @@ import GameController
 import GameplayKit
 import SpriteKit
 
-// MARK: Single-Use Buttons
-
-
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: Variables
@@ -32,6 +29,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var dead              = Bool()
     private var score             = Int()
     private var remainingWallHits = Int()
+    
+    private var audioNotMuted: Bool {
+        !UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted)
+    }
     
     // Sound Effects
     private var scoreSoundEffect: AVAudioPlayer?
@@ -59,11 +60,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else {
             print("\"Score.mp3\" not found in bundle")
         }
-    }
-    
-    // MARK: Computed Variables
-    private var audioNotMuted: Bool {
-        !UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted)
     }
     
     // MARK: Game State Functions
@@ -149,6 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    // MARK: Gamepad Hint Functions
     private func showGamepadHints() {
         restartButtonGamepadHint.show()
         quitButtonGamepadHint.show()
@@ -241,7 +238,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    // MARK: UI Positioning Functions
+    // MARK: Calculation Functions
     private func calculateCloudPosition() -> CGPoint {
         let htHalved = frame.height / 2
         let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35
@@ -382,7 +379,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(walls)
     }
     
-    // MARK: GameScene Functions
+    // MARK: GameScene Overrides
     
     // On first render of GameScene
     override func didMove(to view: SKView) {
@@ -394,55 +391,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func deviceDidRotate() {
-        if UIDevice.current.orientation.isFlat && (!UIDevice.current.orientation.isPortrait || !UIDevice.current.orientation.isLandscape) {
-            return
-        }
-        
-        if UIDevice.current.orientation.isPortrait {
-            scoreLabel.fontSize = 65.0
-            livesLabel.fontSize = 35.0
-        } else if (UIDevice.current.orientation.isLandscape) {
-            scoreLabel.fontSize = 35.0
-            livesLabel.fontSize = 30.0
-        }
-        
-        quitButton.position     = calculateQuitButtonPosition()
-        restartButton.position  = calculateRestartButtonPosition()
-        scoreLabel.position     = calculateScoreLabelPosition()
-        livesLabel.position     = calculateRemainingHitsLabelPosition()
-        gameStartLabel.position = calculateGameStartLabelPosition()
-        
-        restartButtonGamepadHint.position = calculateRestartGamepadHintPosition()
-        quitButtonGamepadHint.position = calculateQuitGamepadHintPosition()
-    }
-    
-    @objc func controllerDidConnect(notification: Notification) {
-        if let controller = notification.object as? GCController {
-            let vendorName = controller.getVendorName()
-            print("Controller connected: \(vendorName)")
-            controller.printLayout()
-            
-            self.reinitializeGamepadHints()
-            self.showGamepadHints()
-        }
-    }
-    
-    @objc func controllerDidDisconnect(notification: Notification) {
-        if let controller = notification.object as? GCController {
-            let vendorName = controller.getVendorName()
-            print("Controller disconnected: \(vendorName)")
-            
-            self.hideGamepadHints()
-        }
-    }
-    
-    @objc func simulateTap() {
-        let touch = UITouch()
-        let tapEvent = UIEvent()
-        touchesBegan([touch], with: tapEvent)
     }
     
     // Handles each screen touch
@@ -570,5 +518,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             player.run(downTurnAfterScore)
         }
+    }
+    
+    // MARK: Objective-C Functions
+    @objc func deviceDidRotate() {
+        if UIDevice.current.orientation.isFlat && (!UIDevice.current.orientation.isPortrait || !UIDevice.current.orientation.isLandscape) {
+            return
+        }
+        
+        if UIDevice.current.orientation.isPortrait {
+            scoreLabel.fontSize = 65.0
+            livesLabel.fontSize = 35.0
+        } else if (UIDevice.current.orientation.isLandscape) {
+            scoreLabel.fontSize = 35.0
+            livesLabel.fontSize = 30.0
+        }
+        
+        quitButton.position     = calculateQuitButtonPosition()
+        restartButton.position  = calculateRestartButtonPosition()
+        scoreLabel.position     = calculateScoreLabelPosition()
+        livesLabel.position     = calculateRemainingHitsLabelPosition()
+        gameStartLabel.position = calculateGameStartLabelPosition()
+        
+        restartButtonGamepadHint.position = calculateRestartGamepadHintPosition()
+        quitButtonGamepadHint.position = calculateQuitGamepadHintPosition()
+    }
+    
+    @objc func controllerDidConnect(notification: Notification) {
+        if let controller = notification.object as? GCController {
+            let vendorName = controller.getVendorName()
+            print("Controller connected: \(vendorName)")
+            controller.printLayout()
+            
+            self.reinitializeGamepadHints()
+            self.showGamepadHints()
+        }
+    }
+    
+    @objc func controllerDidDisconnect(notification: Notification) {
+        if let controller = notification.object as? GCController {
+            let vendorName = controller.getVendorName()
+            print("Controller disconnected: \(vendorName)")
+            
+            self.hideGamepadHints()
+        }
+    }
+    
+    @objc func simulateTap() {
+        let touch = UITouch()
+        let tapEvent = UIEvent()
+        touchesBegan([touch], with: tapEvent)
     }
 }
