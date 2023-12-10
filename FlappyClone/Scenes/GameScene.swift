@@ -147,12 +147,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: Gamepad Hint Functions
     private func showGamepadHints() {
+        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Never" {
+            return
+        }
+        
         restartButtonGamepadHint.show()
         quitButtonGamepadHint.show()
         gameStartLabel.renderNode(withGamepadHint: true)
     }
     
     private func hideGamepadHints() {
+        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Always" {
+            return
+        }
+        
         restartButtonGamepadHint.hide()
         quitButtonGamepadHint.hide()
         gameStartLabel.renderNode(withGamepadHint: false)
@@ -522,14 +530,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: Objective-C Functions
     @objc func deviceDidRotate() {
-        if UIDevice.current.orientation.isFlat && (!UIDevice.current.orientation.isPortrait || !UIDevice.current.orientation.isLandscape) {
+        let isFlat      = UIDevice.current.orientation.isFlat
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        let isPortrait  = UIDevice.current.orientation.isPortrait
+        
+        // Prevent rescale+reposition when device is laid flat without primary orientation change
+        if isFlat && (!isLandscape || !isPortrait) {
             return
         }
         
-        if UIDevice.current.orientation.isPortrait {
+        if isPortrait {
             scoreLabel.fontSize = 65.0
             livesLabel.fontSize = 35.0
-        } else if (UIDevice.current.orientation.isLandscape) {
+        } else if isLandscape {
             scoreLabel.fontSize = 35.0
             livesLabel.fontSize = 30.0
         }
@@ -541,7 +554,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameStartLabel.position = calculateGameStartLabelPosition()
         
         restartButtonGamepadHint.position = calculateRestartGamepadHintPosition()
-        quitButtonGamepadHint.position = calculateQuitGamepadHintPosition()
+        quitButtonGamepadHint.position    = calculateQuitGamepadHintPosition()
     }
     
     @objc func controllerDidConnect(notification: Notification) {
@@ -565,7 +578,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     @objc func simulateTap() {
-        let touch = UITouch()
+        let touch    = UITouch()
         let tapEvent = UIEvent()
         touchesBegan([touch], with: tapEvent)
     }

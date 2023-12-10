@@ -3,6 +3,7 @@ import SpriteKit
 
 class GamepadButton: SKSpriteNode {
     
+    private let defaults = UserDefaults.standard
     private let buttonName: String
     
     init(
@@ -10,22 +11,8 @@ class GamepadButton: SKSpriteNode {
     ) {
         self.buttonName = buttonName
         
-        var sonyLayout = false
-        
-        if let controller = GCController.controllers().first {
-            if controller.isPlayStationFormat() {
-                sonyLayout = true
-            }
-        }
-        
-        let imageName = if sonyLayout {
-            "GamepadSony\(buttonName)"
-        } else {
-            "GamepadXbox\(buttonName)"
-        }
-        
-        let texture = SKTexture(imageNamed: imageName)
-        let size = CGSize(width: 40, height: 40)
+        let texture = SKTexture(imageNamed: "GamepadXbox\(buttonName)")
+        let size    = CGSize(width: 40, height: 40)
         
         // TODO Support PlayStation button layout
         
@@ -39,16 +26,50 @@ class GamepadButton: SKSpriteNode {
         setupButton()
     }
     
+    private func determineGamepadLayout() -> String {
+        let preferredGamepadFormat = defaults.string(forKey: DefaultsKey.PreferredGamepad) ?? "Dynamic"
+        var layout = ""
+        
+        if preferredGamepadFormat == "Sony" || preferredGamepadFormat == "PlayStation" {
+            layout = "Sony"
+        } else if preferredGamepadFormat == "Xbox" || preferredGamepadFormat == "Standard" {
+            layout = "Xbox"
+        } else { // Assume Dynamic
+            for controller in GCController.controllers() {
+                if controller.isPlayStationFormat() {
+                    layout = "Sony"
+                    break
+                }
+            }
+        }
+        
+        if layout.isEmpty {
+            layout = "Xbox"
+        }
+        
+        return layout
+    }
+    
     private func setupButton() {
-        self.run(SKAction.hide())
+        let layout    = determineGamepadLayout()
+        let imageName = "Gamepad\(layout)\(buttonName)"
+        let texture   = SKTexture(imageNamed: imageName)
+        
+        let displayMode = defaults.string(forKey: DefaultsKey.GamepadDisplayMode)
+        
+        self.run(SKAction.setTexture(texture))
+        
+        if displayMode == "Dynamic" || displayMode == "Never" {
+            self.run(SKAction.hide())
+        }
     }
     
     // MARK: Methods
-    func hide() {
+    public func hide() {
         self.run(SKAction.hide())
     }
     
-    func show() {
+    public func show() {
         self.run(SKAction.unhide())
     }
 }

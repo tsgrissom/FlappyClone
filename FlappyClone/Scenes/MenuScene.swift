@@ -67,24 +67,24 @@ class MenuScene: SKScene {
     }
     
     private func calculateSettingsButtonPosition() -> CGPoint {
-        let wtHalved  = frame.size.width  / 2
-        let htHalved = frame.size.height / 2
+        let wtHalved    = frame.size.width  / 2
+        let htHalved    = frame.size.height / 2
         let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
         let yMultiplier = if UIDevice.current.orientation.isPortrait {
             UIDevice.isPhone() ? 0.15 : 0.05
         } else {
             0.12
         }
-        
+         
         return CGPoint(
-            x: frame.midX + (wtHalved  * xMultiplier),
+            x: frame.midX + (wtHalved * xMultiplier),
             y: frame.midY - (htHalved * yMultiplier)
         )
     }
     
     private func calculateAudioToggleButtonPosition() -> CGPoint {
-        let wtHalved  = frame.size.width  / 2
-        let htHalved = frame.size.height / 2
+        let wtHalved    = frame.size.width  / 2
+        let htHalved    = frame.size.height / 2
         let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
     
         let yMultiplier = if UIDevice.current.orientation.isPortrait {
@@ -136,8 +136,7 @@ class MenuScene: SKScene {
         playButton.zPosition = 2
         playButton.scale(to: calculatePlayButtonScale())
         
-        playButtonGamepadHint.position = calculatePlayButtonGamepadHintPosition()
-        playButtonGamepadHint.zPosition = 3
+        reinitializeGamepadHints()
         
         let highScoreLabel = HighScoreLabel(for: sceneSetting)
         highScoreLabel.position = calculateHighScoreLabelPosition()
@@ -160,7 +159,6 @@ class MenuScene: SKScene {
         
         for controller in GCController.controllers() {
             if controller.extendedGamepad != nil {
-                playButtonGamepadHint = GamepadButton(buttonName: "A")
                 self.showGamepadHints()
             }
         }
@@ -176,9 +174,24 @@ class MenuScene: SKScene {
     }
     
     private func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidConnect), name: .GCControllerDidConnect, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidDisconnect), name: .GCControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deviceDidRotate),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(controllerDidConnect),
+            name: .GCControllerDidConnect,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(controllerDidDisconnect),
+            name: .GCControllerDidDisconnect,
+            object: nil
+        )
     }
      
     private func openSettingsView() {
@@ -189,15 +202,25 @@ class MenuScene: SKScene {
     }
     
     private func showGamepadHints() {
+        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Never" {
+            return
+        }
+        
         playButtonGamepadHint.show()
     }
     
     private func hideGamepadHints() {
+        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Always" {
+            return
+        }
+        
         playButtonGamepadHint.hide()
     }
     
     private func reinitializeGamepadHints() {
         playButtonGamepadHint = GamepadButton(buttonName: "A")
+        playButtonGamepadHint.position = calculatePlayButtonGamepadHintPosition()
+        playButtonGamepadHint.zPosition = 3
     }
     
     // MARK: GameScene Functions
@@ -246,11 +269,12 @@ class MenuScene: SKScene {
     
     // MARK: Objective-C Functions
     @objc func deviceDidRotate() {
+        let isFlat      = UIDevice.current.orientation.isFlat
         let isLandscape = UIDevice.current.orientation.isLandscape
         let isPortrait  = UIDevice.current.orientation.isPortrait
         
         // Prevent rescale+reposition when device is laid flat without primary orientation change
-        if UIDevice.current.orientation.isFlat && (!isLandscape || !isPortrait) {
+        if isFlat && (!isLandscape || !isPortrait) {
             return
         }
         
