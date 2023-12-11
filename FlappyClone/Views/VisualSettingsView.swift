@@ -30,7 +30,7 @@ struct VisualSettingsView: View {
     public var body: some View {
         ScrollView {
             sectionHeader
-                .padding(.top, 10)
+                .padding(.top, 20)
                 .padding(.horizontal, 20)
             sectionBase
                 .padding(.top, 10)
@@ -45,7 +45,7 @@ struct VisualSettingsView: View {
     private var sectionHeader: some View {
         VStack {
             HStack {
-                Text("Visual Settings")
+                Text("Settings: Visual")
                     .font(.largeTitle)
                     .bold()
                 Spacer()

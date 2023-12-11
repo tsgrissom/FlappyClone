@@ -23,7 +23,7 @@ struct AppSettingsView: View {
     public var body: some View {
         ScrollView {
             sectionHeader
-                .padding(.top, 10)
+                .padding(.top, 20)
                 .padding(.horizontal, 20)
             sectionToggles
                 .padding(.top, 10)
@@ -36,7 +36,7 @@ struct AppSettingsView: View {
     private var sectionHeader: some View {
         VStack {
             HStack {
-                Text("App Settings")
+                Text("Settings: App")
                     .font(.largeTitle)
                     .bold()
                 Spacer()

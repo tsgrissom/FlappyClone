@@ -47,7 +47,7 @@ struct GameSettingsView: View {
     public var body: some View {
         ScrollView {
             sectionHeader
-                .padding(.top, 10)
+                .padding(.top, 20)
                 .padding(.horizontal, 20)
             sectionBase
                 .padding(.top, 10)
@@ -61,7 +61,7 @@ struct GameSettingsView: View {
     private var sectionHeader: some View {
         VStack {
             HStack {
-                Text("Game Settings")
+                Text("Settings: Game")
                     .font(.largeTitle)
                     .bold()
                 Spacer()
@@ -136,7 +136,7 @@ struct GameSettingsView: View {
             Button(action: {
                 self.isConfirmClearScorePresented = true
             }) {
-                Image(systemName: "trash")
+                Image(systemName: "arrow.circlepath")
             }
             .alert("Reset your high score?", isPresented: $isConfirmClearScorePresented) {
                 Button(role: .destructive, action: clearHighScore) {
@@ -152,7 +152,7 @@ struct GameSettingsView: View {
             Button(action: {
                 self.isNoHighScoreToClearPresented = true
             }) {
-                Image(systemName: "trash")
+                Image(systemName: "arrow.circlepath")
             }
             .alert("Nothing to reset", isPresented: $isNoHighScoreToClearPresented) {
                 Button(role: .cancel, action: {}) {
