@@ -30,7 +30,8 @@ class MenuScene: SKScene {
     
     private func calculatePlayButtonPosition() -> CGPoint {
         let htHalved = frame.size.height / 2
-        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+        let orientation = UIDevice.current.orientation
+        let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.25 : 0.15
         } else {
             0.15
@@ -69,8 +70,9 @@ class MenuScene: SKScene {
     private func calculateSettingsButtonPosition() -> CGPoint {
         let wtHalved    = frame.size.width  / 2
         let htHalved    = frame.size.height / 2
+        let orientation = UIDevice.current.orientation
         let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
-        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+        let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.15 : 0.05
         } else {
             0.12
@@ -85,9 +87,10 @@ class MenuScene: SKScene {
     private func calculateAudioToggleButtonPosition() -> CGPoint {
         let wtHalved    = frame.size.width  / 2
         let htHalved    = frame.size.height / 2
+        let orientation = UIDevice.current.orientation
         let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
     
-        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+        let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.15 : 0.05
         } else {
             0.12

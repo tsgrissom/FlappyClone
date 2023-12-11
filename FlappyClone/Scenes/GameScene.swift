@@ -10,7 +10,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private let defaults = UserDefaults.standard
     
     // Sprites
-    private var player         = PlayerSprite()        // Physics category - Player
+    private var player         = PlayerSprite()
     private var walls          = WallSprite()
     private var cloud          = GroundSprite()
     private var ground         = GroundSprite()
@@ -153,7 +153,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: Gamepad Hint Functions
     private func showGamepadHints() {
-        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Never" {
+        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == GamepadHintDisplayMode.Never.rawValue {
             return
         }
         
@@ -163,7 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func hideGamepadHints() {
-        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Always" {
+        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == GamepadHintDisplayMode.Always.rawValue {
             return
         }
         
