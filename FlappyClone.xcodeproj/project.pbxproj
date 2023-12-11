@@ -103,6 +103,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F0F00822B2784C1000D3323 /* SpriteKit */ = {
+			isa = PBXGroup;
+			children = (
+				2FB05F832B1523E100C410C3 /* Buttons */,
+				2F6E723E2B1ABE27001A1313 /* Labels */,
+				2F6E723C2B1ABD4A001A1313 /* Scenes */,
+				2FD0EE122B117D4F00405095 /* Sprites */,
+			);
+			path = SpriteKit;
+			sourceTree = "<group>";
+		};
 		2F14038C2B0E91A6009D12C9 = {
 			isa = PBXGroup;
 			children = (
@@ -125,11 +136,8 @@
 				2F12FF122B1B8FEC00181D89 /* Assets.xcassets */,
 				2FD0EE202B13DE0600405095 /* Info.plist */,
 				2F43335D2B100BA600C757D5 /* Bundle */,
-				2FB05F832B1523E100C410C3 /* Buttons */,
 				2FD0EE0F2B117D2200405095 /* Extensions */,
-				2F6E723E2B1ABE27001A1313 /* Labels */,
-				2F6E723C2B1ABD4A001A1313 /* Scenes */,
-				2FD0EE122B117D4F00405095 /* Sprites */,
+				2F0F00822B2784C1000D3323 /* SpriteKit */,
 				2F6E723D2B1ABD9B001A1313 /* Types */,
 				2F1FD9022B196D7500926D99 /* Views */,
 				2F1403982B0E91A6009D12C9 /* AppDelegate.swift */,

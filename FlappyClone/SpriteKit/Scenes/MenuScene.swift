@@ -119,7 +119,10 @@ class MenuScene: SKScene {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
         
-        openSettingsView()
+        let settingsViewController = UIHostingController(rootView: SettingsView())
+        if let viewController = view?.window?.rootViewController {
+            viewController.present(settingsViewController, animated: true, completion: nil)
+        }
     }
     
     private func onPressAudioToggleButton() {
@@ -130,10 +133,35 @@ class MenuScene: SKScene {
         audioToggleButton.toggle()
     }
     
+    // MARK: Helper Functions
+    private func showGamepadHints() {
+        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Never" {
+            return
+        }
+        
+        playButtonGamepadHint.show()
+    }
+    
+    private func hideGamepadHints() {
+        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Always" {
+            return
+        }
+        
+        playButtonGamepadHint.hide()
+    }
+    
+    private func reinitializeGamepadHints() {
+        playButtonGamepadHint = GamepadButton(buttonName: "A")
+        playButtonGamepadHint.position = calculatePlayButtonGamepadHintPosition()
+        playButtonGamepadHint.zPosition = 3
+    }
+    
     // MARK: Initializing Functions
     private func createScene() {
+        // Static Sprites
         let background = BackgroundSprite(for: sceneSetting, frameSize: frame.size)
         
+        // User Interface Sprites
         playButton = PlayButton(for: sceneSetting)
         playButton.position = calculatePlayButtonPosition()
         playButton.zPosition = 2
@@ -196,35 +224,6 @@ class MenuScene: SKScene {
             object: nil
         )
     }
-     
-    private func openSettingsView() {
-        let settingsViewController = UIHostingController(rootView: SettingsView())
-        if let viewController = view?.window?.rootViewController {
-            viewController.present(settingsViewController, animated: true, completion: nil)
-        }
-    }
-    
-    private func showGamepadHints() {
-        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Never" {
-            return
-        }
-        
-        playButtonGamepadHint.show()
-    }
-    
-    private func hideGamepadHints() {
-        if defaults.string(forKey: DefaultsKey.GamepadDisplayMode) == "Always" {
-            return
-        }
-        
-        playButtonGamepadHint.hide()
-    }
-    
-    private func reinitializeGamepadHints() {
-        playButtonGamepadHint = GamepadButton(buttonName: "A")
-        playButtonGamepadHint.position = calculatePlayButtonGamepadHintPosition()
-        playButtonGamepadHint.zPosition = 3
-    }
     
     // MARK: GameScene Functions
     override func didMove(to view: SKView) {
@@ -261,11 +260,11 @@ class MenuScene: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             if playButton.contains(location) {
-                onPressPlayButton()
+                self.onPressPlayButton()
             } else if settingsButton.contains(location) {
-                onPressSettingsButton()
+                self.onPressSettingsButton()
             } else if audioToggleButton.contains(location) {
-                onPressAudioToggleButton()
+                self.onPressAudioToggleButton()
             }
         }
     }
