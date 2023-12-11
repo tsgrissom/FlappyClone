@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F0F00812B27294F000D3323 /* UIDeviceOrientationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0F00802B27294F000D3323 /* UIDeviceOrientationExtension.swift */; };
 		2F12FF132B1B8FEC00181D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F12FF122B1B8FEC00181D89 /* Assets.xcassets */; };
 		2F1403992B0E91A6009D12C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1403982B0E91A6009D12C9 /* AppDelegate.swift */; };
 		2F14039F2B0E91A6009D12C9 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F14039E2B0E91A6009D12C9 /* GameScene.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F0F00802B27294F000D3323 /* UIDeviceOrientationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceOrientationExtension.swift; sourceTree = "<group>"; };
 		2F12FF122B1B8FEC00181D89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2F1403952B0E91A6009D12C9 /* FlappyClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlappyClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F1403982B0E91A6009D12C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -210,8 +212,9 @@
 		2FD0EE0F2B117D2200405095 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */,
 				2F2AB62F2B1FFF8000425369 /* GCControllerExtension.swift */,
+				2FD0EE102B117D3100405095 /* UIDeviceExtension.swift */,
+				2F0F00802B27294F000D3323 /* UIDeviceOrientationExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				2FD0EE142B117D5900405095 /* PhysicsCategory.swift in Sources */,
 				2FB05F872B15251000C410C3 /* SettingsButton.swift in Sources */,
 				2F91E6152B16C39D004C4A17 /* GameStartLabel.swift in Sources */,
+				2F0F00812B27294F000D3323 /* UIDeviceOrientationExtension.swift in Sources */,
 				2FB05F852B15242300C410C3 /* PlayButton.swift in Sources */,
 				2F91E6192B16CADE004C4A17 /* DefaultsKey.swift in Sources */,
 				2FD0EE162B117E5300405095 /* PlayerSprite.swift in Sources */,

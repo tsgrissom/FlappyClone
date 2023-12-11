@@ -24,10 +24,10 @@ struct GameSettingsView: View {
     
     // MARK: Helper Functions
     private func resetAll() {
-        defaults.setValue(true, forKey: DefaultsKey.DieOnOutOfBounds)
+        defaults.setValue(true,  forKey: DefaultsKey.DieOnOutOfBounds)
         defaults.setValue(false, forKey: DefaultsKey.DieOnHitBoundary)
         defaults.setValue(false, forKey: DefaultsKey.DieOnHitWall)
-        defaults.setValue(0, forKey: DefaultsKey.NumberOfWallHitsAllowed)
+        defaults.setValue(0,     forKey: DefaultsKey.NumberOfWallHitsAllowed)
         
         dieOnOutOfBounds = true
         dieOnHitBoundary = false

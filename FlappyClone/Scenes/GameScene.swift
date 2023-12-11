@@ -12,6 +12,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Sprites
     private var player         = PlayerSprite()        // Physics category - Player
     private var walls          = WallSprite()
+    private var cloud          = GroundSprite()
+    private var ground         = GroundSprite()
     private var scoreLabel     = ScoreLabel()
     private var livesLabel     = RemainingHitsLabel()
     private var gameStartLabel = GameStartLabel()
@@ -193,11 +195,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Static Sprites
         let background = BackgroundSprite(for: sceneSetting, frameSize: frame.size)
-        let cloud  = GroundSprite(for: sceneSetting)
-        let ground = GroundSprite(for: sceneSetting)
-        cloud.position   = calculateCloudPosition()
-        cloud.zRotation  = CGFloat(Double.pi)
-        cloud.zPosition  = 3
+        
+        // Scene Sprites
+        cloud = GroundSprite(for: sceneSetting)
+        cloud.position  = calculateCloudPosition()
+        cloud.zPosition = 3
+        cloud.zRotation = -CGFloat.pi
+        
+        ground = GroundSprite(for: sceneSetting)
         ground.position  = calculateGroundPosition()
         ground.zPosition = 3
         
@@ -206,12 +211,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameStartLabel.zPosition = 4
         gameStartLabel.gamepadHint.zPosition = 5
         
-        // Dynamic Sprites
+        // Player Sprite
         player = PlayerSprite()
         player.position  = CGPoint(x: frame.midX, y: frame.midY)
         player.zPosition = 2
         player.physicsBody?.affectedByGravity = false
         
+        // User Interface Sprites
         scoreLabel = ScoreLabel(for: sceneSetting)
         scoreLabel.position  = calculateScoreLabelPosition()
         scoreLabel.zPosition = 4
@@ -248,8 +254,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: Calculation Functions
     private func calculateCloudPosition() -> CGPoint {
-        let htHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35
+        let htHalved    = frame.height / 2
+        let orientation = UIDevice.current.orientation
+        let yMultiplier = if orientation.isFlexiblePortrait() {
+            UIDevice.isPhone() ? 0.95 : 0.35
+        } else {
+            0.28
+        }
         
         return CGPoint(
             x: frame.midX,
@@ -259,7 +270,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateGroundPosition() -> CGPoint {
         let htHalved = frame.height / 2
-        let yMultiplier = UIDevice.isPhone() ? 0.95 : 0.35
+        let orientation = UIDevice.current.orientation
+        let yMultiplier = if orientation.isFlexiblePortrait() {
+            UIDevice.isPhone() ? 0.95 : 0.35
+        } else {
+            0.28
+        }
         
         return CGPoint(
             x: frame.midX,
@@ -269,7 +285,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateGameStartLabelPosition() -> CGPoint {
         let htHalved = frame.height / 2
-        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+        let orientation = UIDevice.current.orientation
+        let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.30 : 0.15
         } else {
             0.15
@@ -283,7 +300,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateScoreLabelPosition() -> CGPoint {
         let htHalved = frame.height / 2
-        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+        let orientation = UIDevice.current.orientation
+        let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
             0.15
@@ -297,7 +315,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func calculateRemainingHitsLabelPosition() -> CGPoint {
         let htHalved = frame.height / 2
-        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+        let orientation = UIDevice.current.orientation
+        let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.65 : 0.15
         } else {
             0.10
@@ -310,9 +329,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func calculateQuitButtonPosition() -> CGPoint {
-        let wtHalved  = frame.width  / 2
-        let htHalved = frame.height / 2
-        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+        let wtHalved    = frame.width  / 2
+        let htHalved    = frame.height / 2
+        let orientation = UIDevice.current.orientation
+        let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
             0.12
@@ -336,9 +356,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func calculateRestartButtonPosition() -> CGPoint {
-        let wtHalved  = frame.width  / 2
-        let htHalved = frame.height / 2
-        let yMultiplier = if UIDevice.current.orientation.isPortrait {
+        let wtHalved    = frame.width  / 2
+        let htHalved    = frame.height / 2
+        let orientation = UIDevice.current.orientation
+        let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
             0.12
@@ -552,6 +573,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.position     = calculateScoreLabelPosition()
         livesLabel.position     = calculateRemainingHitsLabelPosition()
         gameStartLabel.position = calculateGameStartLabelPosition()
+        
+        cloud.position = calculateCloudPosition()
+        ground.position = calculateGroundPosition()
         
         restartButtonGamepadHint.position = calculateRestartGamepadHintPosition()
         quitButtonGamepadHint.position    = calculateQuitGamepadHintPosition()
