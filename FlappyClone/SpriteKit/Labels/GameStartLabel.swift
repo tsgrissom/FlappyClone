@@ -38,7 +38,6 @@ class GameStartLabel: SKNode {
         }
         
         renderNode(withGamepadHint: isGamepadConnected)
-        print("GameStartLabel#renderNode called (withGamepadHint=\(isGamepadConnected))")
     }
     
     public func renderNode(withGamepadHint: Bool) {

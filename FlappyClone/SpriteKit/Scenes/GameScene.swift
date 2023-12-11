@@ -321,7 +321,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let htHalved = frame.height / 2
         let orientation = UIDevice.current.orientation
         let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.65 : 0.15
+            UIDevice.isPhone() ? 0.67 : 0.15
         } else {
             0.10
         }
@@ -339,7 +339,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
-            0.12
+            0.15
         }
         
         return CGPoint(
@@ -366,7 +366,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
-            0.12
+            0.15
         }
         
         return CGPoint(
