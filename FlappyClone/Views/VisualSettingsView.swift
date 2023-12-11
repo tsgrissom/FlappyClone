@@ -8,14 +8,22 @@ struct VisualSettingsView: View {
     
     @State private var isConfirmResetAllOptionsPresented = false
     
-    @State private var gamepadHintDisplayMode: String = UserDefaults.standard.string(forKey: DefaultsKey.GamepadDisplayMode) ?? "Dynamic"
-    @State private var preferredGamepad: String = UserDefaults.standard.string(forKey: DefaultsKey.PreferredGamepad) ?? "Dynamic"
+    @State private var gamepadHintDisplayMode: String = UserDefaults.standard.string(forKey: DefaultsKey.GamepadDisplayMode) ?? GamepadHintDisplayMode.Dynamic.rawValue
+    @State private var preferredGamepad: String = UserDefaults.standard.string(forKey: DefaultsKey.PreferredGamepad) ?? GamepadPreference.Dynamic.rawValue
     @State private var preferredSceneSetting: String = UserDefaults.standard.string(forKey: DefaultsKey.PreferredSceneSetting) ?? "Random"
     
     // MARK: Helper Functions
     private func resetAll() {
-        defaults.setValue("Random", forKey: DefaultsKey.PreferredSceneSetting)
-        preferredSceneSetting = "Random"
+        let defDisplayMode = GamepadHintDisplayMode.Dynamic.rawValue
+        let defPreferredGamepad = GamepadPreference.Dynamic.rawValue
+        let defPreferredSceneSetting = "Random"
+        defaults.setValue(defDisplayMode, forKey: DefaultsKey.GamepadDisplayMode)
+        defaults.setValue(defPreferredGamepad, forKey: DefaultsKey.PreferredGamepad)
+        defaults.setValue(defPreferredSceneSetting, forKey: DefaultsKey.PreferredSceneSetting)
+        
+        gamepadHintDisplayMode = defDisplayMode
+        preferredGamepad = defPreferredGamepad
+        preferredSceneSetting = defPreferredSceneSetting
     }
     
     // MARK: View Body
