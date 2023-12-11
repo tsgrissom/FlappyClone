@@ -99,9 +99,9 @@ struct VisualSettingsView: View {
             Text("Display prompts")
             Spacer()
             Picker(selection: $gamepadHintDisplayMode, content: {
-                Text("Dynamic").tag("Dynamic")
-                Text("Always").tag("Always")
-                Text("Never").tag("Never")
+                Text("Dynamic").tag(GamepadHintDisplayMode.Dynamic.rawValue)
+                Text("Always").tag(GamepadHintDisplayMode.Always.rawValue)
+                Text("Never").tag(GamepadHintDisplayMode.Never.rawValue)
             }, label: {})
             .onChange(of: preferredGamepad, initial: false) { oldValue, newValue in
                 print("Altered setting GamepadDisplayMode (\"\(oldValue)\"->\"\(newValue)\")")
@@ -115,9 +115,9 @@ struct VisualSettingsView: View {
             Text("Preferred gamepad")
             Spacer()
             Picker(selection: $preferredGamepad, content: {
-                Text("Dynamic").tag("Dynamic")
-                Text("Sony").tag("Sony")
-                Text("Xbox").tag("Standard")
+                Text("Dynamic").tag(GamepadPreference.Dynamic.rawValue)
+                Text("Sony").tag(GamepadPreference.Sony.rawValue)
+                Text("Xbox").tag(GamepadPreference.Standard.rawValue)
             }, label: {})
             .onChange(of: preferredGamepad, initial: false) { oldValue, newValue in
                 print("Altered setting PreferredGamepad (\"\(oldValue)\"->\"\(newValue)\")")
