@@ -33,7 +33,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var remainingWallHits = Int()
     
     private var audioNotMuted: Bool {
-        !UserDefaults.standard.bool(forKey: DefaultsKey.AudioMuted)
+        !defaults.bool(forKey: DefaultsKey.AudioMuted)
+    }
+    
+    private var hapticsNotDisabled: Bool {
+        !defaults.bool(forKey: DefaultsKey.HapticsDisabled)
     }
     
     // Sound Effects
@@ -82,7 +86,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // TODO Play new high score effect
             defaults.setValue(newScore, forKey: DefaultsKey.HighScore)
         } else {
-            if !defaults.bool(forKey: DefaultsKey.AudioMuted) {
+            if audioNotMuted {
                 scoreSoundEffect?.play()
             }
         }
@@ -413,9 +417,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // On first render of GameScene
     override func didMove(to view: SKView) {
         createScene()
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidConnect), name: .GCControllerDidConnect, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(controllerDidDisconnect), name: .GCControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deviceDidRotate),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(controllerDidConnect),
+            name: .GCControllerDidConnect,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(controllerDidDisconnect),
+            name: .GCControllerDidDisconnect,
+            object: nil
+        )
     }
     
     deinit {
@@ -516,7 +535,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.rotateToZero(collision: true)
             endGame(for: "Player hit Wall")
             
-            if !defaults.bool(forKey: DefaultsKey.HapticsDisabled) {
+            if hapticsNotDisabled {
                 UINotificationFeedbackGenerator().notificationOccurred(.warning)
             }
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Boundary) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Boundary)) {
@@ -528,7 +547,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.rotateToZero(collision: true)
             endGame(for: "Player hit Boundary")
             
-            if !defaults.bool(forKey: DefaultsKey.HapticsDisabled) {
+            if hapticsNotDisabled {
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             }
         } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Score) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Score)) {
