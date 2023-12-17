@@ -267,92 +267,80 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func calculateCloudPosition() -> CGPoint {
         let htHalved    = frame.height / 2
         let orientation = UIDevice.current.orientation
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.95 : 0.35
-        } else {
-            0.35
-        }
         
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY + (htHalved * yMultiplier)
-        )
+        let yMultiplier = orientation.isFlexiblePortrait()
+            ? (UIDevice.isPhone() ? 0.95 : 0.35)
+            : 0.35
+        let posX = frame.midX
+        let posY = frame.midY + (htHalved * yMultiplier)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateGroundPosition() -> CGPoint {
         let htHalved = frame.height / 2
         let orientation = UIDevice.current.orientation
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.95 : 0.35
-        } else {
-            0.35
-        }
         
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY - (htHalved * yMultiplier)
-        )
+        let yMultiplier = orientation.isFlexiblePortrait()
+            ? (UIDevice.isPhone() ? 0.95 : 0.35)
+            : 0.35
+        let posX = frame.midX
+        let posY = frame.midY - (htHalved * yMultiplier)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateGameStartLabelPosition() -> CGPoint {
         let htHalved = frame.height / 2
         let orientation = UIDevice.current.orientation
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.30 : 0.15
-        } else {
-            0.15
-        }
         
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY + (htHalved * yMultiplier)
-        )
+        let yMultiplier = orientation.isFlexiblePortrait()
+            ? (UIDevice.isPhone() ? 0.3 : 0.15)
+            : 0.15
+        let posX = frame.midX
+        let posY = frame.midY + (htHalved * yMultiplier)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateScoreLabelPosition() -> CGPoint {
         let htHalved = frame.height / 2
         let orientation = UIDevice.current.orientation
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.75 : 0.20
-        } else {
-            0.25
-        }
         
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY + (htHalved * yMultiplier)
-        )
+        let yMultiplier = orientation.isFlexiblePortrait()
+            ? (UIDevice.isPhone() ? 0.75 : 0.2)
+            : 0.25
+        let posX = frame.midX
+        let posY = frame.midY + (htHalved * yMultiplier)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateRemainingHitsLabelPosition() -> CGPoint {
         let htHalved = frame.height / 2
         let orientation = UIDevice.current.orientation
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.67 : 0.15
-        } else {
-            0.20
-        }
         
-        return CGPoint(
-            x: frame.midX,
-            y: frame.midY + (htHalved * yMultiplier)
-        )
+        let yMultiplier = orientation.isFlexiblePortrait()
+            ? (UIDevice.isPhone() ? 0.67 : 0.15)
+            : 0.2
+        let posX = frame.midX
+        let posY = frame.midY + (htHalved * yMultiplier)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateQuitButtonPosition() -> CGPoint {
         let wtHalved    = frame.width  / 2
         let htHalved    = frame.height / 2
         let orientation = UIDevice.current.orientation
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.75 : 0.20
-        } else {
-            0.25
-        }
         
-        return CGPoint(
-            x: frame.midX - (wtHalved * 0.52),
-            y: frame.midY + (htHalved * yMultiplier)
-        )
+        let yMultiplier = orientation.isFlexiblePortrait()
+            ? (UIDevice.isPhone() ? 0.75 : 0.2)
+            : 0.25
+        let posX = frame.midX - (wtHalved * 0.52)
+        let posY = frame.midY + (htHalved * yMultiplier)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateQuitGamepadHintPosition() -> CGPoint {
@@ -360,26 +348,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let quitY      = quitButton.position.y
         let quitWidth  = quitButton.frame.width
         let quitHeight = quitButton.frame.height
-        return CGPoint(
-            x: quitX + (quitWidth  * 0.01),
-            y: quitY + (quitHeight * 1.90)
-        )
+        
+        let posX = quitX + (quitWidth  * 0.01)
+        let posY = quitY + (quitHeight * 1.90)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateRestartButtonPosition() -> CGPoint {
         let wtHalved    = frame.width  / 2
         let htHalved    = frame.height / 2
         let orientation = UIDevice.current.orientation
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.75 : 0.20
-        } else {
-            0.25
-        }
         
-        return CGPoint(
-            x: frame.midX + (wtHalved  * 0.52),
-            y: frame.midY + (htHalved * yMultiplier)
-        )
+        let yMultiplier = orientation.isFlexiblePortrait()
+            ? (UIDevice.isPhone() ? 0.75 : 0.2)
+            : 0.25
+        let posX = frame.midX + (wtHalved * 0.52)
+        let posY = frame.midY + (htHalved * yMultiplier)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateRestartGamepadHintPosition() -> CGPoint {
@@ -387,10 +374,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let restartY      = restartButton.position.y
         let restartWidth  = restartButton.frame.width
         let restartHeight = restartButton.frame.height
-        return CGPoint(
-            x: restartX + (restartWidth  * 0.01),
-            y: restartY + (restartHeight * 1.90)
-        )
+        
+        let posX = restartX + (restartWidth  * 0.01)
+        let posY = restartY + (restartHeight * 1.90)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     // Creates the walls

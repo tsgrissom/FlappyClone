@@ -33,8 +33,8 @@ class MenuScene: SKScene {
         let orientation = UIDevice.current.orientation
         
         let yMultiplier = orientation.isFlexiblePortrait()
-        ? (UIDevice.isPhone() ? 0.25 : 0.15)
-        : 0.15
+            ? (UIDevice.isPhone() ? 0.25 : 0.15)
+            : 0.15
         let yPos = frame.midY + (htHalved * yMultiplier)
         
         return horizontallyCenteredPoint(y: yPos)
@@ -51,17 +51,18 @@ class MenuScene: SKScene {
         let playY      = playButton.position.y
         let playWidth  = playButton.frame.width
         let playHeight = playButton.frame.height
-        return CGPoint(
-            x: playX + (playWidth/2),
-            y: playY + (playHeight/2)
-        )
+        
+        let posX = playX + (playWidth  / 2)
+        let posY = playY + (playHeight / 2)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateHighScoreLabelPosition() -> CGPoint {
         let htHalved = frame.size.height / 2
         let yPos = UIDevice.isPhone()
-        ? (frame.midY - (htHalved * 0.01))
-        : (frame.midY + (htHalved * 0.01))
+            ? (frame.midY - (htHalved * 0.01))
+            : (frame.midY + (htHalved * 0.01))
         return horizontallyCenteredPoint(y: yPos)
     }
     
@@ -71,16 +72,15 @@ class MenuScene: SKScene {
         let orientation = UIDevice.current.orientation
         
         let xMultiplier = orientation.isFlexiblePortrait()
-        ? (UIDevice.isPhone() ? 0.2 : 0.1)
-        : 0.15
+            ? (UIDevice.isPhone() ? 0.2 : 0.1)
+            : 0.15
         let yMultiplier = orientation.isFlexiblePortrait()
-        ? (UIDevice.isPhone() ? 0.15 : 0.05)
-        : 0.12
-         
-        return CGPoint(
-            x: frame.midX + (wtHalved * xMultiplier),
-            y: frame.midY - (htHalved * yMultiplier)
-        )
+            ? (UIDevice.isPhone() ? 0.15 : 0.05)
+            : 0.12
+        let posX = frame.midX + (wtHalved * xMultiplier)
+        let posY = frame.midY - (htHalved * yMultiplier)
+        
+        return CGPoint(x: posX, y: posY)
     }
     
     private func calculateAudioToggleButtonPosition() -> CGPoint {
@@ -89,16 +89,15 @@ class MenuScene: SKScene {
         let orientation = UIDevice.current.orientation
         
         let xMultiplier = orientation.isFlexiblePortrait()
-        ? (UIDevice.isPhone() ? 0.20 : 0.10)
-        : 0.15
+            ? (UIDevice.isPhone() ? 0.20 : 0.10)
+            : 0.15
         let yMultiplier = orientation.isFlexiblePortrait()
-        ? (UIDevice.isPhone() ? 0.15 : 0.05)
-        : 0.12
+            ? (UIDevice.isPhone() ? 0.15 : 0.05)
+            : 0.12
+        let posX = frame.midX - (wtHalved * xMultiplier)
+        let posY = frame.midY - (htHalved * yMultiplier)
         
-        return CGPoint(
-            x: frame.midX - (wtHalved * xMultiplier),
-            y: frame.midY - (htHalved * yMultiplier)
-        )
+        return CGPoint(x: posX, y: posY)
     }
     
     // MARK: Button Handler Functions

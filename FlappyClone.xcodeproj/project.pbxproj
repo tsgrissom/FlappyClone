@@ -46,6 +46,14 @@
 		2FD0EE182B11832000405095 /* GroundSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE172B11832000405095 /* GroundSprite.swift */; };
 		2FD0EE1E2B1239E500405095 /* WallSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EE1D2B1239E500405095 /* WallSprite.swift */; };
 		2FD0EE222B13DF1500405095 /* 04B_19__.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 2FD0EE212B13DF1500405095 /* 04B_19__.TTF */; };
+		2FD2AD0F2B2E9D2200FA79AE /* FlappyCloneWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD2AD0E2B2E9D2200FA79AE /* FlappyCloneWatchApp.swift */; };
+		2FD2AD112B2E9D2200FA79AE /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD2AD102B2E9D2200FA79AE /* MenuView.swift */; };
+		2FD2AD132B2E9D2300FA79AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FD2AD122B2E9D2300FA79AE /* Assets.xcassets */; };
+		2FD2AD162B2E9D2300FA79AE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FD2AD152B2E9D2300FA79AE /* Preview Assets.xcassets */; };
+		2FD2AD1B2B2EA77300FA79AE /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD2AD1A2B2EA77300FA79AE /* GameScene.swift */; };
+		2FD2AD1F2B2F5D0D00FA79AE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD2AD1E2B2F5D0D00FA79AE /* SettingsView.swift */; };
+		2FD2AD212B2F66FA00FA79AE /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD2AD202B2F66FA00FA79AE /* GameView.swift */; };
+		2FD2AD232B2F6B1400FA79AE /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2FD2AD222B2F6B1400FA79AE /* GameScene.sks */; };
 		2FF56A1B2B296B120013AF75 /* HapticsKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF56A1A2B296B120013AF75 /* HapticsKit.swift */; };
 /* End PBXBuildFile section */
 
@@ -91,11 +99,27 @@
 		2FD0EE1D2B1239E500405095 /* WallSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallSprite.swift; sourceTree = "<group>"; };
 		2FD0EE202B13DE0600405095 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2FD0EE212B13DF1500405095 /* 04B_19__.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = 04B_19__.TTF; sourceTree = "<group>"; };
+		2FD2AD0C2B2E9D2200FA79AE /* FlappyCloneWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FlappyCloneWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FD2AD0E2B2E9D2200FA79AE /* FlappyCloneWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyCloneWatchApp.swift; sourceTree = "<group>"; };
+		2FD2AD102B2E9D2200FA79AE /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		2FD2AD122B2E9D2300FA79AE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2FD2AD152B2E9D2300FA79AE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2FD2AD1A2B2EA77300FA79AE /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		2FD2AD1E2B2F5D0D00FA79AE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		2FD2AD202B2F66FA00FA79AE /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		2FD2AD222B2F6B1400FA79AE /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		2FF56A1A2B296B120013AF75 /* HapticsKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		2F1403922B0E91A6009D12C9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FD2AD092B2E9D2200FA79AE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -120,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				2F1403972B0E91A6009D12C9 /* FlappyClone */,
+				2FD2AD0D2B2E9D2200FA79AE /* FlappyCloneWatch Watch App */,
 				2F1403962B0E91A6009D12C9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -128,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				2F1403952B0E91A6009D12C9 /* FlappyClone.app */,
+				2FD2AD0C2B2E9D2200FA79AE /* FlappyCloneWatch Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,6 +267,45 @@
 			path = Sprites;
 			sourceTree = "<group>";
 		};
+		2FD2AD0D2B2E9D2200FA79AE /* FlappyCloneWatch Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				2FD2AD122B2E9D2300FA79AE /* Assets.xcassets */,
+				2FD2AD222B2F6B1400FA79AE /* GameScene.sks */,
+				2FD2AD1D2B2EA78400FA79AE /* SpriteKit */,
+				2FD2AD1C2B2EA77D00FA79AE /* Views */,
+				2FD2AD0E2B2E9D2200FA79AE /* FlappyCloneWatchApp.swift */,
+				2FD2AD142B2E9D2300FA79AE /* Preview Content */,
+			);
+			path = "FlappyCloneWatch Watch App";
+			sourceTree = "<group>";
+		};
+		2FD2AD142B2E9D2300FA79AE /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				2FD2AD152B2E9D2300FA79AE /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2FD2AD1C2B2EA77D00FA79AE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2FD2AD102B2E9D2200FA79AE /* MenuView.swift */,
+				2FD2AD1E2B2F5D0D00FA79AE /* SettingsView.swift */,
+				2FD2AD202B2F66FA00FA79AE /* GameView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2FD2AD1D2B2EA78400FA79AE /* SpriteKit */ = {
+			isa = PBXGroup;
+			children = (
+				2FD2AD1A2B2EA77300FA79AE /* GameScene.swift */,
+			);
+			path = SpriteKit;
+			sourceTree = "<group>";
+		};
 		2FF56A192B296AD10013AF75 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,6 +334,23 @@
 			productReference = 2F1403952B0E91A6009D12C9 /* FlappyClone.app */;
 			productType = "com.apple.product-type.application";
 		};
+		2FD2AD0B2B2E9D2200FA79AE /* FlappyCloneWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2FD2AD172B2E9D2300FA79AE /* Build configuration list for PBXNativeTarget "FlappyCloneWatch Watch App" */;
+			buildPhases = (
+				2FD2AD082B2E9D2200FA79AE /* Sources */,
+				2FD2AD092B2E9D2200FA79AE /* Frameworks */,
+				2FD2AD0A2B2E9D2200FA79AE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FlappyCloneWatch Watch App";
+			productName = "FlappyCloneWatch Watch App";
+			productReference = 2FD2AD0C2B2E9D2200FA79AE /* FlappyCloneWatch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -276,11 +358,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 1510;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					2F1403942B0E91A6009D12C9 = {
 						CreatedOnToolsVersion = 15.0.1;
+					};
+					2FD2AD0B2B2E9D2200FA79AE = {
+						CreatedOnToolsVersion = 15.1;
 					};
 				};
 			};
@@ -298,6 +383,7 @@
 			projectRoot = "";
 			targets = (
 				2F1403942B0E91A6009D12C9 /* FlappyClone */,
+				2FD2AD0B2B2E9D2200FA79AE /* FlappyCloneWatch Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -316,6 +402,16 @@
 				2FD0EE222B13DF1500405095 /* 04B_19__.TTF in Resources */,
 				2F91E6132B16BED5004C4A17 /* MenuScene.sks in Resources */,
 				2F1FD90A2B1A2F2B00926D99 /* Splat.mp3 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FD2AD0A2B2E9D2200FA79AE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FD2AD162B2E9D2300FA79AE /* Preview Assets.xcassets in Resources */,
+				2FD2AD232B2F6B1400FA79AE /* GameScene.sks in Resources */,
+				2FD2AD132B2E9D2300FA79AE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +453,18 @@
 				2FD0EE1E2B1239E500405095 /* WallSprite.swift in Sources */,
 				2F2AB6302B1FFF8000425369 /* GCControllerExtension.swift in Sources */,
 				2F1FD9042B196D9B00926D99 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FD2AD082B2E9D2200FA79AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FD2AD1B2B2EA77300FA79AE /* GameScene.swift in Sources */,
+				2FD2AD1F2B2F5D0D00FA79AE /* SettingsView.swift in Sources */,
+				2FD2AD112B2E9D2200FA79AE /* MenuView.swift in Sources */,
+				2FD2AD0F2B2E9D2200FA79AE /* FlappyCloneWatchApp.swift in Sources */,
+				2FD2AD212B2F66FA00FA79AE /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,6 +667,66 @@
 			};
 			name = Release;
 		};
+		2FD2AD182B2E9D2300FA79AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FlappyCloneWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 764Y5F8PLG;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FlappyCloneWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = .FlappyCloneWatch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		2FD2AD192B2E9D2300FA79AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FlappyCloneWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 764Y5F8PLG;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FlappyCloneWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = .FlappyCloneWatch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -576,6 +744,15 @@
 			buildConfigurations = (
 				2F1403AD2B0E91A8009D12C9 /* Debug */,
 				2F1403AE2B0E91A8009D12C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2FD2AD172B2E9D2300FA79AE /* Build configuration list for PBXNativeTarget "FlappyCloneWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2FD2AD182B2E9D2300FA79AE /* Debug */,
+				2FD2AD192B2E9D2300FA79AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
