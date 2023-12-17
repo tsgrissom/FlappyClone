@@ -72,6 +72,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func setScore(to points: Int) {
         self.score = points
         scoreLabel.updateTextForScore(points)
+        
+        if points <= 0 {
+            scoreLabel.flashDanger(waitDuration: 1.5)
+        }
+    }
+    
+    private func resetScore() {
+        setScore(to: 0)
     }
     
     private func addScore(_ points: Int = 1) {
@@ -107,8 +115,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func endGame(for debugMessage: String = "Player hit Wall") {
         print(debugMessage)
-        setScore(to: 0)
-        scoreLabel.flashDanger(waitDuration: 1.5)
+        resetScore()
     }
     
     private func startGame() {
@@ -263,7 +270,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.95 : 0.35
         } else {
-            0.28
+            0.35
         }
         
         return CGPoint(
@@ -278,7 +285,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.95 : 0.35
         } else {
-            0.28
+            0.35
         }
         
         return CGPoint(
@@ -308,7 +315,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
-            0.15
+            0.25
         }
         
         return CGPoint(
@@ -323,7 +330,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.67 : 0.15
         } else {
-            0.10
+            0.20
         }
         
         return CGPoint(
@@ -339,7 +346,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
-            0.15
+            0.25
         }
         
         return CGPoint(
@@ -366,7 +373,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yMultiplier = if orientation.isFlexiblePortrait() {
             UIDevice.isPhone() ? 0.75 : 0.20
         } else {
-            0.15
+            0.25
         }
         
         return CGPoint(
@@ -520,7 +527,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let shouldDieOnHitBoundary = defaults.bool(forKey: DefaultsKey.DieOnHitBoundary)
         let shouldDieOnHitWall     = defaults.bool(forKey: DefaultsKey.DieOnHitWall)
         
-        if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Wall) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Wall)) {
+        let isPlayerHitWall = (maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Wall) || (maskA == PhysicsCategory.Wall && maskB == PhysicsCategory.Player)
+        let isPlayerHitBoundary = (maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Boundary) || (maskA == PhysicsCategory.Boundary && maskB == PhysicsCategory.Player)
+        let isPlayerHitScore = (maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Score) || (maskA == PhysicsCategory.Score && maskB == PhysicsCategory.Player)
+        
+        
+        if isPlayerHitWall {
             if remainingWallHits > 0 {
                 remainingWallHits -= 1
                 livesLabel.updateTextForHits(remainingWallHits)
@@ -531,26 +543,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 die(from: "Player hit Wall")
             }
             
+            HapticsKit.notificationIf(hapticsNotDisabled, type: .warning)
             player.downTurnCanceled = true
             player.rotateToZero(collision: true)
             endGame(for: "Player hit Wall")
-            
-            if hapticsNotDisabled {
-                UINotificationFeedbackGenerator().notificationOccurred(.warning)
-            }
-        } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Boundary) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Boundary)) {
+        } else if isPlayerHitBoundary {
             if shouldDieOnHitBoundary {
                 die(from: "Player hit Boundary")
             }
             
+            HapticsKit.impactIf(hapticsNotDisabled, style: .medium)
             player.downTurnCanceled = true
             player.rotateToZero(collision: true)
             endGame(for: "Player hit Boundary")
-            
-            if hapticsNotDisabled {
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            }
-        } else if ((maskA == PhysicsCategory.Player && maskB == PhysicsCategory.Score) || (maskB == PhysicsCategory.Player && maskA == PhysicsCategory.Score)) {
+        } else if isPlayerHitScore {
             addScore()
             
             if (maskA == PhysicsCategory.Score) {

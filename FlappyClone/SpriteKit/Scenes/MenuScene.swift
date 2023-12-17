@@ -31,18 +31,18 @@ class MenuScene: SKScene {
     private func calculatePlayButtonPosition() -> CGPoint {
         let htHalved = frame.size.height / 2
         let orientation = UIDevice.current.orientation
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.25 : 0.15
-        } else {
-            0.15
-        }
+        
+        let yMultiplier = orientation.isFlexiblePortrait()
+        ? (UIDevice.isPhone() ? 0.25 : 0.15)
+        : 0.15
         let yPos = frame.midY + (htHalved * yMultiplier)
         
         return horizontallyCenteredPoint(y: yPos)
     }
     
     private func calculatePlayButtonScale() -> CGSize {
-        let scaledLength = UIDevice.current.orientation.isPortrait && UIDevice.isPhone() ? 200 : 100
+        let isPortrait = UIDevice.current.orientation.isFlexiblePortrait()
+        let scaledLength = (isPortrait && UIDevice.isPhone()) ? 200 : 100
         return CGSize(width: scaledLength, height: scaledLength)
     }
     
@@ -59,11 +59,9 @@ class MenuScene: SKScene {
     
     private func calculateHighScoreLabelPosition() -> CGPoint {
         let htHalved = frame.size.height / 2
-        let yPos = if UIDevice.isPhone() {
-            frame.midY - (htHalved * 0.01)
-        } else {
-            frame.midY + (htHalved * 0.01)
-        }
+        let yPos = UIDevice.isPhone()
+        ? (frame.midY - (htHalved * 0.01))
+        : (frame.midY + (htHalved * 0.01))
         return horizontallyCenteredPoint(y: yPos)
     }
     
@@ -71,12 +69,13 @@ class MenuScene: SKScene {
         let wtHalved    = frame.size.width  / 2
         let htHalved    = frame.size.height / 2
         let orientation = UIDevice.current.orientation
-        let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.15 : 0.05
-        } else {
-            0.12
-        }
+        
+        let xMultiplier = orientation.isFlexiblePortrait()
+        ? (UIDevice.isPhone() ? 0.2 : 0.1)
+        : 0.15
+        let yMultiplier = orientation.isFlexiblePortrait()
+        ? (UIDevice.isPhone() ? 0.15 : 0.05)
+        : 0.12
          
         return CGPoint(
             x: frame.midX + (wtHalved * xMultiplier),
@@ -88,13 +87,13 @@ class MenuScene: SKScene {
         let wtHalved    = frame.size.width  / 2
         let htHalved    = frame.size.height / 2
         let orientation = UIDevice.current.orientation
-        let xMultiplier = UIDevice.isPhone() ? 0.2  : 0.1
-    
-        let yMultiplier = if orientation.isFlexiblePortrait() {
-            UIDevice.isPhone() ? 0.15 : 0.05
-        } else {
-            0.12
-        }
+        
+        let xMultiplier = orientation.isFlexiblePortrait()
+        ? (UIDevice.isPhone() ? 0.20 : 0.10)
+        : 0.15
+        let yMultiplier = orientation.isFlexiblePortrait()
+        ? (UIDevice.isPhone() ? 0.15 : 0.05)
+        : 0.12
         
         return CGPoint(
             x: frame.midX - (wtHalved * xMultiplier),
@@ -104,20 +103,15 @@ class MenuScene: SKScene {
     
     // MARK: Button Handler Functions
     private func onPressPlayButton() {
-        if hapticsNotDisabled {
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        }
-        
+        HapticsKit.impactIf(hapticsNotDisabled, style: .medium)
         playButton.run(playButton.onPress) {
             self.view?.presentScene(self.gameScene)
         }
     }
     
     private func onPressSettingsButton() {
+        HapticsKit.impactIf(hapticsNotDisabled, style: .light)
         settingsButton.press()
-        if hapticsNotDisabled {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        }
         
         let settingsViewController = UIHostingController(rootView: SettingsView())
         if let viewController = view?.window?.rootViewController {
@@ -126,10 +120,7 @@ class MenuScene: SKScene {
     }
     
     private func onPressAudioToggleButton() {
-        if hapticsNotDisabled {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        }
-        
+        HapticsKit.impactIf(hapticsNotDisabled, style: .light)
         audioToggleButton.toggle()
     }
     

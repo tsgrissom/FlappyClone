@@ -41,8 +41,8 @@ class GameStartLabel: SKNode {
     }
     
     public func renderNode(withGamepadHint: Bool) {
-        gamepadHint = GamepadButton(buttonName: "A")
         removeAllChildren()
+        gamepadHint = GamepadButton(buttonName: "A")
         
         let contextualText = if withGamepadHint {
             "to start"
